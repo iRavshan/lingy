@@ -89,22 +89,71 @@
             </div>
             
             <div class="hero-image-area fade-in-up delay-2">
-                <div class="glass-mockup">
-                    <div class="mockup-header">
-                        <div class="dots">
-                            <span></span><span></span><span></span>
+                <div class="glass-mockup" id="hero-mockup" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); backdrop-filter: var(--glass-blur); position: relative;">
+                    <div class="mockup-header" style="background: var(--bg-secondary); padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-color);">
+                        <div class="dots" style="display: flex; gap: 7px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></span>
                         </div>
-                        <div class="mockup-title">UzSL AI Tarjimon</div>
+                        <div class="mockup-title" style="flex-grow: 1; text-align: center; font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">UzSL AI Tarjimon</div>
                     </div>
-                    <div class="mockup-body">
-                        <div class="animated-translation">
-                            <i class="fa-solid fa-microphone-lines pulse"></i>
-                            <div class="typing-text">"Assalomu alaykum"</div>
-                            <i class="fa-solid fa-arrow-right-long arrow-anim"></i>
-                            <div class="video-thumbnail">
-                                <i class="fa-solid fa-hands"></i>
+                    <div class="mockup-body" style="padding: 40px; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+
+                        <!-- PHASE 1: Microphone Recording -->
+                        <div id="hero-phase-mic" class="hero-phase" style="display: flex; flex-direction: column; align-items: center; gap: 20px; position: absolute; inset: 0; justify-content: center;">
+                            <div style="width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(99,102,241,0.4); animation: pulse-mic 1.5s ease-in-out infinite;">
+                                <i class="fa-solid fa-microphone" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                            <div class="waveform-bars" style="display: flex; align-items: center; gap: 4px; height: 50px;">
+                                <span class="wave-bar" style="width: 4px; height: 20px; background: var(--primary); border-radius: 4px; animation: wave 0.6s ease-in-out 0s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 35px; background: var(--primary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.1s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 25px; background: var(--secondary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.2s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 45px; background: var(--primary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.3s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 30px; background: var(--secondary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.15s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 40px; background: var(--primary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.25s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 20px; background: var(--secondary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.35s infinite alternate;"></span>
+                                <span class="wave-bar" style="width: 4px; height: 35px; background: var(--primary); border-radius: 4px; animation: wave 0.6s ease-in-out 0.05s infinite alternate;"></span>
+                            </div>
+                            <span style="font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px;">Tinglanmoqda...</span>
+                        </div>
+
+                        <!-- PHASE 2: Text Typing -->
+                        <div id="hero-phase-text" class="hero-phase" style="display: none; flex-direction: column; align-items: center; gap: 20px; position: absolute; inset: 0; justify-content: center;">
+                            <div style="display: flex; align-items: center; gap: 10px; color: var(--success); font-size: 0.9rem;">
+                                <i class="fa-solid fa-check-circle"></i> Nutq aniqlandi
+                            </div>
+                            <div id="hero-typed-text" style="font-size: 2rem; font-weight: 700; font-family: var(--font-heading); min-height: 50px; display: flex; align-items: center;">
+                                <span id="hero-text-cursor" style="display: inline-block; width: 3px; height: 35px; background: var(--primary); animation: blink-cursor 0.7s steps(1) infinite; margin-left: 2px;"></span>
+                            </div>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Matnga o'girilmoqda...</span>
+                        </div>
+
+                        <!-- PHASE 3: Sign Language Video -->
+                        <div id="hero-phase-video" class="hero-phase" style="display: none; flex-direction: column; align-items: center; gap: 20px; position: absolute; inset: 0; justify-content: center; padding: 20px;">
+                            <div style="font-size: 0.85rem; color: var(--success); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-language"></i> Imo-ishoraga aylantirilmoqda
+                            </div>
+                            <div class="hero-avatar-video" style="width: 160px; height: 200px; background: linear-gradient(135deg, #111, #1a1a2e); border: 2px solid var(--primary); border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(99,102,241,0.3);">
+                                <i class="fa-solid fa-hands" style="font-size: 4rem; color: var(--primary); animation: sign-anim 1s ease-in-out infinite alternate;"></i>
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: linear-gradient(transparent, rgba(99,102,241,0.2)); display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 0.7rem; color: rgba(255,255,255,0.6);">3D Avatar</span>
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 10px 25px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.95rem;">
+                                "Assalomu alaykum" <i class="fa-solid fa-volume-high text-primary" style="margin-left: 8px; font-size: 0.8rem;"></i>
                             </div>
                         </div>
+
+                    </div>
+                    <!-- Status Bar -->
+                    <div style="padding: 10px 20px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
+                        <div id="hero-status-dots" style="display: flex; gap: 8px;">
+                            <span class="status-dot" style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--primary); background: var(--primary); transition: all 0.3s;"></span>
+                            <span class="status-dot" style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent; transition: all 0.3s;"></span>
+                            <span class="status-dot" style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border-color); background: transparent; transition: all 0.3s;"></span>
+                        </div>
+                        <span id="hero-status-label" style="font-size: 0.75rem; color: var(--text-muted);">1 / 3 — Nutqni yozib olish</span>
                     </div>
                 </div>
             </div>
@@ -124,7 +173,7 @@
                         <i class="fa-solid fa-font"></i> Matndan tarjima
                     </button>
                     <button class="mode-btn" data-mode="video-to-sl" onclick="switchAppMode('video-to-sl')">
-                        <i class="fa-solid fa-photo-film"></i> Videoga tarjimon qo'shish
+                        <i class="fa-solid fa-photo-film"></i> Videoga tarjima qo'shish
                     </button>
                 </div>
             </div>
@@ -359,7 +408,7 @@
                                 <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #27c93f; box-shadow: 0 0 10px rgba(39,201,63,0.3);"></span>
                             </div>
                             <div style="flex-grow: 1; text-align: center;">
-                                <div style="background: var(--bg-main); display: inline-block; padding: 6px 60px; border-radius: 30px; font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--border-color); backdrop-filter: blur(5px);">
+                                <div style="background: var(--bg-main); display: inline-block; padding: 6px 20px; border-radius: 30px; font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--border-color); backdrop-filter: blur(5px);">
                                     <i class="fa-solid fa-lock" style="font-size: 0.75rem; margin-right: 8px; color: var(--success);"></i> wikipedia.org/wiki/Texnologiya
                                 </div>
                             </div>
@@ -368,43 +417,34 @@
                             </div>
                         </div>
                         <!-- Browser Body -->
-                        <div class="browser-body" style="padding: 40px; position: relative; background: linear-gradient(to bottom, var(--bg-card), var(--bg-main));">
-                            <!-- Skeleton Content -->
-                            <div style="width: 40%; height: 28px; background: var(--border-color); border-radius: 6px; margin-bottom: 25px;"></div>
-                            <div style="width: 100%; height: 14px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: 15px;"></div>
+                        <div class="browser-body" style="padding: 30px 35px; position: relative; background: linear-gradient(to bottom, var(--bg-card), var(--bg-main)); min-height: 320px; font-size: 0.82rem; line-height: 1.8; color: var(--text-muted);">
+                            <!-- Real article text -->
+                            <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">Texnologiya</h3>
+                            <p style="margin-bottom: 10px;">Texnologiya — bu ilm-fan yutuqlarini amaliyotda qo'llash jarayoni. U insoniyat taraqqiyotining asosiy omillaridan biridir.</p>
                             
-                            <!-- Highlighted Skeleton Text -->
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;">
-                                <div style="width: 15%; height: 14px; background: var(--bg-secondary); border-radius: 4px;"></div>
-                                <div style="width: 70%; height: 16px; background: rgba(37, 99, 235, 0.15); border: 1px solid var(--primary); border-radius: 4px; position: relative; box-shadow: 0 0 15px rgba(37,99,235,0.1);">
-                                    <!-- Mouse cursor overlay -->
-                                    <i class="fa-solid fa-arrow-pointer" style="position: absolute; right: -18px; top: 8px; color: var(--text-main); font-size: 1.4rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); z-index: 5;"></i>
-                                </div>
+                            <!-- The selectable line -->
+                            <p style="margin-bottom: 10px; position: relative; user-select: none;" id="ext-text-line">
+                                <span id="ext-selectable" style="position: relative; white-space: nowrap;"></span>
+                                <!-- Mouse cursor -->
+                                <i id="ext-cursor" class="fa-solid fa-arrow-pointer" style="position: absolute; top: 12px; left: -10px; color: var(--text-main); font-size: 1.1rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); z-index: 15; opacity: 0; transition: opacity 0.3s;"></i>
+                            </p>
+                            
+                            <p style="margin-bottom: 10px;">Hozirgi kunda sun'iy intellekt, robototexnika va kvant kompyuterlari eng ilg'or yo'nalishlar hisoblanadi.</p>
+                            <p>Texnologik innovatsiyalar hayotimizni tubdan o'zgartirmoqda.</p>
+                            
+                            <!-- UzSL Mini-Button -->
+                            <div id="ext-mini-btn" style="position: absolute; left: 76%; top: 166px; transform: translateX(-50%); display: none; background: var(--primary); color: white; padding: 5px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(99,102,241,0.5); z-index: 20; white-space: nowrap; align-items: center; gap: 5px;">
+                                <i class="fa-solid fa-hands-asl-interpreting" style="font-size: 0.8rem;"></i> UzSL Tarjima
                             </div>
-                            
-                            <div style="width: 90%; height: 14px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: 15px;"></div>
-                            <div style="width: 80%; height: 14px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: 15px;"></div>
-                            <div style="width: 95%; height: 14px; background: var(--bg-secondary); border-radius: 4px;"></div>
-                            
-                            <!-- Extension Popup / Tooltip Mockup -->
-                            <div class="extension-popup glass-panel" style="position: absolute; left: 55%; top: 45%; transform: translate(-50%, -50%); width: 260px; background: rgba(var(--bg-card-rgb), 0.9); border: 1.5px solid var(--primary); border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 10; overflow: hidden; backdrop-filter: blur(15px);">
-                                <div style="background: rgba(37, 99, 235, 0.1); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; font-weight: 600;">
-                                    <span style="display: flex; align-items: center; gap: 8px;">
-                                        <i class="fa-solid fa-hands-asl-interpreting text-primary"></i> UzSL AI
-                                    </span>
-                                    <div style="display: flex; gap: 10px; font-size: 0.8rem;">
-                                        <i class="fa-solid fa-gear text-muted cursor-pointer hover-text-primary"></i>
-                                        <i class="fa-solid fa-xmark text-muted cursor-pointer hover-text-danger"></i>
+
+                            <!-- Extension Popup -->
+                            <div id="ext-popup" class="glass-panel" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.8); width: 230px; background: var(--bg-card); border: 1.5px solid var(--primary); border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 25; overflow: hidden; backdrop-filter: blur(15px); opacity: 0; transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1); padding: 15px;">
+                                <div style="text-align: center;">
+                                    <div style="width: 100%; height: 120px; background: #000; border-radius: 8px; display: flex; justify-content: center; align-items: center; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.08); position: relative; overflow: hidden;">
+                                        <i class="fa-solid fa-hands" style="font-size: 2.5rem; color: var(--primary); animation: sign-anim 1s ease-in-out infinite alternate; filter: drop-shadow(0 0 12px var(--primary));"></i>
                                     </div>
-                                </div>
-                                <div style="padding: 15px; text-align: center;">
-                                    <div class="video-preview-mini" style="width: 100%; height: 150px; background: #000; border-radius: 8px; display: flex; justify-content: center; align-items: center; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;">
-                                        <div class="pulse-ring" style="position: absolute; width: 80px; height: 80px; border: 2px solid var(--primary); border-radius: 50%; animation: pulse-ring 2s infinite;"></div>
-                                        <i class="fa-solid fa-hands-bubbles text-primary" style="font-size: 3rem; z-index: 2; filter: drop-shadow(0 0 15px var(--primary));"></i>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 4px;">
-                                        <span style="font-size: 0.85rem; font-weight: 500;">Tarjima muvaffaqiyatli!</span>
-                                        <span style="font-size: 0.75rem; color: var(--text-muted);">Sanoqli soniyalarda tayyor.</span>
+                                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--success);"><i class="fa-solid fa-check-circle"></i> Tarjima tayyor</span>
                                     </div>
                                 </div>
                             </div>
@@ -453,7 +493,7 @@
                     </div>
                     <h3>Daktil Alifbosi</h3>
                     <p>Har bir harfning qo'l harakatlari orqali ifodasini bosqichma-bosqich o'rganing. Rasmli va videoli darslar.</p>
-                    <a href="#" class="btn-text" style="font-weight: 600; color: var(--primary); text-decoration: none;">Kursni boshlash <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: var(--primary); text-decoration: none;">Kursni boshlash <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
 
                 <!-- Card 2 -->
@@ -463,7 +503,7 @@
                     </div>
                     <h3>Video Lug'at</h3>
                     <p>O'zbek imo-ishora tilidagi 5000 dan ortiq so'zlarning videoli to'plami. Qidiruv tizimi bilan qulay toping.</p>
-                    <a href="#" class="btn-text" style="font-weight: 600; color: var(--secondary); text-decoration: none;">Lug'atni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: var(--secondary); text-decoration: none;">Lug'atni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
 
                 <!-- Card 3 -->
@@ -473,7 +513,7 @@
                     </div>
                     <h3>Kundalik Ibora</h3>
                     <p>Suhbat davomida eng ko'p ishlatiladigan iboralar va savol-javoblarning imo-ishora ko'rinishi.</p>
-                    <a href="#" class="btn-text" style="font-weight: 600; color: #f59e0b; text-decoration: none;">Iboralarni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: #f59e0b; text-decoration: none;">Iboralarni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
             </div>
 
@@ -482,8 +522,8 @@
                     <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Sertifikatni <span class="text-gradient">Qo'lga Kiriting</span></h2>
                     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px;">O'quv kursi yakunida maxsus testlardan o'ting va o'z bilim darajangizni tasdiqlovchi rasmiy sertifikatga ega bo'ling.</p>
                     <div style="display: flex; gap: 15px;">
-                        <button class="btn-primary glow-effect">Kursga yozilish</button>
-                        <button class="btn-outline">Batafsil ma'lumot</button>
+                        <a href="learning.html" class="btn-primary glow-effect" style="text-decoration: none;">O'rganishni Boshlash</a>
+                        <a href="about.html" class="btn-outline" style="text-decoration: none;">Batafsil ma'lumot</a>
                     </div>
                 </div>
                 <div class="learning-banner-image">

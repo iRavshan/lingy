@@ -589,7 +589,7 @@ button {
 .dots span:nth-child(3) { background: #27c93f; }
 
 .mockup-title {
-    margin-left: 20px;
+    margin-right: 60px;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-muted);
@@ -979,9 +979,10 @@ textarea:focus {
     justify-content: center;
     align-items: center;
     color: var(--text-muted);
-    font-family: monospace;
+    font-family: var(--font-body);
+    font-weight: 500;
     font-size: 1.2rem;
-    background: #111;
+    background: linear-gradient(135deg, #111, #1a1b26);
 }
 
 .pip-avatar-layer {
@@ -990,7 +991,8 @@ textarea:focus {
     right: 15px;
     width: 120px;
     height: 160px;
-    background: #222;
+    background: linear-gradient(135deg, var(--bg-card), #16182b);
+    backdrop-filter: var(--glass-blur);
     border: 2px solid var(--primary);
     border-radius: var(--radius-sm);
     display: flex;
@@ -1189,7 +1191,6 @@ textarea::placeholder {
 }
 
 .video-container {
-    background: #000;
     border-radius: var(--radius-md);
     overflow: hidden;
     position: relative;
@@ -1213,7 +1214,7 @@ video {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, var(--bg-secondary), #000);
+    background: var(--bg-secondary);
 }
 
 .placeholder-content {
@@ -1323,13 +1324,16 @@ video {
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     padding: 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
     box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
+}
+
+.download-grid.glass-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .download-content h2 {
@@ -2212,4 +2216,39 @@ textarea.custom-input {
     .about-hero h1 {
         font-size: 2.5rem;
     }
+}
+
+/* ========= Hero Mockup Animations ========= */
+@keyframes pulse-mic {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(99,102,241,0.4); }
+    50% { transform: scale(1.08); box-shadow: 0 0 60px rgba(99,102,241,0.6); }
+}
+
+@keyframes wave {
+    0% { transform: scaleY(0.5); }
+    100% { transform: scaleY(1.5); }
+}
+
+@keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes sign-anim {
+    0% { transform: rotate(-8deg) scale(1); }
+    100% { transform: rotate(8deg) scale(1.1); }
+}
+
+.hero-phase {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hero-phase.phase-active {
+    opacity: 1;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
 }

@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Set dummy video source (since we don't have a real one, use a placeholder or generic video if available)
             // For now, we will just show a colored block representing the video to simulate success
-            slVideo.poster = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%232563eb%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23ffffff%22%20font-size%3D%2224%22%20font-family%3D%22Arial%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%3ETarjima%20qilingan%20Video%3C%2Ftext%3E%3C%2Fsvg%3E';
+            slVideo.poster = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%2316182b%22%2F%3E%3Ccircle%20cx%3D%22400%22%20cy%3D%22180%22%20r%3D%2240%22%20fill%3D%22%236366f1%22%2F%3E%3Cpath%20d%3D%22M410.5%20180L392.5%20193V167L410.5%20180Z%22%20fill%3D%22%23ffffff%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22260%22%20fill%3D%22%2394a3b8%22%20font-size%3D%2218%22%20font-family%3D%22Arial%22%20font-weight%3D%22600%22%20text-anchor%3D%22middle%22%3EUzSL%20Tarjima%20Qilingan%20Video%3C%2Ftext%3E%3C%2Fsvg%3E';
             
             videoStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Tayyor';
             videoStatus.className = 'status-badge ready';
@@ -395,3 +395,215 @@ function handleAudioUpload(input) {
         input.value = '';
     }
 }
+
+// ======== HERO MOCKUP ANIMATION ENGINE ========
+(function heroMockupAnimation() {
+    const phaseMic = document.getElementById('hero-phase-mic');
+    const phaseText = document.getElementById('hero-phase-text');
+    const phaseVideo = document.getElementById('hero-phase-video');
+    const typedText = document.getElementById('hero-typed-text');
+    const statusDots = document.getElementById('hero-status-dots');
+    const statusLabel = document.getElementById('hero-status-label');
+
+    // Abort if elements not found (e.g. on about.html or learning.html)
+    if (!phaseMic || !phaseText || !phaseVideo) return;
+
+    const textToType = '"Assalomu alaykum"';
+    const phases = [phaseMic, phaseText, phaseVideo];
+    const statusLabels = [
+        '1 / 3 — Nutqni yozib olish',
+        '2 / 3 — Matnga o\'girish',
+        '3 / 3 — Imo-ishora tarjimasi'
+    ];
+
+    function setActivePhase(index) {
+        phases.forEach((p, i) => {
+            if (i === index) {
+                p.style.display = 'flex';
+                setTimeout(() => p.classList.add('phase-active'), 50);
+            } else {
+                p.classList.remove('phase-active');
+                setTimeout(() => { p.style.display = 'none'; }, 500);
+            }
+        });
+
+        // Update status dots
+        if (statusDots) {
+            const dots = statusDots.querySelectorAll('.status-dot');
+            dots.forEach((dot, i) => {
+                if (i <= index) {
+                    dot.style.borderColor = 'var(--primary)';
+                    dot.style.background = 'var(--primary)';
+                } else {
+                    dot.style.borderColor = 'var(--border-color)';
+                    dot.style.background = 'transparent';
+                }
+            });
+        }
+
+        if (statusLabel) {
+            statusLabel.textContent = statusLabels[index];
+        }
+    }
+
+    function typeText(callback) {
+        if (!typedText) return callback();
+        
+        let charIndex = 0;
+        typedText.innerHTML = '<span id="hero-text-cursor" style="display:inline-block;width:3px;height:35px;background:var(--primary);animation:blink-cursor 0.7s steps(1) infinite;margin-left:2px;"></span>';
+        
+        const cursor = typedText.querySelector('#hero-text-cursor');
+        
+        const interval = setInterval(() => {
+            if (charIndex < textToType.length) {
+                // Insert character before cursor
+                const charSpan = document.createElement('span');
+                charSpan.textContent = textToType[charIndex];
+                typedText.insertBefore(charSpan, cursor);
+                charIndex++;
+            } else {
+                clearInterval(interval);
+                if (callback) setTimeout(callback, 800);
+            }
+        }, 100);
+    }
+
+    function runCycle() {
+        // Phase 1: Microphone (2.5s)
+        setActivePhase(0);
+
+        setTimeout(() => {
+            // Phase 2: Typing (wait for typing to finish)
+            setActivePhase(1);
+            setTimeout(() => {
+                typeText(() => {
+                    // Phase 3: Video (3s)
+                    setTimeout(() => {
+                        setActivePhase(2);
+                        
+                        // Wait, then restart
+                        setTimeout(() => {
+                            // Reset typed text for next cycle
+                            if (typedText) {
+                                typedText.innerHTML = '<span id="hero-text-cursor" style="display:inline-block;width:3px;height:35px;background:var(--primary);animation:blink-cursor 0.7s steps(1) infinite;margin-left:2px;"></span>';
+                            }
+                            runCycle();
+                        }, 4000);
+                    }, 500);
+                });
+            }, 600);
+        }, 3000);
+    }
+
+    // Kick off after page loads
+    setTimeout(() => {
+        setActivePhase(0);
+        phaseMic.classList.add('phase-active');
+        setTimeout(runCycle, 100);
+    }, 1500);
+})();
+
+// ======== CHROME EXTENSION PREVIEW ANIMATION ========
+(function extPreviewAnimation() {
+    const selectable = document.getElementById('ext-selectable');
+    const cursor = document.getElementById('ext-cursor');
+    const miniBtn = document.getElementById('ext-mini-btn');
+    const popup = document.getElementById('ext-popup');
+
+    if (!selectable || !cursor || !miniBtn || !popup) return;
+
+    const selectableText = "Zamonaviy texnologiyalar jamiyatni rivojlantiradi.";
+    
+    // Build character spans
+    function buildChars() {
+        selectable.innerHTML = '';
+        for (let i = 0; i < selectableText.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = selectableText[i];
+            span.style.transition = 'background 0.05s';
+            span.style.borderRadius = '2px';
+            span.dataset.index = i;
+            selectable.appendChild(span);
+        }
+    }
+    buildChars();
+
+    function resetAll() {
+        // Reset char highlights
+        const chars = selectable.querySelectorAll('span');
+        chars.forEach(ch => {
+            ch.style.background = 'transparent';
+            ch.style.color = 'var(--text-muted)';
+        });
+        // Hide cursor
+        cursor.style.opacity = '0';
+        cursor.style.left = '-10px';
+        // Hide mini button
+        miniBtn.style.display = 'none';
+        // Hide popup
+        popup.style.opacity = '0';
+        popup.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    }
+
+    function selectCharsSequentially(callback) {
+        const chars = selectable.querySelectorAll('span');
+        const totalChars = chars.length;
+        let i = 0;
+
+        // Get selectable element width for cursor movement
+        const lineWidth = selectable.offsetWidth;
+        
+        const interval = setInterval(() => {
+            if (i < totalChars) {
+                // Highlight character
+                chars[i].style.background = 'rgba(99, 102, 241, 0.35)';
+                chars[i].style.color = 'var(--text-main)';
+                
+                // Move cursor to track current character position
+                const progress = (i + 1) / totalChars;
+                cursor.style.left = (progress * lineWidth) + 'px';
+                
+                i++;
+            } else {
+                clearInterval(interval);
+                if (callback) callback();
+            }
+        }, 60);
+    }
+
+    function runExtCycle() {
+        resetAll();
+
+        // Step 1: Show cursor at the start of text (0.8s)
+        setTimeout(() => {
+            cursor.style.opacity = '1';
+            cursor.style.left = '-5px';
+        }, 800);
+
+        // Step 2: Start selecting characters left to right (1.5s)
+        setTimeout(() => {
+            selectCharsSequentially(() => {
+                // Step 3: Selection done, hide cursor, show UzSL button
+                setTimeout(() => {
+                    cursor.style.opacity = '0';
+                    miniBtn.style.display = 'flex';
+                }, 400);
+
+                // Step 4: "Click" the button → popup appears
+                setTimeout(() => {
+                    miniBtn.style.display = 'none';
+                    popup.style.opacity = '1';
+                    popup.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 1800);
+
+                // Step 5: Hold, then restart
+                setTimeout(() => {
+                    runExtCycle();
+                }, 6000);
+            });
+        }, 1500);
+    }
+
+    // Kick off
+    setTimeout(runExtCycle, 2500);
+})();
