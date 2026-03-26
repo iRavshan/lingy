@@ -1,0 +1,117 @@
+:root {
+    --primary-green: #58cc02;
+    --dark-green: #46a302;
+    --error-red: #ff4b4b;
+    --text-color: #4b4b4b;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 16px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 100%;
+    background-color: var(--primary-green);
+    transition: width 0.3s ease;
+}
+
+.sign-display {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.sign-display img {
+    border-radius: 15px;
+    border: 3px solid #e5e5e5;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.option-btn {
+    padding: 15px;
+    border: 2px solid #e5e5e5;
+    border-bottom: 5px solid #e5e5e5;
+    border-radius: 12px;
+    background: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.option-btn:active {
+    border-bottom-width: 2px;
+    transform: translateY(3px);
+}
+
+.option-btn.correct {
+    background-color: #d7ffb8;
+    border-color: var(--primary-green);
+    color: var(--dark-green);
+}
+
+.option-btn.wrong {
+    background-color: #ffdfe0;
+    border-color: var(--error-red);
+    color: var(--error-red);
+}
+
+.feedback-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 0;
+    background-color: #d7ffb8;
+    display: flex;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.feedback-panel.show {
+    transform: translateY(0);
+}
+
+.hidden { display: none; }
+
+#next-btn {
+    padding: 12px 40px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--dark-green);
+}
