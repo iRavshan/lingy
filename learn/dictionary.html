@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundalik So'zlar Lug'ati — UzSL</title>
+    <meta name="description" content="O'zbek imo-ishora tili kundalik so'zlar lug'ati. Eng ko'p ishlatiladigan so'zlarni o'rganing.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="assets/theme.js"></script>
+
+    <style>
+        :root, [data-theme="dark"] {
+            --bg-main: #0B0B13;
+            --bg-card: rgba(22, 24, 43, 0.7);
+            --bg-card-hover: rgba(30, 32, 55, 0.9);
+            --bg-secondary: #131422;
+            --bg-nav: rgba(11, 11, 19, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.18);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: rgba(99, 102, 241, 0.12);
+            --secondary: #ec4899;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius-sm: 0.5rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --glass-blur: blur(12px);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f4f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(245, 245, 250, 0.95);
+            --bg-secondary: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.15);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* === Top Navigation === */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-nav);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-back:hover { color: var(--primary); }
+
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* === Hero === */
+        .page-hero {
+            text-align: center;
+            padding: 50px 24px 20px;
+            position: relative;
+        }
+        .page-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .page-hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .hero-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            pointer-events: none;
+        }
+        .hero-glow.left { top: -100px; left: -100px; background: var(--primary); }
+        .hero-glow.right { top: -50px; right: -100px; background: var(--secondary); }
+
+        /* === Search Bar === */
+        .search-section {
+            max-width: 600px;
+            margin: 30px auto 10px;
+            padding: 0 24px;
+        }
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 22px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .search-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99,102,241,0.1);
+        }
+        .search-wrapper i { color: var(--text-muted); font-size: 1.1rem; }
+        .search-wrapper input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-family: var(--font-body);
+        }
+        .search-wrapper input::placeholder { color: var(--text-muted); opacity: 0.5; }
+        .search-clear {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            display: none;
+            transition: color 0.2s;
+        }
+        .search-clear:hover { color: var(--danger); }
+        .search-count {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 12px;
+            opacity: 0.7;
+        }
+
+        /* === Category Tabs === */
+        .category-bar {
+            max-width: 1200px;
+            margin: 25px auto 30px;
+            padding: 0 24px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .category-bar::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cat-btn:hover { border-color: var(--primary); color: var(--text-main); }
+        .cat-btn.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .cat-btn .cat-emoji { font-size: 1.1rem; }
+
+        /* === Words Grid === */
+        .words-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 16px;
+        }
+
+        /* === Word Card === */
+        .word-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px 16px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .word-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(236,72,153,0.04));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .word-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
+        }
+        .word-card:hover::before { opacity: 1; }
+
+        .word-emoji {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
+        }
+
+        .word-uz {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+        .word-card:hover .word-uz {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .word-en {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+
+        .word-hand {
+            margin-top: 10px;
+            width: 44px;
+            height: 44px;
+            margin-left: auto;
+            margin-right: auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === No Results === */
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            display: none;
+        }
+        .no-results .nr-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        .no-results h3 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+        .no-results p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* === Detail Modal === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 35px;
+            text-align: center;
+            position: relative;
+            animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: var(--danger); }
+
+        .modal-emoji {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+
+        .modal-word-uz {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .modal-word-en {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-hand-box {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 8px 25px rgba(99,102,241,0.2);
+            animation: handBounce 2s ease-in-out infinite;
+        }
+        @keyframes handBounce {
+            0%, 100% { transform: scale(1) rotate(0); }
+            50% { transform: scale(1.05) rotate(3deg); }
+        }
+
+        .modal-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .modal-cat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .modal-nav {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .modal-nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-nav button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2rem; }
+            .words-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+            .modal-card { padding: 30px 24px; }
+        }
+        @media (max-width: 480px) {
+            .words-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Orqaga</span>
+            </a>
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleLearnTheme()" title="Mavzu o'zgartirish">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="hero-glow left"></div>
+        <div class="hero-glow right"></div>
+        <h1>Kundalik <span>so'zlar</span> lug'ati</h1>
+        <p>Har kuni ishlatiladigan so'zlarning imo-ishoradagi ko'rinishini o'rganing</p>
+    </section>
+
+    <!-- Search -->
+    <div class="search-section">
+        <div class="search-wrapper">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="searchInput" placeholder="So'z qidiring... (masalan: salom, oila)" autocomplete="off">
+            <button class="search-clear" id="searchClear" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="search-count" id="searchCount"></div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-bar" id="categoryBar">
+        <button class="cat-btn active" data-cat="all" onclick="filterCat('all', this)">
+            <span class="cat-emoji">📚</span> Barchasi
+        </button>
+    </div>
+
+    <!-- Words Grid -->
+    <section class="words-section">
+        <div class="words-grid" id="wordsGrid"></div>
+        <div class="no-results" id="noResults">
+            <div class="nr-icon">🔍</div>
+            <h3>Hech narsa topilmadi</h3>
+            <p>Boshqa so'z yoki kategoriya bilan urinib ko'ring</p>
+        </div>
+    </section>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="wordModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <span class="modal-emoji" id="mEmoji">👋</span>
+            <div class="modal-word-uz" id="mWordUz">Salom</div>
+            <div class="modal-word-en" id="mWordEn">Hello</div>
+            <div class="modal-hand-box" id="mHand">👋</div>
+            <div class="modal-desc" id="mDesc">Salomlashish uchun ishlatiladigan imo-ishora.</div>
+            <div class="modal-cat-badge" id="mCat"><i class="fa-solid fa-tag"></i> Salomlashish</div>
+            <div class="modal-nav">
+                <button onclick="navWord(-1)" title="Oldingi"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="navWord(1)" title="Keyingi"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+<script>
+const categories = [
+    { id: "salomlashish", name: "Salomlashish", emoji: "👋" },
+    { id: "oila", name: "Oila", emoji: "👨‍👩‍👧‍👦" },
+    { id: "oziq-ovqat", name: "Oziq-ovqat", emoji: "🍽️" },
+    { id: "hayvonlar", name: "Hayvonlar", emoji: "🐾" },
+    { id: "ranglar", name: "Ranglar", emoji: "🎨" },
+    { id: "raqamlar", name: "Raqamlar", emoji: "🔢" },
+    { id: "hissiyotlar", name: "His-tuyg'ular", emoji: "😊" },
+    { id: "kundalik", name: "Kundalik hayot", emoji: "🏠" },
+    { id: "tabiat", name: "Tabiat", emoji: "🌿" },
+    { id: "tanishish", name: "Tanishish", emoji: "🤝" }
+];
+
+const words = [
+    // Salomlashish
+    { uz: "Salom", emoji: "👋", hand: "🤚", cat: "salomlashish", desc: "Qo'lni ko'tarib tepaga silkitish harakati." },
+    { uz: "Xayr", emoji: "👋", hand: "🫡", cat: "salomlashish", desc: "Qo'l silkitib hayrlashtirish." },
+    { uz: "Rahmat", emoji: "🙏", hand: "🙏", cat: "salomlashish", desc: "Ikkala kaft yuz oldida birlashtiriladi." },
+    { uz: "Iltimos", emoji: "🤲", hand: "🤲", cat: "salomlashish", desc: "Kaftlar yuqoriga ochiq holda ko'rsatiladi." },
+    { uz: "Kechirasiz", emoji: "😔", hand: "✊", cat: "salomlashish", desc: "Musht ko'krak ustiga qo'yilib aylantiladi." },
+    { uz: "Ha", emoji: "✅", hand: "👍", cat: "salomlashish", desc: "Bosh barmoq yuqoriga ko'tariladi." },
+    { uz: "Yo'q", emoji: "❌", hand: "🙅", cat: "salomlashish", desc: "Qo'llar chap-o'ngga harakatlantiriladi." },
+
+    // Oila
+    { uz: "Ona", emoji: "👩", hand: "🫶", cat: "oila", desc: "Bosh barmoq iyak ostiga qo'yiladi." },
+    { uz: "Ota", emoji: "👨", hand: "🫡", cat: "oila", desc: "Bosh barmoq peshona oldiga qo'yiladi." },
+    { uz: "Aka", emoji: "👦", hand: "✌️", cat: "oila", desc: "Ikki barmoq tepada ko'rsatiladi." },
+    { uz: "Opa", emoji: "👧", hand: "☝️", cat: "oila", desc: "Ko'rsatkich barmoq yuz yonida harakatlanadi." },
+    { uz: "Bola", emoji: "👶", hand: "🤱", cat: "oila", desc: "Qo'llar bola ko'tarish harakatini takrorlaydi." },
+    { uz: "Bobo", emoji: "👴", hand: "🧔", cat: "oila", desc: "Bosh barmoq iyak ostida pastga harakatlanadi." },
+    { uz: "Buvi", emoji: "👵", hand: "🤶", cat: "oila", desc: "Bosh barmoqlar ikkala yoq ustiga qo'yiladi." },
+    { uz: "Oila", emoji: "👨‍👩‍👧", hand: "🫂", cat: "oila", desc: "Ikkala qo'l birlashtiriladi." },
+
+    // Oziq-ovqat
+    { uz: "Non", emoji: "🍞", hand: "🤲", cat: "oziq-ovqat", desc: "Qo'llar non sindirgandek harakatlanadi." },
+    { uz: "Suv", emoji: "💧", hand: "🤏", cat: "oziq-ovqat", desc: "Bosh barmoq og'izga yaqinlashtiriladi." },
+    { uz: "Choy", emoji: "🍵", hand: "☕", cat: "oziq-ovqat", desc: "Qo'l stakan ushlag‌andek harakatlanadi." },
+    { uz: "Olma", emoji: "🍎", hand: "✊", cat: "oziq-ovqat", desc: "Musht yoq oldiga qo'yiladi va aylantiriladi." },
+    { uz: "Palov", emoji: "🍚", hand: "🫰", cat: "oziq-ovqat", desc: "Barmoqlar osh yeyishni ifodalaydi." },
+    { uz: "Go'sht", emoji: "🥩", hand: "🤌", cat: "oziq-ovqat", desc: "Qo'l go'sht ko'rsatish ishorasi." },
+    { uz: "Meva", emoji: "🍇", hand: "👌", cat: "oziq-ovqat", desc: "Barmoqlar yumaloq shakl hosil qiladi." },
+    { uz: "Sut", emoji: "🥛", hand: "🤛", cat: "oziq-ovqat", desc: "Musht pastga-yuqoriga harakatlanadi." },
+
+    // Hayvonlar
+    { uz: "Mushuk", emoji: "🐱", hand: "🤏", cat: "hayvonlar", desc: "Bosh barmoq va ko'rsatkich yuz yonida mo'ylov shaklida." },
+    { uz: "It", emoji: "🐕", hand: "🫳", cat: "hayvonlar", desc: "Qo'l pastga qaratib chapak uriladi." },
+    { uz: "Qush", emoji: "🐦", hand: "🤌", cat: "hayvonlar", desc: "Barmoqlar tumshuq shaklida ochiladi-yopiladi." },
+    { uz: "Baliq", emoji: "🐟", hand: "🫱", cat: "hayvonlar", desc: "Kaft gorizontal harakatlantiriladi." },
+    { uz: "Ot", emoji: "🐴", hand: "✌️", cat: "hayvonlar", desc: "Ikki barmoq quloqni ifodalaydi." },
+    { uz: "Sigir", emoji: "🐄", hand: "🤘", cat: "hayvonlar", desc: "Ko'rsatkich va jimjiloq shox shaklida." },
+
+    // Ranglar
+    { uz: "Qizil", emoji: "🔴", hand: "☝️", cat: "ranglar", desc: "Ko'rsatkich barmoq labga tegadi." },
+    { uz: "Ko'k", emoji: "🔵", hand: "🤙", cat: "ranglar", desc: "Jimjiloq barmoq ko'rsatiladi." },
+    { uz: "Yashil", emoji: "🟢", hand: "🖐️", cat: "ranglar", desc: "Kaft barglardek silkinadi." },
+    { uz: "Oq", emoji: "⚪", hand: "🤚", cat: "ranglar", desc: "Kaft ko'krakdan oldinga harakatlanadi." },
+    { uz: "Qora", emoji: "⚫", hand: "👆", cat: "ranglar", desc: "Ko'rsatkich barmoq qosh ustida yuritiladi." },
+    { uz: "Sariq", emoji: "🟡", hand: "🤟", cat: "ranglar", desc: "Y harfi shaklida qo'l silkinadi." },
+
+    // Raqamlar
+    { uz: "Bir", emoji: "1️⃣", hand: "☝️", cat: "raqamlar", desc: "Bitta ko'rsatkich barmoq ko'tariladi." },
+    { uz: "Ikki", emoji: "2️⃣", hand: "✌️", cat: "raqamlar", desc: "Ikki barmoq V shaklida ko'tariladi." },
+    { uz: "Uch", emoji: "3️⃣", hand: "🤟", cat: "raqamlar", desc: "Uchta barmoq ko'tariladi." },
+    { uz: "To'rt", emoji: "4️⃣", hand: "🖐️", cat: "raqamlar", desc: "To'rtta barmoq ko'tariladi, bosh barmoq yig'iq." },
+    { uz: "Besh", emoji: "5️⃣", hand: "🖐️", cat: "raqamlar", desc: "Beshta barmoq to'liq ochiladi." },
+    { uz: "O'n", emoji: "🔟", hand: "🤲", cat: "raqamlar", desc: "Ikkala qo'l barmoqlari ochiladi." },
+
+    // His-tuyg'ular
+    { uz: "Xursand", emoji: "😊", hand: "👐", cat: "hissiyotlar", desc: "Ikkala kaft yuqoriga ochiladi." },
+    { uz: "G'amgin", emoji: "😢", hand: "👇", cat: "hissiyotlar", desc: "Barmoqlar yuz bo'ylab pastga tushadi." },
+    { uz: "Qo'rqinchli", emoji: "😨", hand: "🤚", cat: "hissiyotlar", desc: "Kaftlar ko'krakdan oldinga itariladi." },
+    { uz: "Hayron", emoji: "😲", hand: "🖐️", cat: "hissiyotlar", desc: "Kaftlar yuz yonida ochilib ko'tariladi." },
+    { uz: "Sevgi", emoji: "❤️", hand: "🫶", cat: "hissiyotlar", desc: "Ikkala qo'l yurak shaklini hosil qiladi." },
+    { uz: "Charchagan", emoji: "😩", hand: "🫠", cat: "hissiyotlar", desc: "Qo'llar pastga tushib holsizlikni ifodalaydi." },
+
+    // Kundalik hayot
+    { uz: "Uy", emoji: "🏠", hand: "🏠", cat: "kundalik", desc: "Barmoqlar tom shaklini hosil qiladi." },
+    { uz: "Maktab", emoji: "🏫", hand: "📖", cat: "kundalik", desc: "Kaftlar kitob ochilganday harakatlanadi." },
+    { uz: "Ish", emoji: "💼", hand: "✊", cat: "kundalik", desc: "Mushtlar bir-biriga uriladi." },
+    { uz: "Ovqat", emoji: "🍽️", hand: "🤌", cat: "kundalik", desc: "Barmoqlar og'izga yo'naltiriladi." },
+    { uz: "Kitob", emoji: "📖", hand: "🤲", cat: "kundalik", desc: "Kaftlar kitob ochilganday ochiladi." },
+    { uz: "Telefon", emoji: "📱", hand: "🤙", cat: "kundalik", desc: "Bosh barmoq va jimjiloq quloq yonida." },
+    { uz: "Mashina", emoji: "🚗", hand: "🫱", cat: "kundalik", desc: "Qo'llar rul ushlagandek aylantiriladi." },
+    { uz: "Do'kon", emoji: "🏪", hand: "💰", cat: "kundalik", desc: "Barmoqlar pul sanash harakatini takrorlaydi." },
+
+    // Tabiat
+    { uz: "Quyosh", emoji: "☀️", hand: "🌟", cat: "tabiat", desc: "Barmoqlar yuqoriga ochiladi — nur shakli." },
+    { uz: "Oy", emoji: "🌙", hand: "🤏", cat: "tabiat", desc: "Qo'l C shaklida yarim doira hosil qiladi." },
+    { uz: "Yomg'ir", emoji: "🌧️", hand: "🖐️", cat: "tabiat", desc: "Barmoqlar yuqoridan pastga silkinadi." },
+    { uz: "Gul", emoji: "🌸", hand: "🤌", cat: "tabiat", desc: "Barmoqlar gul ochganday ochiladi." },
+    { uz: "Daraxt", emoji: "🌳", hand: "🤚", cat: "tabiat", desc: "Bilek — tana, barmoqlar — shoxlar." },
+    { uz: "Tog'", emoji: "⛰️", hand: "🫶", cat: "tabiat", desc: "Barmoqlar uchburchak cho'qqi shaklida." },
+
+    // Tanishish
+    { uz: "Ismim", emoji: "🏷️", hand: "👆", cat: "tanishish", desc: "Ko'rsatkich barmoq ko'krakka yo'naltiriladi." },
+    { uz: "Yosh", emoji: "🎂", hand: "☝️", cat: "tanishish", desc: "Barmoqlar sonni ko'rsatadi." },
+    { uz: "Qaerdan", emoji: "📍", hand: "🫵", cat: "tanishish", desc: "Ko'rsatkich barmoq so'roq bilan harakatlanadi." },
+    { uz: "Tanishganimdan xursandman", emoji: "🤝", hand: "🤝", cat: "tanishish", desc: "Qo'l berib ko'rishish harakati." }
+];
+
+let currentCat = 'all';
+let currentSearch = '';
+let currentModalIdx = -1;
+let filteredWords = [...words];
+
+// Build category buttons
+function buildCatBar() {
+    const bar = document.getElementById('categoryBar');
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-btn';
+        btn.dataset.cat = cat.id;
+        btn.onclick = () => filterCat(cat.id, btn);
+        btn.innerHTML = `<span class="cat-emoji">${cat.emoji}</span> ${cat.name}`;
+        bar.appendChild(btn);
+    });
+}
+
+function getFiltered() {
+    let result = [...words];
+    if (currentCat !== 'all') {
+        result = result.filter(w => w.cat === currentCat);
+    }
+    if (currentSearch) {
+        const q = currentSearch.toLowerCase();
+        result = result.filter(w =>
+            w.uz.toLowerCase().includes(q) ||
+            w.en.toLowerCase().includes(q)
+        );
+    }
+    return result;
+}
+
+function renderGrid() {
+    const grid = document.getElementById('wordsGrid');
+    const noRes = document.getElementById('noResults');
+    grid.innerHTML = '';
+
+    filteredWords = getFiltered();
+
+    if (filteredWords.length === 0) {
+        grid.style.display = 'none';
+        noRes.style.display = 'block';
+    } else {
+        grid.style.display = 'grid';
+        noRes.style.display = 'none';
+
+        filteredWords.forEach((w, i) => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.onclick = () => openModal(i);
+            card.innerHTML = `
+                <span class="word-emoji">${w.emoji}</span>
+                <div class="word-uz">${w.uz}</div>
+                <div class="word-hand">${w.hand}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Update count
+    const countEl = document.getElementById('searchCount');
+    if (currentSearch) {
+        countEl.textContent = `${filteredWords.length} ta natija topildi`;
+    } else {
+        countEl.textContent = `Jami: ${filteredWords.length} ta so'z`;
+    }
+}
+
+function filterCat(catId, btn) {
+    currentCat = catId;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid();
+}
+
+// Search
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+
+searchInput.addEventListener('input', (e) => {
+    currentSearch = e.target.value.trim();
+    searchClear.style.display = currentSearch ? 'block' : 'none';
+    renderGrid();
+});
+
+function clearSearch() {
+    searchInput.value = '';
+    currentSearch = '';
+    searchClear.style.display = 'none';
+    searchInput.focus();
+    renderGrid();
+}
+
+// Modal
+function openModal(filteredIdx) {
+    currentModalIdx = filteredIdx;
+    const w = filteredWords[filteredIdx];
+    document.getElementById('mEmoji').textContent = w.emoji;
+    document.getElementById('mWordUz').textContent = w.uz;
+    document.getElementById('mWordEn').textContent = w.en;
+    document.getElementById('mHand').textContent = w.hand;
+    document.getElementById('mDesc').textContent = w.desc;
+
+    const cat = categories.find(c => c.id === w.cat);
+    document.getElementById('mCat').innerHTML = `<i class="fa-solid fa-tag"></i> ${cat ? cat.name : w.cat}`;
+
+    document.getElementById('wordModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('wordModal').classList.remove('active');
+}
+
+function navWord(dir) {
+    let next = currentModalIdx + dir;
+    if (next < 0) next = filteredWords.length - 1;
+    if (next >= filteredWords.length) next = 0;
+    openModal(next);
+}
+
+document.getElementById('wordModal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') navWord(-1);
+    if (e.key === 'ArrowRight') navWord(1);
+});
+
+// Init
+buildCatBar();
+renderGrid();
+</script>
+
+</body>
+</html>

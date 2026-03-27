@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UzSL — O'rganish Yo'li</title>
+    <meta name="description" content="O'zbek imo-ishora tilini Duolingo uslubida bosqichma-bosqich o'rganing.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="assets/theme.js"></script>
+
+    <style>
+        :root, [data-theme="dark"] {
+            --bg-main: #0B0B13;
+            --bg-card: rgba(22, 24, 43, 0.7);
+            --bg-secondary: #131422;
+            --bg-nav: rgba(11, 11, 19, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-light: rgba(99, 102, 241, 0.12);
+            --secondary: #ec4899;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --success-dark: #059669;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gold: #fbbf24;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --glass-blur: blur(12px);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f4f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-secondary: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Sticky Top Bar === */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-nav);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+        }
+        .top-bar-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .top-bar a {
+            text-decoration: none;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .top-bar a:hover { color: var(--primary); }
+
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .top-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .stat-item i { font-size: 1.1rem; }
+        .stat-fire { color: #f97316; }
+        .stat-gem { color: #6366f1; }
+        .stat-heart { color: #ef4444; }
+
+        /* === Unit Header === */
+        .unit-header {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 35px 20px 10px;
+        }
+        .unit-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 28px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 40px rgba(99,102,241,0.25);
+        }
+        .unit-banner-text h2 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .unit-banner-text p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+        .unit-banner-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        /* === Learning Path === */
+        .path-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 20px 100px;
+            position: relative;
+        }
+
+        /* Vertical center line */
+        .path-spine {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--border-color);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .path-row {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
+        }
+
+        /* Zigzag offsets */
+        .path-row.left { justify-content: flex-start; padding-left: 15%; }
+        .path-row.center { justify-content: center; }
+        .path-row.right { justify-content: flex-end; padding-right: 15%; }
+
+        /* === Node (Lesson Circle) === */
+        .node {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            border: 4px solid transparent;
+        }
+        .node:hover { transform: scale(1.1); }
+
+        .node-icon {
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 2;
+        }
+        .node-label {
+            position: absolute;
+            bottom: -26px;
+            white-space: nowrap;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
+            width: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Completed node */
+        .node.completed {
+            background: var(--success);
+            border-color: var(--success-dark);
+            box-shadow: 0 6px 0 var(--success-dark), 0 8px 25px rgba(16,185,129,0.3);
+        }
+        .node.completed .node-icon { color: white; }
+        .node.completed .node-label { color: var(--success); }
+
+        /* Current / Active node */
+        .node.current {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 6px 0 #4338ca, 0 0 30px rgba(99,102,241,0.4);
+            animation: nodePulse 2.5s ease-in-out infinite;
+        }
+        .node.current .node-icon { color: white; }
+        .node.current .node-label { color: var(--primary); font-weight: 700; }
+
+        @keyframes nodePulse {
+            0%, 100% { box-shadow: 0 6px 0 #4338ca, 0 0 20px rgba(99,102,241,0.3); }
+            50% { box-shadow: 0 6px 0 #4338ca, 0 0 40px rgba(99,102,241,0.6); }
+        }
+
+        /* Locked node */
+        .node.locked {
+            background: var(--bg-secondary);
+            border-color: rgba(255,255,255,0.1);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.3);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .node.locked .node-icon { color: var(--text-muted); }
+        .node.locked:hover { transform: scale(1); }
+
+        /* Checkpoint (Trophy) node */
+        .node.checkpoint {
+            width: 90px;
+            height: 90px;
+            border-radius: 22px;
+        }
+        .node.checkpoint.completed {
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            border-color: #d97706;
+            box-shadow: 0 6px 0 #b45309, 0 8px 30px rgba(251,191,36,0.3);
+        }
+        .node.checkpoint.locked {
+            border-radius: 22px;
+        }
+
+        /* Crown badge */
+        .node-crown {
+            position: absolute;
+            top: -14px;
+            right: -8px;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        /* === Connector Lines (SVG between nodes) === */
+        .connector-row {
+            position: relative;
+            z-index: 0;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* === Section Divider === */
+        .section-divider {
+            max-width: 700px;
+            margin: 20px auto 10px;
+            padding: 0 20px;
+        }
+        .unit-banner.secondary {
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+        }
+        .unit-banner.gold {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+
+        /* === Bottom Nav === */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-nav);
+            backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 8px 0 12px;
+        }
+        .bottom-nav-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            padding: 4px 16px;
+            border-radius: 12px;
+        }
+        .nav-tab i { font-size: 1.3rem; }
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        .nav-tab:hover { color: var(--primary); }
+
+        /* === Lesson Popup === */
+        .lesson-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+        }
+        .lesson-popup-overlay.active { display: flex; }
+
+        .lesson-popup {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px 24px 24px 24px;
+            width: 100%;
+            max-width: 420px;
+            padding: 35px 30px 30px;
+            text-align: center;
+            animation: popupSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            margin-bottom: 60px;
+        }
+        @keyframes popupSlideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .popup-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        .popup-icon.green { background: rgba(16,185,129,0.15); color: var(--success); }
+        .popup-icon.blue { background: var(--primary-light); color: var(--primary); }
+        .popup-icon.gold { background: rgba(251,191,36,0.15); color: var(--gold); }
+        .popup-icon.gray { background: rgba(148,163,184,0.1); color: var(--text-muted); }
+
+        .popup-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .popup-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .popup-xp {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .popup-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .popup-btn.primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 0 #4338ca;
+        }
+        .popup-btn.primary:active {
+            box-shadow: 0 2px 0 #4338ca;
+            transform: translateY(3px);
+        }
+        .popup-btn.success {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 5px 0 var(--success-dark);
+        }
+        .popup-btn.success:active {
+            box-shadow: 0 2px 0 var(--success-dark);
+            transform: translateY(3px);
+        }
+        .popup-btn.locked {
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* === Responsive === */
+        @media (max-width: 480px) {
+            .unit-banner { padding: 22px 20px; flex-direction: column; gap: 12px; text-align: center; }
+            .node { width: 68px; height: 68px; }
+            .node.checkpoint { width: 78px; height: 78px; }
+            .node-icon { font-size: 1.5rem; }
+            .path-row.left { padding-left: 8%; }
+            .path-row.right { padding-right: 8%; }
+            .top-stats { gap: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <nav class="top-bar">
+        <div class="top-bar-inner">
+            <a href="index.html">
+                Daktil
+            </a>
+            <div class="top-stats">
+                <div class="stat-item stat-fire">
+                    <i class="fa-solid fa-fire"></i> <span id="streakCount">3</span>
+                </div>
+                <div class="stat-item stat-gem">
+                    <i class="fa-solid fa-gem"></i> <span id="gemCount">120</span>
+                </div>
+                <div class="stat-item stat-heart">
+                    <i class="fa-solid fa-heart"></i> <span id="heartCount">5</span>
+                </div>
+                <button class="theme-toggle" id="themeToggleBtn" onclick="toggleLearnTheme()" title="Mavzu o'zgartirish">
+                    <i class="fa-solid fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Path Content -->
+    <div id="pathContent"></div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <a href="/learn/index.html" class="nav-tab active">
+                <i class="fa-solid fa-graduation-cap"></i>
+                O'rganish
+            </a>
+            <a href="/learn/alphabet.html" class="nav-tab">
+                <i class="fa-solid fa-hand-sparkles"></i>
+                Alifbo
+            </a>
+            <a href="/learn/dictionary.html" class="nav-tab">
+                <i class="fa-solid fa-book"></i>
+                Lug'at
+            </a>
+            <a href="#" class="nav-tab">
+                <i class="fa-solid fa-user"></i>
+                Profil
+            </a>
+        </div>
+    </nav>
+
+    <!-- Lesson Popup -->
+    <div class="lesson-popup-overlay" id="lessonPopup">
+        <div class="lesson-popup">
+            <div class="popup-icon" id="popupIcon"><i class="fa-solid fa-star"></i></div>
+            <div class="popup-title" id="popupTitle">Dars nomi</div>
+            <div class="popup-desc" id="popupDesc">Dars haqida qisqacha.</div>
+            <div class="popup-xp" id="popupXp"><i class="fa-solid fa-bolt"></i> +10 XP</div>
+            <button class="popup-btn primary" id="popupBtn" onclick="startLesson()">Boshlash</button>
+        </div>
+    </div>
+
+<script>
+// ===== DATA =====
+const units = [
+    {
+        title: "Bo'lim 1: Asoslar",
+        desc: "Salomlashish va daktil alifbosi",
+        icon: "👋",
+        gradient: "linear-gradient(135deg, #6366f1, #ec4899)",
+        lessons: [
+            { id: 1, title: "Salom!", desc: "Salomlashish va tanishish", emoji: "👋", xp: 10, status: "completed", link: "/learn/dictionary.html" },
+            { id: 2, title: "A-D harflari", desc: "Birinchi 4 ta daktil harfi", emoji: "🔤", xp: 10, status: "completed", link: "/learn/alphabet.html" },
+            { id: 3, title: "Ha va Yo'q", desc: "Oddiy javoblar", emoji: "✅", xp: 15, status: "completed", link: "/learn/dictionary.html" },
+            { id: 4, title: "E-I harflari", desc: "Navbatdagi harflar guruhi", emoji: "🅰️", xp: 15, status: "current", link: "/learn/alphabet.html" },
+            { id: 5, title: "Oila a'zolari", desc: "Ona, Ota, Aka, Opa", emoji: "👨‍👩‍👧‍👦", xp: 20, status: "locked" },
+            { id: "cp1", title: "Birinchi sinov", desc: "Bo'lim 1 yakuniy testi", emoji: "🏆", xp: 50, status: "locked", checkpoint: true }
+        ]
+    },
+    {
+        title: "Bo'lim 2: Kundalik hayot",
+        desc: "Har kuni kerak bo'ladigan so'zlar",
+        icon: "🏠",
+        gradient: "linear-gradient(135deg, #7c3aed, #2563eb)",
+        lessons: [
+            { id: 6, title: "Uy va maktab", desc: "Muhim joylar nomlari", emoji: "🏫", xp: 15, status: "locked" },
+            { id: 7, title: "J-N harflari", desc: "Daktil davomi", emoji: "🔤", xp: 15, status: "locked" },
+            { id: 8, title: "Ovqatlanish", desc: "Non, suv, choy, palov", emoji: "🍽️", xp: 20, status: "locked" },
+            { id: 9, title: "Ranglar", desc: "Qizil, ko'k, yashil...", emoji: "🎨", xp: 15, status: "locked" },
+            { id: 10, title: "O-T harflari", desc: "Daktil harflari davomi", emoji: "🅰️", xp: 20, status: "locked" },
+            { id: "cp2", title: "Ikkinchi sinov", desc: "Bo'lim 2 yakuniy testi", emoji: "🏆", xp: 50, status: "locked", checkpoint: true }
+        ]
+    },
+    {
+        title: "Bo'lim 3: So'zlashish",
+        desc: "Gaplar tuzish va muloqot",
+        icon: "💬",
+        gradient: "linear-gradient(135deg, #f59e0b, #ef4444)",
+        lessons: [
+            { id: 11, title: "Raqamlar", desc: "1 dan 10 gacha sanash", emoji: "🔢", xp: 15, status: "locked" },
+            { id: 12, title: "U-Z harflari", desc: "Oxirgi harflar guruhi", emoji: "🔤", xp: 20, status: "locked" },
+            { id: 13, title: "His-tuyg'ular", desc: "Xursand, g'amgin, sevgi", emoji: "😊", xp: 20, status: "locked" },
+            { id: 14, title: "Maxsus harflar", desc: "O', G', Sh, Ch, Ng", emoji: "✨", xp: 25, status: "locked" },
+            { id: 15, title: "Hayvonlar", desc: "Mushuk, it, qush...", emoji: "🐾", xp: 20, status: "locked" },
+            { id: 16, title: "Tabiat", desc: "Quyosh, oy, yomg'ir", emoji: "🌿", xp: 20, status: "locked" },
+            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha darslar bo'yicha sinov", emoji: "👑", xp: 100, status: "locked", checkpoint: true }
+        ]
+    }
+];
+
+// Zigzag pattern
+const zigzag = ['center', 'right', 'center', 'left', 'center', 'right'];
+
+function renderPath() {
+    const container = document.getElementById('pathContent');
+    container.innerHTML = '';
+
+    units.forEach((unit, ui) => {
+        // Unit header
+        const header = document.createElement('div');
+        header.className = 'section-divider';
+        header.innerHTML = `
+            <div class="unit-banner" style="background: ${unit.gradient};">
+                <div class="unit-banner-text">
+                    <h2>${unit.title}</h2>
+                    <p>${unit.desc}</p>
+                </div>
+                <div class="unit-banner-icon">${unit.icon}</div>
+            </div>
+        `;
+        container.appendChild(header);
+
+        // Path with spine
+        const pathWrap = document.createElement('div');
+        pathWrap.className = 'path-container';
+        pathWrap.innerHTML = '<div class="path-spine"></div>';
+
+        unit.lessons.forEach((lesson, li) => {
+            // Connector space
+            if (li > 0) {
+                const conn = document.createElement('div');
+                conn.className = 'connector-row';
+                pathWrap.appendChild(conn);
+            }
+
+            // Node row
+            const row = document.createElement('div');
+            const alignment = zigzag[li % zigzag.length];
+            row.className = `path-row ${alignment}`;
+
+            const isCheckpoint = lesson.checkpoint;
+            const nodeClass = `node ${lesson.status}${isCheckpoint ? ' checkpoint' : ''}`;
+
+            let crownHTML = '';
+            if (lesson.status === 'completed' && !isCheckpoint) {
+                crownHTML = '<span class="node-crown">⭐</span>';
+            }
+
+            const node = document.createElement('div');
+            node.className = nodeClass;
+            node.onclick = () => openPopup(lesson);
+            node.innerHTML = `
+                ${crownHTML}
+                <span class="node-icon">${lesson.emoji}</span>
+                <span class="node-label">${lesson.title}</span>
+            `;
+
+            row.appendChild(node);
+            pathWrap.appendChild(row);
+        });
+
+        container.appendChild(pathWrap);
+    });
+}
+
+// ===== POPUP =====
+let currentLesson = null;
+
+function openPopup(lesson) {
+    currentLesson = lesson;
+    const overlay = document.getElementById('lessonPopup');
+    const icon = document.getElementById('popupIcon');
+    const title = document.getElementById('popupTitle');
+    const desc = document.getElementById('popupDesc');
+    const xp = document.getElementById('popupXp');
+    const btn = document.getElementById('popupBtn');
+
+    title.textContent = lesson.title;
+    desc.textContent = lesson.desc;
+    xp.innerHTML = `<i class="fa-solid fa-bolt"></i> +${lesson.xp} XP`;
+
+    if (lesson.status === 'completed') {
+        icon.className = 'popup-icon green';
+        icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        btn.textContent = 'Qayta o\'tish';
+        btn.className = 'popup-btn success';
+    } else if (lesson.status === 'current') {
+        icon.className = 'popup-icon blue';
+        icon.innerHTML = `<span style="font-size:2rem;">${lesson.emoji}</span>`;
+        btn.textContent = 'Boshlash';
+        btn.className = 'popup-btn primary';
+    } else {
+        icon.className = 'popup-icon gray';
+        icon.innerHTML = '<i class="fa-solid fa-lock"></i>';
+        btn.textContent = 'Qulflangan';
+        btn.className = 'popup-btn locked';
+    }
+
+    overlay.classList.add('active');
+}
+
+function closePopup() {
+    document.getElementById('lessonPopup').classList.remove('active');
+}
+
+function startLesson() {
+    if (!currentLesson) return;
+    if (currentLesson.status === 'locked') return;
+    if (currentLesson.link) {
+        window.location.href = currentLesson.link;
+    } else {
+        closePopup();
+    }
+}
+
+// Close popup on overlay click
+document.getElementById('lessonPopup').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closePopup();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePopup();
+});
+
+// ===== INIT =====
+renderPath();
+</script>
+
+</body>
+</html>

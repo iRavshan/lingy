@@ -128,23 +128,108 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mic Button Mock
+    // Speech-to-Text via Web Speech API
     if (micBtn) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
         let isRecording = false;
-        micBtn.addEventListener('click', () => {
-            isRecording = !isRecording;
-            if (isRecording) {
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            // Try Uzbek first, fallback to Russian which has better support
+            recognition.lang = 'uz-UZ';
+
+            let finalTranscript = '';
+
+            recognition.onstart = () => {
+                isRecording = true;
+                finalTranscript = '';
                 micBtn.classList.add('recording');
                 micBtn.innerHTML = `<i class="fa-solid fa-stop"></i> <span>To'xtatish</span>`;
-                showToast('Ovoz yozish boshlandi', 'success');
-            } else {
-                micBtn.classList.remove('recording');
-                micBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> <span>Gapirish</span>`;
-                showToast('Ovoz yozish to\'xtatildi', 'warning');
+                showToast('Mikrofon yoqildi — gapiring', 'success');
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
                 if (textInput) {
-                    textInput.value += (textInput.value ? ' ' : '') + "Assalomu alaykum!";
-                    const ev = new Event('input', { bubbles: true});
+                    // Show final + interim (interim in lighter style via value)
+                    const existingText = textInput.dataset.prevText || '';
+                    textInput.value = existingText + finalTranscript + interimTranscript;
+                    const ev = new Event('input', { bubbles: true });
                     textInput.dispatchEvent(ev);
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.warn('Speech recognition error:', event.error);
+                if (event.error === 'not-allowed') {
+                    showToast('Mikrofonga ruxsat berilmadi. Brauzer sozlamalarini tekshiring.', 'error');
+                } else if (event.error === 'no-speech') {
+                    showToast('Ovoz eshitilmadi. Qayta urinib ko\'ring.', 'warning');
+                } else if (event.error === 'network') {
+                    showToast('Tarmoq xatosi. Internetni tekshiring.', 'error');
+                } else {
+                    showToast('Xatolik yuz berdi: ' + event.error, 'error');
+                }
+                stopRecording();
+            };
+
+            recognition.onend = () => {
+                // If user didn't manually stop, recognition ended (e.g. silence timeout)
+                if (isRecording) {
+                    // Commit final text
+                    if (textInput && finalTranscript.trim()) {
+                        textInput.dataset.prevText = textInput.value;
+                    }
+                    stopRecording();
+                }
+            };
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            micBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> <span>Gapirish</span>`;
+            if (recognition) {
+                try { recognition.stop(); } catch(e) {}
+            }
+            // Save current text as prev for next session
+            if (textInput) {
+                textInput.dataset.prevText = textInput.value;
+            }
+        }
+
+        micBtn.addEventListener('click', () => {
+            if (!SpeechRecognition) {
+                showToast('Bu brauzer ovozni yozishni qo\'llab-quvvatlamaydi. Chrome yoki Edge ishlatib ko\'ring.', 'error');
+                return;
+            }
+
+            if (isRecording) {
+                stopRecording();
+                showToast('Ovoz yozish to\'xtatildi', 'warning');
+            } else {
+                // Save existing text so we append to it
+                if (textInput) {
+                    textInput.dataset.prevText = textInput.value;
+                }
+                try {
+                    recognition.start();
+                } catch (e) {
+                    // Already started
+                    stopRecording();
+                    setTimeout(() => recognition.start(), 200);
                 }
             }
         });
