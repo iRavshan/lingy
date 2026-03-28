@@ -65,37 +65,87 @@
             overflow-x: hidden;
         }
 
-        /* === Top Navigation === */
-        .top-nav {
+        /* === App Layout === */
+        .app-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* === Left Sidebar (Desktop) === */
+        .sidebar {
+            width: 250px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            background: var(--bg-main);
+            z-index: 100;
+        }
+        .sidebar-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 10px;
+        }
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sidebar-menu a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 18px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+        .sidebar-menu a:hover {
+            background: var(--bg-card);
+            color: var(--text-main);
+        }
+        .sidebar-menu a.active {
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--border-color);
+        }
+
+        /* === Mobile Top Bar === */
+        .mobile-top-bar {
+            display: none;
             position: sticky;
             top: 0;
             z-index: 100;
             background: var(--bg-nav);
             backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border-color);
-            padding: 15px 0;
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
+            height: 60px;
+            padding: 0 20px;
             align-items: center;
             justify-content: space-between;
         }
-
-        .nav-back {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .mobile-logo {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
             text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            transition: color 0.2s;
         }
-        .nav-back:hover { color: var(--primary); }
-        .nav-back i { font-size: 1.1rem; }
 
         .theme-toggle {
             width: 38px;
@@ -112,6 +162,66 @@
             transition: all 0.2s;
         }
         .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* === Right Progression Panel === */
+        .right-panel {
+            width: 300px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* === Mobile Bottom Navigation === */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-nav);
+            backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 10px 15px;
+            padding-bottom: env(safe-area-inset-bottom, 10px);
+        }
+        .bottom-nav-inner {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .nav-tab i { font-size: 1.3rem; }
+        .nav-tab.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .main-content {
+            flex: 1;
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: 50px;
+            min-height: 100vh;
+        }
 
         .nav-title {
             font-family: var(--font-heading);
@@ -464,6 +574,14 @@
         .no-results i { font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.4; }
 
         /* === Responsive === */
+        @media (max-width: 992px) {
+            .app-layout { flex-direction: column; }
+            .sidebar { display: none; }
+            .right-panel { display: none; }
+            .main-content { border-right: none; max-width: 100%; }
+            .mobile-top-bar { display: flex; }
+            .bottom-nav { display: block; }
+        }
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2rem; }
             .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
@@ -480,20 +598,41 @@
 </head>
 <body>
 
-    <!-- Top Nav -->
-    <nav class="top-nav">
-        <div class="nav-inner">
-            <a href="index.html" class="nav-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Orqaga</span>
+    <div class="app-layout">
+        
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <img src="/assets/img/logo.png" alt="logo" style="width: 35px;"> Daktil
             </a>
-            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleLearnTheme()" title="Mavzu o'zgartirish">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-        </div>
-    </nav>
+            <div class="sidebar-menu">
+                <a href="/learn/index.html">
+                    <i class="fa-solid fa-house"></i> O'rganish
+                </a>
+                <a href="/learn/alphabet.html" class="active">
+                    <i class="fa-solid fa-hand-sparkles"></i> Alifbo
+                </a>
+                <a href="/learn/dictionary.html">
+                    <i class="fa-solid fa-book"></i> Lug'at
+                </a>
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i> Profil
+                </a>
+            </div>
+            <div style="flex-grow: 1;"></div>
+        </aside>
 
-    <!-- Hero -->
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Top Bar -->
+            <nav class="mobile-top-bar">
+                <a href="index.html" class="mobile-logo">Daktil</a>
+                <div class="top-stats">
+                    <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
+                </div>
+            </nav>
+
+            <!-- Hero -->
     <section class="page-hero">
         <div class="hero-glow left"></div>
         <div class="hero-glow right"></div>
@@ -534,6 +673,32 @@
         </div>
         <div class="alphabet-grid" id="consonant-grid" style="display:none;"></div>
     </section>
+        
+        </main> <!-- /main-content -->
+
+        <!-- Mobile Bottom Nav -->
+        <nav class="bottom-nav">
+            <div class="bottom-nav-inner">
+                <a href="/learn/index.html" class="nav-tab">
+                    <i class="fa-solid fa-house"></i>
+                    <span>O'rganish</span>
+                </a>
+                <a href="/learn/alphabet.html" class="nav-tab active">
+                    <i class="fa-solid fa-hand-sparkles"></i>
+                    <span>Alifbo</span>
+                </a>
+                <a href="/learn/dictionary.html" class="nav-tab">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Lug'at</span>
+                </a>
+                <a href="profile.html" class="nav-tab">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </div>
+        </nav>
+        
+    </div> <!-- /app-layout -->
 
     <!-- Detail Modal -->
     <div class="modal-overlay" id="letterModal">
