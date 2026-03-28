@@ -12,14 +12,14 @@
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem(STORAGE_KEY, theme);
 
-        // Update toggle button icon if exists
-        const btn = document.getElementById('themeToggleBtn');
-        if (btn) {
+        // Update all toggle buttons
+        const btns = document.querySelectorAll('.theme-toggle');
+        btns.forEach(btn => {
             btn.innerHTML = theme === 'dark'
                 ? '<i class="fa-solid fa-sun"></i>'
                 : '<i class="fa-solid fa-moon"></i>';
             btn.title = theme === 'dark' ? 'Yorug\' rejim' : 'Qorong\'i rejim';
-        }
+        });
     }
 
     // Apply on load (before paint)

@@ -58,34 +58,134 @@
             overflow-x: hidden;
         }
 
-        /* === Sticky Top Bar === */
-        .top-bar {
+        /* === App Layout === */
+        .app-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* === Left Sidebar (Desktop) === */
+        .sidebar {
+            width: 250px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            background: var(--bg-main);
+            z-index: 100;
+        }
+        .sidebar-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 10px;
+        }
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sidebar-menu a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 18px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+        .sidebar-menu a:hover {
+            background: var(--bg-card);
+            color: var(--text-main);
+        }
+        .sidebar-menu a.active {
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .certificate-card {
+            background: var(--bg-card);
+            border: 1px dashed var(--primary-light);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .cert-preview {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .cert-preview i { font-size: 2.8rem; color: var(--gold); filter: drop-shadow(0 4px 6px rgba(251,191,36,0.3)); }
+        .cert-text { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--text-main); }
+
+        /* === Main Content === */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: 100px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        /* === Mobile Top Bar === */
+        .mobile-top-bar {
+            display: none; /* hidden on desktop */
             position: sticky;
             top: 0;
             z-index: 100;
             background: var(--bg-nav);
             backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border-color);
-            padding: 12px 0;
-        }
-        .top-bar-inner {
-            max-width: 700px;
-            margin: 0 auto;
+            height: 60px;
             padding: 0 20px;
-            display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .top-bar a {
+        .mobile-logo {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
             text-decoration: none;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: color 0.2s;
         }
-        .top-bar a:hover { color: var(--primary); }
+
+        /* === Right Progression Panel === */
+        .right-panel {
+            width: 300px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
         .theme-toggle {
             width: 38px;
@@ -121,7 +221,6 @@
         .stat-item i { font-size: 1.1rem; }
         .stat-fire { color: #f97316; }
         .stat-gem { color: #6366f1; }
-        .stat-heart { color: #ef4444; }
 
         /* === Unit Header === */
         .unit-header {
@@ -132,7 +231,7 @@
         .unit-banner {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 20px;
-            padding: 28px 30px;
+            padding: 18px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -164,117 +263,111 @@
         .path-container {
             max-width: 700px;
             margin: 0 auto;
-            padding: 20px 20px 100px;
+            padding: 10px 20px 50px;
             position: relative;
-        }
-
-        /* Vertical center line */
-        .path-spine {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--border-color);
-            transform: translateX(-50%);
-            z-index: 0;
         }
 
         .path-row {
             display: flex;
             justify-content: center;
+            align-items: center;
+            height: 110px;
             position: relative;
             z-index: 1;
-            margin-bottom: 10px;
         }
 
-        /* Zigzag offsets */
-        .path-row.left { justify-content: flex-start; padding-left: 15%; }
-        .path-row.center { justify-content: center; }
-        .path-row.right { justify-content: flex-end; padding-right: 15%; }
+        /* Zigzag relative offsets */
+        .pos-left { margin-right: 150px; }
+        .pos-center { margin: 0; }
+        .pos-right { margin-left: 150px; }
 
-        /* === Node (Lesson Circle) === */
+        /* === Node (Lesson Buttons) === */
         .node {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             position: relative;
-            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            border: 4px solid transparent;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 8px 0 rgba(0,0,0,0.15), inset 0 4px 6px rgba(255,255,255,0.05);
         }
-        .node:hover { transform: scale(1.1); }
+        .node:hover { transform: translateY(-4px); }
+        .node:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0) !important; }
 
         .node-icon {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             position: relative;
             z-index: 2;
-        }
-        .node-label {
-            position: absolute;
-            bottom: -26px;
-            white-space: nowrap;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-align: center;
-            width: 120px;
-            left: 50%;
-            transform: translateX(-50%);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Completed node */
         .node.completed {
-            background: var(--success);
-            border-color: var(--success-dark);
-            box-shadow: 0 6px 0 var(--success-dark), 0 8px 25px rgba(16,185,129,0.3);
+            background: linear-gradient(145deg, var(--success), #059669);
+            border: none;
+            box-shadow: 0 8px 0 #047857, 0 15px 25px rgba(16,185,129,0.3), inset 0 4px 5px rgba(255,255,255,0.3);
         }
         .node.completed .node-icon { color: white; }
-        .node.completed .node-label { color: var(--success); }
+        .node.completed .node-label { color: var(--text-main); }
+        .node.completed:active {
+            transform: translateY(8px);
+        }
 
         /* Current / Active node */
         .node.current {
-            background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 6px 0 #4338ca, 0 0 30px rgba(99,102,241,0.4);
+            background: linear-gradient(145deg, var(--primary), #4f46e5);
+            border: none;
+            box-shadow: 0 8px 0 #3730a3, 0 0 35px rgba(99,102,241,0.5), inset 0 4px 5px rgba(255,255,255,0.3);
             animation: nodePulse 2.5s ease-in-out infinite;
         }
         .node.current .node-icon { color: white; }
-        .node.current .node-label { color: var(--primary); font-weight: 700; }
+        .node.current .node-label { color: var(--primary); font-weight: 800; font-size: 0.85rem; }
+        .node.current:active {
+            transform: translateY(8px);
+        }
 
         @keyframes nodePulse {
-            0%, 100% { box-shadow: 0 6px 0 #4338ca, 0 0 20px rgba(99,102,241,0.3); }
-            50% { box-shadow: 0 6px 0 #4338ca, 0 0 40px rgba(99,102,241,0.6); }
+            0%, 100% { box-shadow: 0 8px 0 #3730a3, 0 0 20px rgba(99,102,241,0.4), inset 0 4px 5px rgba(255,255,255,0.3); }
+            50% { box-shadow: 0 8px 0 #3730a3, 0 0 40px rgba(99,102,241,0.7), inset 0 4px 5px rgba(255,255,255,0.3); }
         }
 
         /* Locked node */
         .node.locked {
-            background: var(--bg-secondary);
-            border-color: rgba(255,255,255,0.1);
-            box-shadow: 0 6px 0 rgba(0,0,0,0.3);
+            filter: grayscale(1);
+            opacity: 0.6;
             cursor: not-allowed;
-            opacity: 0.5;
+            background: var(--bg-card);
+            border-color: var(--border-color);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.15);
         }
-        .node.locked .node-icon { color: var(--text-muted); }
-        .node.locked:hover { transform: scale(1); }
+        .node.locked .node-icon { color: var(--text-muted); opacity: 0.7; }
+        .node.locked:hover { transform: none; }
+        .node.locked:active { transform: translateY(6px); }
 
         /* Checkpoint (Trophy) node */
         .node.checkpoint {
-            width: 90px;
-            height: 90px;
-            border-radius: 22px;
+            width: 95px;
+            height: 95px;
+            border-radius: 28px;
         }
         .node.checkpoint.completed {
-            background: linear-gradient(135deg, var(--gold), #f59e0b);
-            border-color: #d97706;
-            box-shadow: 0 6px 0 #b45309, 0 8px 30px rgba(251,191,36,0.3);
+            background: linear-gradient(145deg, var(--gold), #d97706);
+            border: none;
+            box-shadow: 0 8px 0 #b45309, 0 15px 30px rgba(251,191,36,0.3), inset 0 4px 5px rgba(255,255,255,0.4);
+        }
+        .node.checkpoint.completed:active {
+            transform: translateY(8px);
         }
         .node.checkpoint.locked {
-            border-radius: 22px;
+            border-radius: 28px;
         }
 
         /* Crown badge */
@@ -286,18 +379,22 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        /* === Connector Lines (SVG between nodes) === */
-        .connector-row {
+        /* === Unit Section & Sticky Header === */
+        .unit-section {
             position: relative;
-            z-index: 0;
-            height: 40px;
-            margin-bottom: 10px;
+            z-index: 10;
         }
-
-        /* === Section Divider === */
+        .unit-sticky-wrapper {
+            position: sticky;
+            top: 0px; /* Offset for top-nav height */
+            z-index: 50;
+            background: var(--bg-main);
+            padding: 20px 0 10px;
+            margin-bottom: 20px;
+        }
         .section-divider {
             max-width: 700px;
-            margin: 20px auto 10px;
+            margin: 0 auto;
             padding: 0 20px;
         }
         .unit-banner.secondary {
@@ -307,8 +404,70 @@
             background: linear-gradient(135deg, #f59e0b, #ef4444);
         }
 
-        /* === Bottom Nav === */
+        /* === Right Progression Cards === */
+        .panel-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-evenly;
+            margin-bottom: 10px;
+        }
+        .progression-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .progression-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .progress-bar-wrap {
+            height: 16px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--warning);
+            border-radius: 20px;
+        }
+        .progression-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 5px;
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* === Mobile Bottom Nav === */
         .bottom-nav {
+            display: none; /* hidden on desktop */
             position: fixed;
             bottom: 0;
             left: 0;
@@ -331,19 +490,21 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             text-decoration: none;
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             transition: color 0.2s;
             padding: 4px 16px;
             border-radius: 12px;
         }
-        .nav-tab i { font-size: 1.3rem; }
-        .nav-tab.active {
-            color: var(--primary);
+        .nav-tab i { font-size: 1.4rem; margin-bottom: 2px; }
+        .nav-tab.active { color: var(--primary); }
+        .nav-tab.active i {
             background: var(--primary-light);
+            padding: 6px 12px;
+            border-radius: 12px;
         }
         .nav-tab:hover { color: var(--primary); }
 
@@ -455,66 +616,119 @@
         }
 
         /* === Responsive === */
+        @media (max-width: 992px) {
+            .app-layout { flex-direction: column; }
+            .sidebar { display: none; }
+            .right-panel { display: none; }
+            .main-content { border-right: none; max-width: 100%; }
+            .mobile-top-bar { display: flex; }
+            .bottom-nav { display: block; }
+        }
         @media (max-width: 480px) {
             .unit-banner { padding: 22px 20px; flex-direction: column; gap: 12px; text-align: center; }
             .node { width: 68px; height: 68px; }
             .node.checkpoint { width: 78px; height: 78px; }
             .node-icon { font-size: 1.5rem; }
-            .path-row.left { padding-left: 8%; }
-            .path-row.right { padding-right: 8%; }
             .top-stats { gap: 14px; }
+            .mobile-logo { display: none; }
+            .mobile-top-bar { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <nav class="top-bar">
-        <div class="top-bar-inner">
-            <a href="index.html">
-                Daktil
+    <!-- App Layout -->
+    <div class="app-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fa-solid fa-hands-asl-interpreting"></i> UzSL
             </a>
-            <div class="top-stats">
-                <div class="stat-item stat-fire">
-                    <i class="fa-solid fa-fire"></i> <span id="streakCount">3</span>
-                </div>
-                <div class="stat-item stat-gem">
-                    <i class="fa-solid fa-gem"></i> <span id="gemCount">120</span>
-                </div>
-                <div class="stat-item stat-heart">
-                    <i class="fa-solid fa-heart"></i> <span id="heartCount">5</span>
-                </div>
-                <button class="theme-toggle" id="themeToggleBtn" onclick="toggleLearnTheme()" title="Mavzu o'zgartirish">
-                    <i class="fa-solid fa-sun"></i>
-                </button>
+            <div class="sidebar-menu">
+                <a href="/learn/index.html" class="active">
+                    <i class="fa-solid fa-house"></i> O'rganish
+                </a>
+                <a href="/learn/alphabet.html">
+                    <i class="fa-solid fa-hand-sparkles"></i> Alifbo
+                </a>
+                <a href="/learn/dictionary.html">
+                    <i class="fa-solid fa-book"></i> Lug'at
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-user"></i> Profil
+                </a>
             </div>
-        </div>
-    </nav>
+            
+            <div style="flex-grow: 1;"></div>
+            
+        </aside>
 
-    <!-- Path Content -->
-    <div id="pathContent"></div>
+        <!-- Main Content (Path) -->
+        <main class="main-content">
+            <!-- Mobile Top Bar -->
+            <nav class="mobile-top-bar">
+                <a href="index.html" class="mobile-logo">Daktil</a>
+                <div class="top-stats">
+                    <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span id="streakCountMobile">3</span></div>
+                    <div class="stat-item stat-gem"><i class="fa-solid fa-gem"></i> <span id="gemCountMobile">120</span></div>
+                    <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
+                </div>
+            </nav>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="bottom-nav-inner">
-            <a href="/learn/index.html" class="nav-tab active">
-                <i class="fa-solid fa-graduation-cap"></i>
-                O'rganish
-            </a>
-            <a href="/learn/alphabet.html" class="nav-tab">
-                <i class="fa-solid fa-hand-sparkles"></i>
-                Alifbo
-            </a>
-            <a href="/learn/dictionary.html" class="nav-tab">
-                <i class="fa-solid fa-book"></i>
-                Lug'at
-            </a>
-            <a href="#" class="nav-tab">
-                <i class="fa-solid fa-user"></i>
-                Profil
-            </a>
-        </div>
-    </nav>
+            <div id="pathContent"></div>
+        </main>
+
+        <!-- Right Progression Panel -->
+        <aside class="right-panel">
+            <div class="panel-stats">
+                <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span id="streakCount">3</span></div>
+                <div class="stat-item stat-gem"><i class="fa-solid fa-gem"></i> <span id="gemCount">120</span></div>
+                <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
+            </div>
+            
+            <div class="progression-card">
+                <h3><i class="fa-solid fa-bolt" style="color:var(--warning)"></i> Kunlik maqsad</h3>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" style="width: 60%"></div>
+                </div>
+                <p>30 / 50 XP</p>
+                <button class="btn-outline">Reytingni ko'rish</button>
+            </div>
+
+            <div class="certificate-card">
+                <h3><i class="fa-solid fa-certificate" style="color:var(--primary)"></i> Sertifikat</h3>
+                <div class="cert-preview">
+                    <i class="fa-solid fa-award"></i>
+                    <div class="cert-text">UzSL Boshlang'ich darajasi</div>
+                </div>
+                <p style="font-size: 0.8rem; font-weight: 500;">Barcha bo'limlarni yakunlang va maxsus sertifikatga ega bo'ling!</p>
+            </div>
+        </aside>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="bottom-nav-inner">
+                <a href="/learn/index.html" class="nav-tab active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>O'rganish</span>
+                </a>
+                <a href="/learn/alphabet.html" class="nav-tab">
+                    <i class="fa-solid fa-hand-sparkles"></i>
+                    <span>Alifbo</span>
+                </a>
+                <a href="/learn/dictionary.html" class="nav-tab">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Lug'at</span>
+                </a>
+                <a href="#" class="nav-tab">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </div>
+        </nav>
+        
+    </div>
 
     <!-- Lesson Popup -->
     <div class="lesson-popup-overlay" id="lessonPopup">
@@ -536,12 +750,12 @@ const units = [
         icon: "👋",
         gradient: "linear-gradient(135deg, #6366f1, #ec4899)",
         lessons: [
-            { id: 1, title: "Salom!", desc: "Salomlashish va tanishish", emoji: "👋", xp: 10, status: "completed", link: "/learn/dictionary.html" },
-            { id: 2, title: "A-D harflari", desc: "Birinchi 4 ta daktil harfi", emoji: "🔤", xp: 10, status: "completed", link: "/learn/alphabet.html" },
-            { id: 3, title: "Ha va Yo'q", desc: "Oddiy javoblar", emoji: "✅", xp: 15, status: "completed", link: "/learn/dictionary.html" },
-            { id: 4, title: "E-I harflari", desc: "Navbatdagi harflar guruhi", emoji: "🅰️", xp: 15, status: "current", link: "/learn/alphabet.html" },
-            { id: 5, title: "Oila a'zolari", desc: "Ona, Ota, Aka, Opa", emoji: "👨‍👩‍👧‍👦", xp: 20, status: "locked" },
-            { id: "cp1", title: "Birinchi sinov", desc: "Bo'lim 1 yakuniy testi", emoji: "🏆", xp: 50, status: "locked", checkpoint: true }
+            { id: 1, title: "Salom!", desc: "Salomlashish va tanishish", xp: 10, status: "completed", link: "/learn/dictionary.html" },
+            { id: 2, title: "A-D harflari", desc: "Birinchi 4 ta daktil harfi", xp: 10, status: "completed", link: "/learn/alphabet.html" },
+            { id: 3, title: "Ha va Yo'q", desc: "Oddiy javoblar", xp: 15, status: "completed", link: "/learn/dictionary.html" },
+            { id: 4, title: "E-I harflari", desc: "Navbatdagi harflar guruhi", xp: 15, status: "current", link: "/learn/alphabet.html" },
+            { id: 5, title: "Oila a'zolari", desc: "Ona, Ota, Aka, Opa", xp: 20, status: "locked" },
+            { id: "cp1", title: "Birinchi sinov", desc: "Bo'lim 1 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
         ]
     },
     {
@@ -550,12 +764,12 @@ const units = [
         icon: "🏠",
         gradient: "linear-gradient(135deg, #7c3aed, #2563eb)",
         lessons: [
-            { id: 6, title: "Uy va maktab", desc: "Muhim joylar nomlari", emoji: "🏫", xp: 15, status: "locked" },
-            { id: 7, title: "J-N harflari", desc: "Daktil davomi", emoji: "🔤", xp: 15, status: "locked" },
-            { id: 8, title: "Ovqatlanish", desc: "Non, suv, choy, palov", emoji: "🍽️", xp: 20, status: "locked" },
-            { id: 9, title: "Ranglar", desc: "Qizil, ko'k, yashil...", emoji: "🎨", xp: 15, status: "locked" },
-            { id: 10, title: "O-T harflari", desc: "Daktil harflari davomi", emoji: "🅰️", xp: 20, status: "locked" },
-            { id: "cp2", title: "Ikkinchi sinov", desc: "Bo'lim 2 yakuniy testi", emoji: "🏆", xp: 50, status: "locked", checkpoint: true }
+            { id: 6, title: "Uy va maktab", desc: "Muhim joylar nomlari", xp: 15, status: "locked" },
+            { id: 7, title: "J-N harflari", desc: "Daktil davomi", xp: 15, status: "locked" },
+            { id: 8, title: "Ovqatlanish", desc: "Non, suv, choy, palov", xp: 20, status: "locked" },
+            { id: 9, title: "Ranglar", desc: "Qizil, ko'k, yashil...", xp: 15, status: "locked" },
+            { id: 10, title: "O-T harflari", desc: "Daktil harflari davomi", xp: 20, status: "locked" },
+            { id: "cp2", title: "Ikkinchi sinov", desc: "Bo'lim 2 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
         ]
     },
     {
@@ -564,13 +778,13 @@ const units = [
         icon: "💬",
         gradient: "linear-gradient(135deg, #f59e0b, #ef4444)",
         lessons: [
-            { id: 11, title: "Raqamlar", desc: "1 dan 10 gacha sanash", emoji: "🔢", xp: 15, status: "locked" },
-            { id: 12, title: "U-Z harflari", desc: "Oxirgi harflar guruhi", emoji: "🔤", xp: 20, status: "locked" },
-            { id: 13, title: "His-tuyg'ular", desc: "Xursand, g'amgin, sevgi", emoji: "😊", xp: 20, status: "locked" },
-            { id: 14, title: "Maxsus harflar", desc: "O', G', Sh, Ch, Ng", emoji: "✨", xp: 25, status: "locked" },
-            { id: 15, title: "Hayvonlar", desc: "Mushuk, it, qush...", emoji: "🐾", xp: 20, status: "locked" },
-            { id: 16, title: "Tabiat", desc: "Quyosh, oy, yomg'ir", emoji: "🌿", xp: 20, status: "locked" },
-            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha darslar bo'yicha sinov", emoji: "👑", xp: 100, status: "locked", checkpoint: true }
+            { id: 11, title: "Raqamlar", desc: "1 dan 10 gacha sanash", xp: 15, status: "locked" },
+            { id: 12, title: "U-Z harflari", desc: "Oxirgi harflar guruhi", xp: 20, status: "locked" },
+            { id: 13, title: "His-tuyg'ular", desc: "Xursand, g'amgin, sevgi", xp: 20, status: "locked" },
+            { id: 14, title: "Maxsus harflar", desc: "O', G', Sh, Ch, Ng", xp: 25, status: "locked" },
+            { id: 15, title: "Hayvonlar", desc: "Mushuk, it, qush...", xp: 20, status: "locked" },
+            { id: 16, title: "Tabiat", desc: "Quyosh, oy, yomg'ir", xp: 20, status: "locked" },
+            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha darslar bo'yicha sinov", xp: 100, status: "locked", checkpoint: true }
         ]
     }
 ];
@@ -582,61 +796,65 @@ function renderPath() {
     const container = document.getElementById('pathContent');
     container.innerHTML = '';
 
+    const rowHeight = 110;
+    const cx = 150;
+    const offset = 75;
+    const getX = (align) => align === 'left' ? cx - offset : (align === 'right' ? cx + offset : cx);
+
     units.forEach((unit, ui) => {
-        // Unit header
-        const header = document.createElement('div');
-        header.className = 'section-divider';
-        header.innerHTML = `
-            <div class="unit-banner" style="background: ${unit.gradient};">
-                <div class="unit-banner-text">
-                    <h2>${unit.title}</h2>
-                    <p>${unit.desc}</p>
+        // Wrap everything in a section to support sticky headers correctly
+        const unitSection = document.createElement('section');
+        unitSection.className = 'unit-section';
+
+        const stickyWrap = document.createElement('div');
+        stickyWrap.className = 'unit-sticky-wrapper';
+        stickyWrap.innerHTML = `
+            <div class="section-divider">
+                <div class="unit-banner" style="background: ${unit.gradient};">
+                    <div class="unit-banner-text">
+                        <h2>${unit.title}</h2>
+                        <p>${unit.desc}</p>
+                    </div>
+                    <div class="unit-banner-icon">${unit.icon}</div>
                 </div>
-                <div class="unit-banner-icon">${unit.icon}</div>
             </div>
         `;
-        container.appendChild(header);
+        unitSection.appendChild(stickyWrap);
 
-        // Path with spine
         const pathWrap = document.createElement('div');
         pathWrap.className = 'path-container';
-        pathWrap.innerHTML = '<div class="path-spine"></div>';
 
         unit.lessons.forEach((lesson, li) => {
-            // Connector space
-            if (li > 0) {
-                const conn = document.createElement('div');
-                conn.className = 'connector-row';
-                pathWrap.appendChild(conn);
-            }
-
-            // Node row
-            const row = document.createElement('div');
             const alignment = zigzag[li % zigzag.length];
-            row.className = `path-row ${alignment}`;
-
-            const isCheckpoint = lesson.checkpoint;
-            const nodeClass = `node ${lesson.status}${isCheckpoint ? ' checkpoint' : ''}`;
-
-            let crownHTML = '';
-            if (lesson.status === 'completed' && !isCheckpoint) {
-                crownHTML = '<span class="node-crown">⭐</span>';
+            const row = document.createElement('div');
+            row.className = 'path-row';
+            
+            const nodeClass = `node pos-${alignment} ${lesson.status}${lesson.checkpoint ? ' checkpoint' : ''}`;
+            
+            let iconHTML = `<i class="fa-solid fa-check"></i>`;
+            if (lesson.status === 'completed' && !lesson.checkpoint) {
+                iconHTML = `<span class="node-icon"><i class="fa-solid fa-check"></i></span>`;
+            }
+            else if (lesson.status === 'current' && !lesson.checkpoint) {
+                iconHTML = `<i class="fa-solid fa-o"></i>`;
+            }
+            else{
+                iconHTML = `<i class="fa-solid fa-lock"></i>`;
             }
 
             const node = document.createElement('div');
             node.className = nodeClass;
             node.onclick = () => openPopup(lesson);
             node.innerHTML = `
-                ${crownHTML}
-                <span class="node-icon">${lesson.emoji}</span>
-                <span class="node-label">${lesson.title}</span>
+                ${iconHTML}
             `;
 
             row.appendChild(node);
             pathWrap.appendChild(row);
         });
 
-        container.appendChild(pathWrap);
+        unitSection.appendChild(pathWrap);
+        container.appendChild(unitSection);
     });
 }
 
