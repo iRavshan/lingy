@@ -273,7 +273,6 @@
             justify-content: center;
             font-size: 3.5rem;
             box-shadow: 0 8px 30px rgba(99,102,241,0.2);
-            animation: handBounce 2s ease-in-out infinite;
         }
         @keyframes handBounce {
             0%, 100% { transform: scale(1) rotate(0deg); }
@@ -407,6 +406,24 @@
         <div class="alphabet-grid" id="consonant-grid" style="display:none;"></div>
     </section>
         
+    <!-- Letter Modal -->
+    <div class="modal-overlay" id="letterModal">
+        <div class="modal-card" id="modalContent" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-letter" id="modalLetter">A</div>
+            <div class="modal-hand-sign" id="modalHand"></div>
+            <div class="modal-tag" id="modalTag">Unli</div>
+            <div class="modal-info">
+                <h3 id="modalName" style="display:none;"></h3> <!-- Hidden name as requested -->
+                <p id="modalDesc"></p>
+            </div>
+            <div class="modal-nav">
+                <button onclick="navigateLetter(-1)" title="Oldingi harf"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="navigateLetter(1)" title="Keyingi harf"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
     <script>
     // Full Uzbek alphabet data with relevant images
     const alphabet = [
@@ -499,14 +516,19 @@
         const card = document.createElement('div');
         card.className = 'letter-card';
         card.onclick = () => openModal(idx);
+        
+        let imgChar = l.letter.toLowerCase().charAt(0);
+        let imgSrc = '/static/img/alphabet/' + imgChar + '.png';
+
         card.innerHTML = `
             <div class="card-image">
                 <span class="card-emoji">${l.emoji}</span>
                 <span class="card-word">${l.word}</span>
             </div>
             <div class="letter-big">${l.letter}</div>
-            <div class="hand-sign">${l.hand}</div>
-            <div class="letter-name">${l.name}</div>
+            <div class="hand-sign" style="background:transparent; border:none;">
+                <img src="${imgSrc}" alt="${l.letter}" style="width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1));" onerror="this.outerHTML='<span>${l.hand}</span>'">
+            </div>
         `;
         return card;
     }
@@ -523,8 +545,13 @@
         currentModalIndex = index;
         const l = alphabet[index];
         document.getElementById('modalLetter').textContent = l.letter;
-        document.getElementById('modalHand').textContent = l.hand;
-        document.getElementById('modalName').textContent = l.name + ' harfi';
+        
+        // Use image or fallback to hand emoji
+        let imgChar = l.letter.toLowerCase().charAt(0);
+        let imgSrc = '/static/img/alphabet/' + imgChar + '.png';
+        const imgHtml = `<img src="${imgSrc}" style="width:75%; height:75%; object-fit:contain;" onerror="this.outerHTML='&lt;span&gt;${l.hand}&lt;/span&gt;'">`;
+        document.getElementById('modalHand').innerHTML = imgHtml;
+        
         document.getElementById('modalDesc').textContent = l.desc;
         
         const tag = document.getElementById('modalTag');

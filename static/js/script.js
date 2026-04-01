@@ -102,7 +102,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const MAX_CHARS = 500;
 
-    // Character count update
+    // ---- Real-time Translation Toggle ----
+    const realtimeToggle = document.getElementById('realtime-toggle');
+    const realtimeIcon = document.getElementById('realtime-icon');
+    const realtimeLabel = document.getElementById('realtime-label');
+    let isRealtimeMode = false;
+    let realtimeDebounceTimer = null;
+
+    function updateRealtimeUI(enabled) {
+        isRealtimeMode = enabled;
+        if (realtimeIcon) realtimeIcon.style.color = enabled ? 'var(--success)' : 'var(--text-muted)';
+        if (realtimeLabel) realtimeLabel.style.color = enabled ? 'var(--success)' : 'var(--text-muted)';
+        
+        // Hide/show the translate button
+        if (translateBtn) {
+            translateBtn.style.display = enabled ? 'none' : '';
+        }
+
+        if (enabled && textInput && textInput.value.trim()) {
+            // Immediately translate what's already typed
+            showRealtimeLetter(textInput.value);
+        }
+    }
+
+    if (realtimeToggle) {
+        realtimeToggle.addEventListener('change', () => {
+            updateRealtimeUI(realtimeToggle.checked);
+        });
+    }
+
+    // Character count update + real-time translation
     if (textInput && charCount) {
         textInput.addEventListener('input', () => {
             const length = textInput.value.length;
@@ -115,7 +144,84 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 charCount.style.color = 'var(--text-muted)';
             }
+
+            // Real-time translation mode
+            if (isRealtimeMode) {
+                clearTimeout(realtimeDebounceTimer);
+                realtimeDebounceTimer = setTimeout(() => {
+                    showRealtimeLetter(textInput.value);
+                }, 80);
+            }
         });
+    }
+
+    // Show the last typed letter's sign image in real-time
+    function showRealtimeLetter(text) {
+        if (!text) { resetVideo(); return; }
+        
+        const imgSequenceBlock = document.getElementById('sl-image-sequence');
+        const currentImg = document.getElementById('current-sl-image');
+        const currentLetter = document.getElementById('current-sl-letter');
+        
+        if (!imgSequenceBlock || !currentImg || !currentLetter) return;
+        
+        // Stop any sequence playback
+        if (slPlaybackInterval) clearInterval(slPlaybackInterval);
+        isPlayingSl = false;
+        
+        // Get the last valid character
+        const validChars = 'abcdefghijklmnopqrstuvwxyz';
+        const raw = text.toLowerCase();
+        let lastChar = null;
+        
+        for (let i = raw.length - 1; i >= 0; i--) {
+            if (validChars.includes(raw[i])) {
+                lastChar = raw[i];
+                break;
+            } else if (raw[i] === ' ') {
+                lastChar = ' ';
+                break;
+            }
+        }
+        
+        if (!lastChar) return;
+        
+        // Show the image container
+        videoPlaceholder.style.display = 'none';
+        slVideo.style.display = 'none';
+        imgSequenceBlock.style.display = 'flex';
+        
+        videoStatus.innerHTML = '<i class="fa-solid fa-bolt" style="color:var(--success)"></i> Real-vaqt';
+        videoStatus.className = 'status-badge ready';
+        
+        // Smooth transition
+        currentImg.style.opacity = '0';
+        setTimeout(() => {
+            if (lastChar === ' ') {
+                currentImg.src = '';
+                currentLetter.innerText = '_';
+            } else {
+                currentImg.src = `/static/img/alphabet/${lastChar}.png`;
+                currentLetter.innerText = lastChar;
+                currentImg.onerror = function() { this.src = ''; };
+            }
+            currentImg.style.opacity = '1';
+        }, 100);
+        
+        // Also prepare the full sequence for replay
+        slSequence = [];
+        for (let i = 0; i < raw.length; i++) {
+            if (validChars.includes(raw[i])) {
+                slSequence.push({ char: raw[i], type: 'letter' });
+            } else if (raw[i] === ' ') {
+                slSequence.push({ char: ' ', type: 'space' });
+            }
+        }
+        slCurrentIndex = slSequence.length - 1;
+        
+        enableVideoControls();
+        const btnPlay = document.getElementById('btn-play-pause');
+        if (btnPlay) btnPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
     }
 
     // Clear Button
@@ -138,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
             recognition = new SpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-            // Try Uzbek first, fallback to Russian which has better support
             recognition.lang = 'uz-UZ';
 
             let finalTranscript = '';
@@ -163,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (textInput) {
-                    // Show final + interim (interim in lighter style via value)
                     const existingText = textInput.dataset.prevText || '';
                     textInput.value = existingText + finalTranscript + interimTranscript;
                     const ev = new Event('input', { bubbles: true });
@@ -186,9 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             recognition.onend = () => {
-                // If user didn't manually stop, recognition ended (e.g. silence timeout)
                 if (isRecording) {
-                    // Commit final text
                     if (textInput && finalTranscript.trim()) {
                         textInput.dataset.prevText = textInput.value;
                     }
@@ -204,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (recognition) {
                 try { recognition.stop(); } catch(e) {}
             }
-            // Save current text as prev for next session
             if (textInput) {
                 textInput.dataset.prevText = textInput.value;
             }
@@ -220,14 +321,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 stopRecording();
                 showToast('Ovoz yozish to\'xtatildi', 'warning');
             } else {
-                // Save existing text so we append to it
                 if (textInput) {
                     textInput.dataset.prevText = textInput.value;
                 }
                 try {
                     recognition.start();
                 } catch (e) {
-                    // Already started
                     stopRecording();
                     setTimeout(() => recognition.start(), 200);
                 }
@@ -235,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Translate Button Mock
+    // Translate Button (Manual mode)
     if (translateBtn && textInput) {
         translateBtn.addEventListener('click', () => {
             const text = textInput.value.trim();
@@ -251,10 +350,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function startTranslationMock() {
+    let slPlaybackInterval = null;
+    let slCurrentIndex = 0;
+    let slSequence = [];
+    let isPlayingSl = false;
+
+    function startTranslationMock(textToTranslate) {
+        if(!textToTranslate && textInput) textToTranslate = textInput.value.trim();
+        if(!textToTranslate) return;
+
         // UI Updates
         videoPlaceholder.style.display = 'none';
         slVideo.style.display = 'none';
+        const imgSequenceBlock = document.getElementById('sl-image-sequence');
+        if (imgSequenceBlock) imgSequenceBlock.style.display = 'none';
+        
         loadingOverlay.style.display = 'flex';
         
         videoStatus.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Tayyorlanmoqda';
@@ -262,27 +372,154 @@ document.addEventListener('DOMContentLoaded', () => {
         
         disableVideoControls();
 
+        // Stop any ongoing playback
+        if (slPlaybackInterval) clearInterval(slPlaybackInterval);
+
+        // Prepare sequence mapping
+        const rawText = textToTranslate.toLowerCase();
+        slSequence = [];
+        
+        // Very basic tokenizer for Uzbek latin (treating ch, sh, o', g' would require slightly complex processing, let's keep it letter by letter for simplicity or basic mapping)
+        const validChars = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        
+        for (let i = 0; i < rawText.length; i++) {
+            let char = rawText[i];
+            
+            // Handle basic multi-char like sh, ch, ng if needed. For now simple character fallback
+            if (validChars.includes(char)) {
+                slSequence.push({ char: char, type: 'letter' });
+            } else if (char === ' ') {
+                slSequence.push({ char: ' ', type: 'space' });
+            }
+        }
+
         // Simulate network delay
         setTimeout(() => {
             loadingOverlay.style.display = 'none';
-            slVideo.style.display = 'block';
-            
-            // Set dummy video source (since we don't have a real one, use a placeholder or generic video if available)
-            // For now, we will just show a colored block representing the video to simulate success
-            slVideo.poster = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%2316182b%22%2F%3E%3Ccircle%20cx%3D%22400%22%20cy%3D%22180%22%20r%3D%2240%22%20fill%3D%22%236366f1%22%2F%3E%3Cpath%20d%3D%22M410.5%20180L392.5%20193V167L410.5%20180Z%22%20fill%3D%22%23ffffff%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22260%22%20fill%3D%22%2394a3b8%22%20font-size%3D%2218%22%20font-family%3D%22Arial%22%20font-weight%3D%22600%22%20text-anchor%3D%22middle%22%3EUzSL%20Tarjima%20Qilingan%20Video%3C%2Ftext%3E%3C%2Fsvg%3E';
+            if (imgSequenceBlock) {
+                imgSequenceBlock.style.display = 'flex';
+                // Remove sl-video just in case
+                slVideo.style.display = 'none';
+            }
             
             videoStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Tayyor';
             videoStatus.className = 'status-badge ready';
             
             enableVideoControls();
             showToast('Tarjima muvaffaqiyatli yakunlandi', 'success');
+            
+            // Auto start playing
+            slCurrentIndex = 0;
+            isPlayingSl = true;
+            playSlSequence();
         }, 1500);
     }
+
+    function playSlSequence() {
+        const speed = speedSelect ? parseFloat(speedSelect.value) : 1;
+        const intervalMs = 1500 / speed; // Base 1.5s per letter
+        
+        const currentImg = document.getElementById('current-sl-image');
+        const currentLetter = document.getElementById('current-sl-letter');
+        const imgSequenceBlock = document.getElementById('sl-image-sequence');
+
+        if (!currentImg || !currentLetter || slSequence.length === 0) return;
+        
+        if (btnPlayPause) {
+            btnPlayPause.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        }
+
+        // Immediate first render
+        renderSlFrame();
+
+        slPlaybackInterval = setInterval(() => {
+            slCurrentIndex++;
+            if (slCurrentIndex >= slSequence.length) {
+                clearInterval(slPlaybackInterval);
+                isPlayingSl = false;
+                if (btnPlayPause) btnPlayPause.innerHTML = '<i class="fa-solid fa-play"></i>';
+                // Don't auto-reset, just stop at the end or clear
+                setTimeout(() => {
+                    currentImg.style.opacity = '0';
+                    currentLetter.innerText = '';
+                }, 1000);
+                return;
+            }
+            renderSlFrame();
+        }, intervalMs);
+    }
+
+    function renderSlFrame() {
+        const currentImg = document.getElementById('current-sl-image');
+        const currentLetter = document.getElementById('current-sl-letter');
+        const item = slSequence[slCurrentIndex];
+        
+        // Smooth transition effect
+        currentImg.style.opacity = '0';
+        
+        setTimeout(() => {
+            if (item.type === 'space') {
+                currentImg.src = '';
+                currentLetter.innerText = '_';
+            } else {
+                currentImg.src = `/static/img/alphabet/${item.char}.png`;
+                currentLetter.innerText = item.char;
+                
+                // Fallback for missing images
+                currentImg.onerror = function() {
+                    this.src = ''; // Clear broken image icon
+                    currentLetter.innerText = item.char; // Let the text remain
+                };
+            }
+            currentImg.style.opacity = '1';
+        }, 150);
+    }
+
+    function toggleSlPlayback() {
+        if (!slSequence || slSequence.length === 0) return;
+        
+        if (isPlayingSl) {
+            clearInterval(slPlaybackInterval);
+            isPlayingSl = false;
+            if (btnPlayPause) btnPlayPause.innerHTML = '<i class="fa-solid fa-play"></i>';
+        } else {
+            if (slCurrentIndex >= slSequence.length) {
+                slCurrentIndex = 0; // restart if at end
+            }
+            isPlayingSl = true;
+            playSlSequence();
+        }
+    }
+
+    if (btnPlayPause) {
+        // remove old listener if any and add new
+        const newBtnPlay = btnPlayPause.cloneNode(true);
+        btnPlayPause.parentNode.replaceChild(newBtnPlay, btnPlayPause);
+        newBtnPlay.addEventListener('click', toggleSlPlayback);
+        // Note: we can't reliably update `btnPlayPause` variable references unless we reload or just modify existing
+    }
+    
+    // Better hook for events
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#btn-play-pause')) toggleSlPlayback();
+        if (e.target.closest('#btn-replay')) {
+            if (slPlaybackInterval) clearInterval(slPlaybackInterval);
+            slCurrentIndex = 0;
+            isPlayingSl = true;
+            playSlSequence();
+        }
+    });
 
     function resetVideo() {
         videoPlaceholder.style.display = 'flex';
         slVideo.style.display = 'none';
+        const imgSequenceBlock = document.getElementById('sl-image-sequence');
+        if (imgSequenceBlock) imgSequenceBlock.style.display = 'none';
+        
         loadingOverlay.style.display = 'none';
+        if (slPlaybackInterval) clearInterval(slPlaybackInterval);
+        slSequence = [];
+        isPlayingSl = false;
         
         videoStatus.innerHTML = '<i class="fa-solid fa-circle"></i> Kutmoqda';
         videoStatus.className = 'status-badge';
@@ -291,22 +528,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function enableVideoControls() {
-        if (btnPlayPause) btnPlayPause.disabled = false;
-        if (btnReplay) btnReplay.disabled = false;
-        if (speedSelect) speedSelect.disabled = false;
+        // Find them freshly just in case
+        const btnPlay = document.getElementById('btn-play-pause');
+        const btnRep = document.getElementById('btn-replay');
+        const spdSel = document.getElementById('speed-select');
         
-        if (btnPlayPause) {
-            btnPlayPause.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        if (btnPlay) btnPlay.disabled = false;
+        if (btnRep) btnRep.disabled = false;
+        if (spdSel) spdSel.disabled = false;
+        
+        if (btnPlay) {
+            btnPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
         }
     }
 
     function disableVideoControls() {
-        if (btnPlayPause) {
-            btnPlayPause.disabled = true;
-            btnPlayPause.innerHTML = '<i class="fa-solid fa-play"></i>';
+        const btnPlay = document.getElementById('btn-play-pause');
+        const btnRep = document.getElementById('btn-replay');
+        const spdSel = document.getElementById('speed-select');
+        
+        if (btnPlay) {
+            btnPlay.disabled = true;
+            btnPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
         }
-        if (btnReplay) btnReplay.disabled = true;
-        if (speedSelect) speedSelect.disabled = true;
+        if (btnRep) btnRep.disabled = true;
+        if (spdSel) spdSel.disabled = true;
     }
 
     // Toast Notification System
@@ -415,13 +661,10 @@ function clearFileSelection() {
     document.getElementById('file-translate-btn').disabled = true;
 }
 
-// Ensure the old trranslation button logic calls the right thing if we updated the HTML to use simulateTranslation()
+// Bridge: global simulateTranslation triggers the scoped startTranslationMock via button click
 function simulateTranslation() {
-    // Try to click original translation logic from initTranslatorMock if it exists
-    const simulateBtn = document.getElementById('tarjima-qilish');
-    // The initTranslatorMock attaches the event listener to #tarjima-qilish. 
-    // Wait, the HTML inline onclick is 'simulateTranslation()'. We shouldn't infinitely loop.
-    // Instead of clicking the button to trigger itself, we will trigger the event if possible or just rely on the existing listener.
+    const btn = document.getElementById('tarjima-qilish');
+    if (btn) btn.click();
 }
 
 // Picture in Picture simulation logic
@@ -442,7 +685,7 @@ function simulateVideoGeneration() {
         
         const statusBadge = document.getElementById('video-pip-status');
         statusBadge.innerHTML = '<i class="fa-solid fa-check-circle"></i> Tayyor';
-        statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.2)'; // success tint
+        statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
         statusBadge.style.color = 'var(--success)';
         
         document.getElementById('download-pip-btn').disabled = false;
@@ -472,7 +715,7 @@ function handleAudioUpload(input) {
             
             window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Audio muvaffaqiyatli matnga o\'girildi!', type: 'success'}})); 
             
-            // Automatically launch translation
+            // Automatically launch translation via button click
             simulateTranslation();
         }, 2000);
         

@@ -810,16 +810,16 @@
                 <img src="{% static '/img/logo.png' %}" alt="logo" style="width: 35px;"> Remu
             </a>
             <div class="sidebar-menu">
-                <a href="{% url 'path' %}" class="active">
+                <a href="{% url 'path' %}" class="{% if request.resolver_match.url_name == 'path' %}active{% endif %}">
                     <i class="fa-solid fa-house"></i> O'rganish
                 </a>
-                <a href="{% url 'alphabet' %}">
+                <a href="{% url 'alphabet' %}" class="{% if request.resolver_match.url_name == 'alphabet' %}active{% endif %}">
                     <i class="fa-solid fa-hand-sparkles"></i> Alifbo
                 </a>
-                <a href="{% url 'dictionary' %}">
+                <a href="{% url 'dictionary' %}" class="{% if request.resolver_match.url_name == 'dictionary' %}active{% endif %}">
                     <i class="fa-solid fa-book"></i> Lug'at
                 </a>
-                <a href="{% url 'profile' %}">
+                <a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                     <i class="fa-solid fa-user"></i> Profil
                 </a>
                 <div class="more-menu-wrapper">
@@ -857,19 +857,19 @@
         <!-- Mobile Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="bottom-nav-inner">
-                <a href="#" class="nav-tab active">
+                <a href="{% url 'path' %}" class="nav-tab {% if request.resolver_match.url_name == 'path' %}active{% endif %}">
                     <i class="fa-solid fa-house"></i>
                     <span>O'rganish</span>
                 </a>
-                <a href="{% url 'alphabet' %}" class="nav-tab">
+                <a href="{% url 'alphabet' %}" class="nav-tab {% if request.resolver_match.url_name == 'alphabet' %}active{% endif %}">
                     <i class="fa-solid fa-hand-sparkles"></i>
                     <span>Alifbo</span>
                 </a>
-                <a href="{% url 'dictionary' %}" class="nav-tab">
+                <a href="{% url 'dictionary' %}" class="nav-tab {% if request.resolver_match.url_name == 'dictionary' %}active{% endif %}">
                     <i class="fa-solid fa-book"></i>
                     <span>Lug'at</span>
                 </a>
-                <a href="#" class="nav-tab">
+                <a href="{% url 'profile' %}" class="nav-tab {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
                     <i class="fa-solid fa-user"></i>
                     <span>Profil</span>
                 </a>

@@ -207,6 +207,18 @@
                         <textarea id="matn-kiritish" placeholder="Tarjima qilish uchun matnni shu yerga kiriting..." autofocus></textarea>
                         <div class="char-count" id="char-count">0 / 500</div>
                     </div>
+
+                    <!-- Translation Mode Toggle -->
+                    <div id="translation-mode-toggle" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: rgba(99,102,241,0.06); border-radius: 10px; margin: 0 0 8px 0; border: 1px solid var(--border-color);">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-bolt" id="realtime-icon" style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;"></i>
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);" id="realtime-label">Real-vaqt tarjima</span>
+                        </div>
+                        <label class="switch-toggle" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                            <input type="checkbox" id="realtime-toggle" style="opacity:0; width:0; height:0;">
+                            <span class="switch-slider" style="position:absolute; inset:0; background: rgba(255,255,255,0.1); border-radius: 24px; transition: 0.3s; border: 1px solid var(--border-color);"></span>
+                        </label>
+                    </div>
                     
                     <div class="card-footer">
                         <div style="display: flex; gap: 10px;">
@@ -219,7 +231,7 @@
                                 <i class="fa-solid fa-file-audio"></i> <span>Audio yuklash</span>
                             </button>
                         </div>
-                        <button id="tarjima-qilish" class="btn-primary" onclick="simulateTranslation()">
+                        <button id="tarjima-qilish" class="btn-primary">
                             Tarjima qilish <i class="fa-solid fa-language"></i>
                         </button>
                     </div>
@@ -247,6 +259,10 @@
                             </div>
                         </div>
                         <video id="sl-video" style="display: none;" playsinline></video>
+                        <div id="sl-image-sequence" style="display: none; width: 100%; height: 100%; min-height: 250px; background: #0b0b13; border-radius: 12px; position: relative; overflow: hidden; align-items: center; justify-content: center;">
+                            <img id="current-sl-image" src="" style="max-height: 100%; max-width: 100%; object-fit: contain; transition: opacity 0.2s ease-in-out; opacity: 1;">
+                            <div id="current-sl-letter" style="position: absolute; bottom: 20px; font-size: 2.5rem; color: #fff; font-family: var(--font-heading); font-weight: 800; text-transform: uppercase;"></div>
+                        </div>
                         <div class="loading-overlay" id="loading-overlay" style="display: none;">
                             <div class="spinner"></div>
                             <p>Tarjima qilinmoqda...</p>
@@ -556,60 +572,103 @@
     </section>
 
     <!-- Learning Materials Section -->
-    <section id="learn" class="learning-section">
+    <section id="learn" class="learning-section" style="padding: 100px 0;">
+        <style>
+            @media (max-width: 900px) {
+                .learning-showcase { grid-template-columns: 1fr !important; gap: 40px !important; padding: 40px 20px !important; text-align: center; }
+                .learning-info ul li { text-align: left; }
+                .learning-info .action-btns { flex-direction: column; }
+                .learning-info .action-btns a { width: 100%; justify-content: center; display: flex; }
+            }
+        </style>
         <div class="container">
-            <div class="section-header text-center fade-in-up">
-                <h2 style="font-size: 3rem; margin-top: 15px;">Surdo tilini <span class="text-gradient">o'rganing</span></h2>
-                <div class="header-line" style="margin: 20px auto;"></div>
-                <p style="max-width: 600px; margin: 0 auto;">Faqat tarjima qilish emas, balki tilni mustaqil o'rganish uchun zarur bo'lgan barcha resurslar bir joyda.</p>
-            </div>
+            <div class="learning-showcase glass-panel fade-in-up" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; padding: 60px; border-radius: 24px;">
+                
+                <div class="learning-info" style="order: 1;">
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); margin-bottom: 20px; display: inline-block;">Remu Akademiya</span>
+                    <h2 style="font-size: 2.8rem; margin-bottom: 25px; line-height: 1.2; font-weight: 800;">Surdo tilini <span class="text-gradient">tizimli</span> o'rganing va sertifikat oling</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6;">O'zbek imo-ishora tilini noldan boshlab professional darajagacha o'zlashtiring. Bizning platforma qadam-baqadam ta'lim olishingizni kafolatlaydi.</p>
+                    
+                    <ul class="feature-list" style="list-style: none; padding: 0; margin-bottom: 40px; display: flex; flex-direction: column; gap: 20px;">
+                        <li style="display: flex; align-items: flex-start; gap: 15px;">
+                            <div style="min-width: 45px; height: 45px; border-radius: 12px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fa-solid fa-font"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.15rem; margin-bottom: 4px; font-family: var(--font-heading); color: var(--text-main);">Daktil Alifbosi va Iboralar</h4>
+                                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Harflarni va ko'p ishlatiladigan iboralarni interaktiv mashqlar yordamida tez fursatda yod oling.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 15px;">
+                            <div style="min-width: 45px; height: 45px; border-radius: 12px; background: rgba(124, 58, 237, 0.1); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.15rem; margin-bottom: 4px; font-family: var(--font-heading); color: var(--text-main);">Aqlli Video Lug'at</h4>
+                                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">5000+ so'zlardan iborat vizual va videoli ma'lumotlar bazasidan qulay foydalaning.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 15px;">
+                            <div style="min-width: 45px; height: 45px; border-radius: 12px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fa-solid fa-certificate"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.15rem; margin-bottom: 4px; font-family: var(--font-heading); color: var(--text-main);">Rasmiy Sertifikat</h4>
+                                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Kurs yakunida onlayn testdan muvaffaqiyatli o'tib, bilimingizni tasdiqlovchi sertifikatga ega bo'ling.</p>
+                            </div>
+                        </li>
+                    </ul>
 
-            <div class="learning-grid">
-                <!-- Card 1 -->
-                <div class="learning-card glass-card fade-in-up delay-1">
-                    <div class="learning-card-icon">
-                        <i class="fa-solid fa-font"></i>
+                    <div class="action-btns" style="display: flex; gap: 15px;">
+                        <a href="{% url 'path' %}" class="btn-primary glow-effect" style="text-decoration: none; padding: 16px 32px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-rocket" style="margin-right: 8px;"></i> Boshlash
+                        </a>
+                        <a href="{% url 'alphabet' %}" class="btn-outline" style="text-decoration: none; padding: 16px 32px; font-size: 1.05rem;">
+                            <i class="fa-solid fa-hand-sparkles" style="margin-right: 8px;"></i> Alifboga o'tish
+                        </a>
                     </div>
-                    <h3>Daktil Alifbosi</h3>
-                    <p>Har bir harfning qo'l harakatlari orqali ifodasini bosqichma-bosqich o'rganing. Rasmli va videoli darslar.</p>
-                    <a href="{% url 'alphabet' %}" class="btn-text" style="font-weight: 600; color: var(--primary); text-decoration: none;">Kursni boshlash <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="learning-card glass-card fade-in-up delay-2">
-                    <div class="learning-card-icon" style="background: rgba(124, 58, 237, 0.1); color: var(--secondary);">
-                        <i class="fa-solid fa-book-open"></i>
-                    </div>
-                    <h3>Video Lug'at</h3>
-                    <p>O'zbek imo-ishora tilidagi 5000 dan ortiq so'zlarning videoli to'plami. Qidiruv tizimi bilan qulay toping.</p>
-                    <a href="{% url 'dictionary' %}" class="btn-text" style="font-weight: 600; color: var(--secondary); text-decoration: none;">Lug'atni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="learning-card glass-card fade-in-up delay-3">
-                    <div class="learning-card-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                        <i class="fa-solid fa-comments"></i>
-                    </div>
-                    <h3>Kundalik Ibora</h3>
-                    <p>Suhbat davomida eng ko'p ishlatiladigan iboralar va savol-javoblarning imo-ishora ko'rinishi.</p>
-                    <a href="{% url 'path' %}" class="btn-text" style="font-weight: 600; color: #f59e0b; text-decoration: none;">Iboralarni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
-                </div>
-            </div>
-
-            <div class="learning-banner glass-panel fade-in-up delay-4">
-                <div class="learning-banner-content">
-                    <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Sertifikatni <span class="text-gradient">Qo'lga Kiriting</span></h2>
-                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px;">O'quv kursi yakunida maxsus testlardan o'ting va o'z bilim darajangizni tasdiqlovchi rasmiy sertifikatga ega bo'ling.</p>
-                    <div style="display: flex; gap: 15px;">
-                        <a href="{% url 'path' %}" class="btn-primary glow-effect" style="text-decoration: none;">O'rganishni boshlash</a>
-                        <a href="{% url 'about' %}" class="btn-outline" style="text-decoration: none;">Batafsil ma'lumot</a>
-                    </div>
-                </div>
-                <div class="learning-banner-image">
-                    <div style="width: 280px; height: 200px; background: rgba(var(--bg-card-rgb), 0.5); border: 2px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(5deg); box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
-                        <i class="fa-solid fa-certificate text-warning" style="font-size: 4rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.3));"></i>
-                        <span style="font-weight: 700; font-size: 1.2rem;">UzSL Verified</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">Muvaffaqiyatli topshirildi</span>
+                <div class="learning-visual" style="order: 2; position: relative; display: flex; justify-content: center;">
+                    <div style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); width: 120%; height: 120%; background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 60%); z-index: 1;"></div>
+                    
+                    <!-- Certificate Mockup -->
+                    <div class="cert-mockup hover-float" style="width: 100%; max-width: 400px; background: linear-gradient(145deg, var(--bg-card), var(--bg-main)); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px; position: relative; z-index: 2; box-shadow: 0 25px 50px rgba(0,0,0,0.4); overflow: hidden;">
+                        
+                        <div style="position: absolute; top:0; left:0; width:100%; height:6px; background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);"></div>
+                        
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <i class="fa-solid fa-award" style="font-size: 4rem; color: var(--gold); filter: drop-shadow(0 0 15px rgba(245,158,11,0.5)); margin-bottom: 12px;"></i>
+                            <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--gold); letter-spacing: 2px;">CERTIFICATE</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 5px;">of Achievement</p>
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 25px; position: relative;">
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Ushbu sertifikat topshirildi:</p>
+                            <h4 style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 2.2rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin: 0 20px; color: var(--text-main);">Ism Familiya</h4>
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; padding: 0 15px;">
+                                O'zbek imo-ishora tili bo'yicha "Master" toifasini muvaffaqiyatli yakunlagani uchun.
+                            </p>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+                            <div>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Sana:</p>
+                                <strong style="font-size: 0.95rem; font-family: monospace;">12 May, 2026</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="{% static '/img/logo.png' %}" alt="logo" style="width: 20px; filter: grayscale(1) brightness(1.5);">
+                                <strong style="font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase;">Remu</strong>
+                            </div>
+                        </div>
+                        
+                        <!-- Verification stamp -->
+                        <div style="position: absolute; bottom: 25px; right: 20px; width: 65px; height: 65px; border-radius: 50%; border: 3px solid rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; transform: rotate(-20deg); opacity: 0.4;">
+                            <i class="fa-solid fa-check" style="color: var(--gold); font-size: 2rem;"></i>
+                        </div>
                     </div>
                 </div>
             </div>
