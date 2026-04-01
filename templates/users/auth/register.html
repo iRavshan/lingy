@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz" data-theme="dark">
 <head>
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Theme Manager -->
-    <script src="learn/assets/theme.js"></script>
+    <script src="{% static 'learn/assets/theme.js' %}"></script>
 
     <style>
         :root, [data-theme="dark"] {
@@ -267,8 +268,8 @@
 
     <!-- Navigation -->
     <nav class="top-nav">
-        <a href="index.html" class="logo">
-            <img src="assets/img/logo.png" alt="" style="width: 32px"> Daktil
+        <a href="#" class="logo">
+            <img src="{% static 'assets/img/logo.png' %}" alt="" style="width: 32px"> Daktil
         </a>
         <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-moon"></i></button>
     </nav>
@@ -280,22 +281,31 @@
             <p>O'zbek imo-ishora tili olamiga qo'shiling</p>
         </div>
 
-        <form action="learn/index.html">
+        {% if messages %}
+            <div class="messages" style="margin-bottom: 20px; text-align: center;">
+                {% for message in messages %}
+                    <p style="color: var(--danger); font-size: 0.95rem; font-weight: 600;">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'signup' %}" method="POST">
+            {% csrf_token %}
             <div class="input-group">
                 <label>To'liq ismingiz</label>
-                <input type="text" class="input-field" placeholder="Masalan: Sardorbek" required>
+                <input type="text" name="full_name" class="input-field" placeholder="Masalan: Sardorbek" required>
                 <i class="fa-solid fa-user input-icon"></i>
             </div>
             
             <div class="input-group">
                 <label>Elektron pochta</label>
-                <input type="email" class="input-field" placeholder="ismingiz@email.com" required>
+                <input type="email" name="email" class="input-field" placeholder="ismingiz@email.com" required>
                 <i class="fa-solid fa-envelope input-icon"></i>
             </div>
             
             <div class="input-group">
                 <label>Maxfiy so'z</label>
-                <input type="password" class="input-field" placeholder="••••••••" required>
+                <input type="password" name="password" class="input-field" placeholder="••••••••" required>
                 <i class="fa-solid fa-lock input-icon"></i>
             </div>
             
@@ -314,7 +324,7 @@
         </div>
 
         <div class="auth-footer">
-            Akkauntingiz bormi? <a href="login.html">Tizimga kirish</a>
+            Akkauntingiz bormi? <a href="{% url 'login' %}">Tizimga kirish</a>
         </div>
     </div>
 

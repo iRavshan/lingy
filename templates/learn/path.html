@@ -1,0 +1,204 @@
+{% extends 'shared/_base.html' %}
+{% load static %}
+{% block title %}Yo'l{% endblock %}
+{% block content %}
+ 
+        <div id="pathContent"></div>                            
+
+    <!-- Lesson Popup -->
+    <div class="lesson-popup-overlay" id="lessonPopup">
+        <div class="lesson-popup">
+            <div class="popup-icon" id="popupIcon"><i class="fa-solid fa-star"></i></div>
+            <div class="popup-title" id="popupTitle">Dars nomi</div>
+            <div class="popup-desc" id="popupDesc">Dars haqida qisqacha.</div>
+            <div class="popup-xp" id="popupXp"><i class="fa-solid fa-bolt"></i> +10 XP</div>
+            <button class="popup-btn primary" id="popupBtn" onclick="startLesson()">Boshlash</button>
+        </div>
+    </div>
+
+<script>
+// ===== DATA =====
+const units = [
+    {
+        title: "Bo'lim 1: Asoslar",
+        desc: "Salomlashish va daktil alifbosi",
+        icon: "👋",
+        gradient: "linear-gradient(135deg, #6366f1, #ec4899)",
+        lessons: [
+            { id: 1, title: "Salom!", desc: "Salomlashish va tanishish", xp: 10, status: "completed", link: "/learn/dictionary.html" },
+            { id: 2, title: "A-D harflari", desc: "Birinchi 4 ta daktil harfi", xp: 10, status: "completed", link: "/learn/alphabet.html" },
+            { id: 3, title: "Ha va Yo'q", desc: "Oddiy javoblar", xp: 15, status: "completed", link: "/learn/dictionary.html" },
+            { id: 4, title: "E-I harflari", desc: "Navbatdagi harflar guruhi", xp: 15, status: "current", link: "/learn/alphabet.html" },
+            { id: 5, title: "Oila a'zolari", desc: "Ona, Ota, Aka, Opa", xp: 20, status: "locked" },
+            { id: "cp1", title: "Birinchi sinov", desc: "Bo'lim 1 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
+        ]
+    },
+    {
+        title: "Bo'lim 2: Kundalik hayot",
+        desc: "Har kuni kerak bo'ladigan so'zlar",
+        icon: "🏠",
+        gradient: "linear-gradient(135deg, #7c3aed, #2563eb)",
+        lessons: [
+            { id: 6, title: "Uy va maktab", desc: "Muhim joylar nomlari", xp: 15, status: "locked" },
+            { id: 7, title: "J-N harflari", desc: "Daktil davomi", xp: 15, status: "locked" },
+            { id: 8, title: "Ovqatlanish", desc: "Non, suv, choy, palov", xp: 20, status: "locked" },
+            { id: 9, title: "Ranglar", desc: "Qizil, ko'k, yashil...", xp: 15, status: "locked" },
+            { id: 10, title: "O-T harflari", desc: "Daktil harflari davomi", xp: 20, status: "locked" },
+            { id: "cp2", title: "Ikkinchi sinov", desc: "Bo'lim 2 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
+        ]
+    },
+    {
+        title: "Bo'lim 3: So'zlashish",
+        desc: "Gaplar tuzish va muloqot",
+        icon: "💬",
+        gradient: "linear-gradient(135deg, #f59e0b, #ef4444)",
+        lessons: [
+            { id: 11, title: "Raqamlar", desc: "1 dan 10 gacha sanash", xp: 15, status: "locked" },
+            { id: 12, title: "U-Z harflari", desc: "Oxirgi harflar guruhi", xp: 20, status: "locked" },
+            { id: 13, title: "His-tuyg'ular", desc: "Xursand, g'amgin, sevgi", xp: 20, status: "locked" },
+            { id: 14, title: "Maxsus harflar", desc: "O', G', Sh, Ch, Ng", xp: 25, status: "locked" },
+            { id: 15, title: "Hayvonlar", desc: "Mushuk, it, qush...", xp: 20, status: "locked" },
+            { id: 16, title: "Tabiat", desc: "Quyosh, oy, yomg'ir", xp: 20, status: "locked" },
+            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha darslar bo'yicha sinov", xp: 100, status: "locked", checkpoint: true }
+        ]
+    }
+];
+
+// Zigzag pattern
+const zigzag = ['center', 'right', 'center', 'left', 'center', 'right'];
+
+function renderPath() {
+    const container = document.getElementById('pathContent');
+    container.innerHTML = '';
+
+    const rowHeight = 110;
+    const cx = 150;
+    const offset = 75;
+    const getX = (align) => align === 'left' ? cx - offset : (align === 'right' ? cx + offset : cx);
+
+    units.forEach((unit, ui) => {
+        // Wrap everything in a section to support sticky headers correctly
+        const unitSection = document.createElement('section');
+        unitSection.className = 'unit-section';
+
+        const stickyWrap = document.createElement('div');
+        stickyWrap.className = 'unit-sticky-wrapper';
+        stickyWrap.innerHTML = `
+            <div class="section-divider">
+                <div class="unit-banner" style="background: ${unit.gradient};">
+                    <div class="unit-banner-text">
+                        <h2>${unit.title}</h2>
+                        <p>${unit.desc}</p>
+                    </div>
+                    <div class="unit-banner-icon">${unit.icon}</div>
+                </div>
+            </div>
+        `;
+        unitSection.appendChild(stickyWrap);
+
+        const pathWrap = document.createElement('div');
+        pathWrap.className = 'path-container';
+
+        unit.lessons.forEach((lesson, li) => {
+            const alignment = zigzag[li % zigzag.length];
+            const row = document.createElement('div');
+            row.className = 'path-row';
+            
+            const nodeClass = `node pos-${alignment} ${lesson.status}${lesson.checkpoint ? ' checkpoint' : ''}`;
+            
+            let iconHTML = '';
+            if (lesson.checkpoint) {
+                iconHTML = `<span class="node-icon"><i class="fa-solid fa-trophy"></i></span>`;
+            } else if (lesson.status === 'completed') {
+                iconHTML = `<span class="node-icon"><i class="fa-solid fa-check"></i></span>`;
+            } else if (lesson.status === 'current') {
+                iconHTML = `<span class="node-icon"><i class="fa-solid fa-play"></i></span>`;
+            } else {
+                iconHTML = `<span class="node-icon"><i class="fa-solid fa-lock"></i></span>`;
+            }
+
+            const node = document.createElement('div');
+            node.className = nodeClass;
+            node.onclick = () => openPopup(lesson);
+            node.innerHTML = `
+                ${iconHTML}
+            `;
+
+            row.appendChild(node);
+            pathWrap.appendChild(row);
+        });
+
+        unitSection.appendChild(pathWrap);
+        container.appendChild(unitSection);
+    });
+}
+
+// ===== POPUP =====
+let currentLesson = null;
+
+function openPopup(lesson) {
+    currentLesson = lesson;
+    const overlay = document.getElementById('lessonPopup');
+    const icon = document.getElementById('popupIcon');
+    const title = document.getElementById('popupTitle');
+    const desc = document.getElementById('popupDesc');
+    const xp = document.getElementById('popupXp');
+    const btn = document.getElementById('popupBtn');
+
+    title.textContent = lesson.title;
+    desc.textContent = lesson.desc;
+    xp.innerHTML = `<i class="fa-solid fa-bolt"></i> +${lesson.xp} XP`;
+
+    if (lesson.checkpoint) {
+        icon.className = lesson.status === 'completed' ? 'popup-icon gold' : 'popup-icon gray';
+        icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+        btn.textContent = lesson.status === 'completed' ? 'Qayta o\'tish' : 'Qulflangan';
+        btn.className = lesson.status === 'completed' ? 'popup-btn primary' : 'popup-btn locked';
+    } else if (lesson.status === 'completed') {
+        icon.className = 'popup-icon green';
+        icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        btn.textContent = 'Qayta o\'tish';
+        btn.className = 'popup-btn success';
+    } else if (lesson.status === 'current') {
+        icon.className = 'popup-icon pink';
+        icon.innerHTML = '<i class="fa-solid fa-play"></i>';
+        btn.textContent = 'Boshlash';
+        btn.className = 'popup-btn secondary';
+    } else {
+        icon.className = 'popup-icon gray';
+        icon.innerHTML = '<i class="fa-solid fa-lock"></i>';
+        btn.textContent = 'Qulflangan';
+        btn.className = 'popup-btn locked';
+    }
+
+    overlay.classList.add('active');
+}
+
+function closePopup() {
+    document.getElementById('lessonPopup').classList.remove('active');
+}
+
+function startLesson() {
+    if (!currentLesson) return;
+    if (currentLesson.status === 'locked') return;
+    if (currentLesson.link) {
+        window.location.href = currentLesson.link;
+    } else {
+        closePopup();
+    }
+}
+
+// Close popup on overlay click
+document.getElementById('lessonPopup').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closePopup();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePopup();
+});
+
+// ===== INIT =====
+renderPath();
+</script>
+
+{% endblock %}

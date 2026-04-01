@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="uz" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UzSL — Foydalanuvchi Profili</title>
-    <meta name="description" content="UzSL profilingiz va yutuqlaringiz">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="assets/theme.js"></script>
-
+{% extends 'shared/_base.html' %}
+{% load static %}
+{% block title %}{{user.first_name}}{% endblock %}
+{% block content %}
     <style>
         :root, [data-theme="dark"] {
             --bg-main: #0B0B13;
@@ -486,46 +476,8 @@
             .achievement-item { flex-direction: column; text-align: center; gap: 16px; }
         }
     </style>
-</head>
-<body>
 
-    <div class="app-layout">
-        
-        <!-- Left Sidebar -->
-        <aside class="sidebar">
-            <a href="index.html" class="sidebar-logo">
-                <img src="/assets/img/logo.png" alt="logo" style="width: 35px;"> Daktil
-            </a>
-            <div class="sidebar-menu">
-                <a href="/learn/index.html">
-                    <i class="fa-solid fa-house"></i> O'rganish
-                </a>
-                <a href="/learn/alphabet.html">
-                    <i class="fa-solid fa-hand-sparkles"></i> Alifbo
-                </a>
-                <a href="/learn/dictionary.html">
-                    <i class="fa-solid fa-book"></i> Lug'at
-                </a>
-                <a href="profile.html" class="active">
-                    <i class="fa-solid fa-user"></i> Profil
-                </a>
-            </div>
-            <div style="flex-grow: 1;"></div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Mobile Top Bar -->
-            <nav class="mobile-top-bar">
-                <a href="index.html" class="mobile-logo">Daktil</a>
-                <div class="top-stats">
-                    <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span>3</span></div>
-                    <div class="stat-item stat-bolt"><i class="fa-solid fa-bolt"></i> <span>120</span></div>
-                    <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
-                </div>
-            </nav>
-
-            <div class="profile-cover"></div>
+    <div class="profile-cover"></div>
             
             <div class="profile-header">
                 <div class="profile-user-info">
@@ -533,8 +485,8 @@
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="profile-details">
-                        <h1>Sardorbek</h1>
-                        <p><i class="fa-solid fa-calendar-days"></i> 2024-yil avgustdan beri a'zo</p>
+                        <h1>{{user.first_name}}</h1>
+                        <p><i class="fa-solid fa-calendar-days"></i> {{user.date_joined}}</p>
                     </div>
                 </div>
                 <button class="btn-edit"><i class="fa-solid fa-pen"></i> Tahrirlash</button>
@@ -602,46 +554,4 @@
                     </div>
                 </div>
             </div>
-        </main>
-
-        <!-- Right Progression Panel -->
-        <aside class="right-panel">
-            <div class="panel-stats">
-                <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span id="streakCount">3</span></div>
-                <div class="stat-item stat-bolt"><i class="fa-solid fa-bolt"></i> <span id="gemCount">120</span></div>
-                <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
-            </div>
-            
-            <div class="progression-card">
-                <h3><i class="fa-solid fa-gear" style="color:var(--success)"></i> Sozlamalar</h3>
-                <p style="color:var(--text-muted); font-size: 0.95rem; margin-top:10px;">Hisob parametrlari, bildirishnomalar va maqsadlarni sozlash.</p>
-                <button class="btn-outline" style="margin-top:20px;">O'zgartirish</button>
-            </div>
-        </aside>
-
-        <!-- Mobile Bottom Navigation -->
-        <nav class="bottom-nav">
-            <div class="bottom-nav-inner">
-                <a href="/learn/index.html" class="nav-tab">
-                    <i class="fa-solid fa-house"></i>
-                    <span>O'rganish</span>
-                </a>
-                <a href="/learn/alphabet.html" class="nav-tab">
-                    <i class="fa-solid fa-hand-sparkles"></i>
-                    <span>Alifbo</span>
-                </a>
-                <a href="/learn/dictionary.html" class="nav-tab">
-                    <i class="fa-solid fa-book"></i>
-                    <span>Lug'at</span>
-                </a>
-                <a href="profile.html" class="nav-tab active">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profil</span>
-                </a>
-            </div>
-        </nav>
-        
-    </div>
-
-</body>
-</html>
+{% endblock %}

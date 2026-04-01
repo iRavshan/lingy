@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz" data-theme="dark">
 <head>
@@ -14,13 +15,13 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar scrolled" id="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="#" class="logo">
                 <div class="logo-icon">
                     <i class="fa-solid fa-hands-asl-interpreting"></i>
                 </div>
@@ -28,17 +29,17 @@
             </a>
             
             <ul class="nav-links">
-                <li><a href="index.html#home">Asosiy</a></li>
-                <li><a href="index.html#app">Tarjimon</a></li>
-                <li><a href="about.html" class="active">Biz haqimizda</a></li>
-                <li><a href="index.html#download">Yuklab olish</a></li>
+                <li><a href="#">Asosiy</a></li>
+                <li><a href="#">Tarjimon</a></li>
+                <li><a href="{% url 'about' %}" class="active">Biz haqimizda</a></li>
+                <li><a href="#">Yuklab olish</a></li>
             </ul>
             
             <div class="nav-actions">
                 <button class="theme-toggle" id="theme-toggle" aria-label="Mavzuni o'zgartirish">
                     <i class="fa-solid fa-sun"></i>
                 </button>
-                <a href="index.html#app" class="btn-primary btn-nav">Boshlash</a>
+                <a href="#" class="btn-primary btn-nav">Boshlash</a>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -53,7 +54,7 @@
         <ul>
             <li><a href="index.html#home">Asosiy</a></li>
             <li><a href="index.html#app">Tarjimon</a></li>
-            <li><a href="about.html" class="active">Biz haqimizda</a></li>
+            <li><a href="{% url 'about' %}" class="active">Biz haqimizda</a></li>
             <li><a href="index.html#download">Yuklab olish</a></li>
             <li>
                 <button class="theme-toggle-mobile" id="theme-toggle-mobile">
@@ -131,7 +132,7 @@
                 <!-- Team Member 1 -->
                 <div class="team-card glass-card fade-in-up delay-1">
                     <div class="team-img-wrapper">
-                        <img src="" alt="Jamoa a'zosi" class="team-img">
+                        <img src="{% static '/img/muxlisa.jpg' %}" alt="Jamoa a'zosi" class="team-img">
                         <div class="team-socials">
                             <a href="https://t.me/Muxlisa_02_Abdurashidova" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                         </div>
@@ -146,7 +147,7 @@
                 <!-- Team Member 2 -->
                 <div class="team-card glass-card fade-in-up delay-2">
                     <div class="team-img-wrapper">
-                        <img src="/assets/img/regina.jpg" alt="Jamoa a'zosi" class="team-img">
+                        <img src="{% static '/img/regina.jpg' %}" alt="Jamoa a'zosi" class="team-img">
                         <div class="team-socials">
                             <a href="https://t.me/RNavruzovna" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                         </div>
@@ -161,7 +162,7 @@
                 <!-- Team Member 3 -->
                 <div class="team-card glass-card fade-in-up delay-3">
                     <div class="team-img-wrapper">
-                        <img src="assets/img/ravshan.jpg" alt="Jamoa a'zosi" class="team-img">
+                        <img src="{% static '/img/ravshan.jpg' %}" alt="Jamoa a'zosi" class="team-img">
                         <div class="team-socials">
                             <a href="https://t.me/iRavshan" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                             <a href="https://github.com/iRavshan" target="_blank"><i class="fa-brands fa-github"></i></a>
@@ -220,7 +221,7 @@
         <div class="container">
             <div class="footer-simple" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 20px; gap: 20px;">
                 <div class="footer-brand" style="margin-bottom: 0px; max-width: none;">
-                    <a href="index.html" class="logo">
+                    <a href="#" class="logo">
                         <div class="logo-icon" style="width: 35px; height: 35px; font-size: 1rem;">
                             <i class="fa-solid fa-hands-asl-interpreting"></i>
                         </div>
@@ -232,7 +233,7 @@
                     <a href="index.html#home" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Asosiy sahifa</a>
                     <a href="index.html#app" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Tarjimon</a>
                     <a href="index.html#download" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Mobil ilova</a>
-                    <a href="about.html" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Loyiha haqida</a>
+                    <a href="{% url 'about' %}" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Loyiha haqida</a>
                 </div>
                 
                 <div class="social-links" style="margin-top: 0px; justify-content: center;">
@@ -251,6 +252,6 @@
         </div>
     </footer>
     <div id="notification-area" class="notification-area"></div>
-    <script src="script.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

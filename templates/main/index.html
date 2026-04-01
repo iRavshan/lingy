@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz" data-theme="dark">
 <head>
@@ -6,10 +7,10 @@
     <title>O'zbek Imo-ishora Tili Tarjimoni</title>
     <meta name="description" content="O'zbek Imo-ishora Tili Tarjimoni - matn va nutqni real vaqt rejimida imo-ishora tili videosiga aylantiramiz.">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/assets/img/favicon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'assets/img/favicon/site.webmanifest' %}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +20,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <!-- Navbar -->
@@ -27,23 +28,23 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <div class="logo-icon">
-                    <img src="/assets/img/logo.png" alt="logo">
+                    <img src="{% static '/img/logo.png' %}" alt="logo">
                 </div>
-                <span>UzSL <strong>Tarjimon</strong></span>
+                <span>Remu</span>
             </a>
             
             <ul class="nav-links">
                 <li><a href="#home" class="active">Asosiy</a></li>
                 <li><a href="#app">Tarjimon</a></li>
-                <li><a href="#download">O'rganish</a></li>
-                <li><a href="about.html">Biz haqimizda</a></li>
+                <li><a href="#learn">O'rganish</a></li>
+                <li><a href="{% url 'about' %}">Biz haqimizda</a></li>
             </ul>
             
             <div class="nav-actions">
                 <button class="theme-toggle" id="theme-toggle" aria-label="Mavzuni o'zgartirish">
                     <i class="fa-solid fa-sun"></i>
                 </button>
-                <a href="#app" class="btn-primary btn-nav">Yuklab olish</a>
+                <a href="#download" class="btn-primary btn-nav">Yuklab olish</a>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -58,7 +59,7 @@
         <ul>
             <li><a href="#home" class="active">Asosiy</a></li>
             <li><a href="#app">Tarjimon</a></li>
-            <li><a href="about.html">Biz haqimizda</a></li>
+            <li><a href="{% url 'about' %}">Biz haqimizda</a></li>
             <li><a href="#download">Yuklab olish</a></li>
             <li>
                 <button class="theme-toggle-mobile" id="theme-toggle-mobile">
@@ -418,7 +419,7 @@
                                 </div>
                             </div>
                             <div class="extension-icon-small" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
-                                <img src="/assets/img/logo.png" alt="logo">
+                                <img src="{% static '/img/logo.png' %}" alt="logo">
                             </div>
                         </div>
                         <!-- Browser Body -->
@@ -482,7 +483,7 @@
     </section>
 
     <!-- Learning Materials Section -->
-    <section id="learning" class="learning-section">
+    <section id="learn" class="learning-section">
         <div class="container">
             <div class="section-header text-center fade-in-up">
                 <h2 style="font-size: 3rem; margin-top: 15px;">Surdo tilini <span class="text-gradient">o'rganing</span></h2>
@@ -498,7 +499,7 @@
                     </div>
                     <h3>Daktil Alifbosi</h3>
                     <p>Har bir harfning qo'l harakatlari orqali ifodasini bosqichma-bosqich o'rganing. Rasmli va videoli darslar.</p>
-                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: var(--primary); text-decoration: none;">Kursni boshlash <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="{% url 'alphabet' %}" class="btn-text" style="font-weight: 600; color: var(--primary); text-decoration: none;">Kursni boshlash <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
 
                 <!-- Card 2 -->
@@ -508,7 +509,7 @@
                     </div>
                     <h3>Video Lug'at</h3>
                     <p>O'zbek imo-ishora tilidagi 5000 dan ortiq so'zlarning videoli to'plami. Qidiruv tizimi bilan qulay toping.</p>
-                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: var(--secondary); text-decoration: none;">Lug'atni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="{% url 'dictionary' %}" class="btn-text" style="font-weight: 600; color: var(--secondary); text-decoration: none;">Lug'atni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
 
                 <!-- Card 3 -->
@@ -518,7 +519,7 @@
                     </div>
                     <h3>Kundalik Ibora</h3>
                     <p>Suhbat davomida eng ko'p ishlatiladigan iboralar va savol-javoblarning imo-ishora ko'rinishi.</p>
-                    <a href="learning.html" class="btn-text" style="font-weight: 600; color: #f59e0b; text-decoration: none;">Iboralarni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                    <a href="{% url 'path' %}" class="btn-text" style="font-weight: 600; color: #f59e0b; text-decoration: none;">Iboralarni ko'rish <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
                 </div>
             </div>
 
@@ -527,8 +528,8 @@
                     <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Sertifikatni <span class="text-gradient">Qo'lga Kiriting</span></h2>
                     <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px;">O'quv kursi yakunida maxsus testlardan o'ting va o'z bilim darajangizni tasdiqlovchi rasmiy sertifikatga ega bo'ling.</p>
                     <div style="display: flex; gap: 15px;">
-                        <a href="learning.html" class="btn-primary glow-effect" style="text-decoration: none;">O'rganishni Boshlash</a>
-                        <a href="about.html" class="btn-outline" style="text-decoration: none;">Batafsil ma'lumot</a>
+                        <a href="{% url 'path' %}" class="btn-primary glow-effect" style="text-decoration: none;">O'rganishni boshlash</a>
+                        <a href="{% url 'about' %}" class="btn-outline" style="text-decoration: none;">Batafsil ma'lumot</a>
                     </div>
                 </div>
                 <div class="learning-banner-image">
@@ -622,17 +623,15 @@
                 <div class="footer-brand" style="margin-bottom: 0px; max-width: none;">
                     <a href="#" class="logo">
                         <div class="logo-icon" style="width: 35px; height: 35px; font-size: 1rem;">
-                            <img src="/assets/img/logo.png" alt="logo">
+                            <img src="{% static '/img/logo.png' %}" alt="logo">
                         </div>
-                        <span style="font-size: 1.25rem;">UzSL <strong>Tarjimon</strong></span>
+                        <span style="font-size: 1.25rem;">Remu</span>
                     </a>
                 </div>
                 
                 <div class="footer-simple-links" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-                    <a href="#home" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Asosiy sahifa</a>
-                    <a href="#app" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Tarjimon</a>
-                    <a href="#learning" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">O'rganish</a>
-                    <a href="#download" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Mobil ilova</a>
+                    <a href="#app" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Foydalanish shartlari</a>
+                    <a href="#learning" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Maxfiylik siyosati</a>
                 </div>
                 
                 <div class="social-links" style="margin-top: 0px; justify-content: center;">
@@ -651,7 +650,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
     <script>
         window.replainSettings = { id: '79428094-3207-4f62-8785-93b005038894' };
         (function(u){var s=document.createElement('script');s.async=true;s.src=u;

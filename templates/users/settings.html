@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz" data-theme="dark">
 <head>
@@ -10,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="assets/theme.js"></script>
+    <script src="{% static 'assets/theme.js' %}"></script>
 
     <style>
         :root, [data-theme="dark"] {
@@ -308,20 +309,20 @@
         
         <!-- Left Sidebar -->
         <aside class="sidebar">
-            <a href="index.html" class="sidebar-logo">
-                <img src="/assets/img/logo.png" alt="logo" style="width: 35px;"> Daktil
+            <a href="{% url 'index' %}" class="sidebar-logo">
+                <img src="{% static 'assets/img/logo.png' %}" alt="logo" style="width: 35px;"> Daktil
             </a>
             <div class="sidebar-menu">
-                <a href="/learn/index.html">
+                <a href="{% url 'learn_index' %}">
                     <i class="fa-solid fa-house"></i> O'rganish
                 </a>
-                <a href="/learn/alphabet.html">
+                <a href="{% url 'learn_alphabet' %}">
                     <i class="fa-solid fa-hand-sparkles"></i> Alifbo
                 </a>
-                <a href="/learn/dictionary.html">
+                <a href="{% url 'learn_dictionary' %}">
                     <i class="fa-solid fa-book"></i> Lug'at
                 </a>
-                <a href="profile.html">
+                <a href="{% url 'learn_profile' %}">
                     <i class="fa-solid fa-user"></i> Profil
                 </a>
                 <div class="more-menu-wrapper">
@@ -332,9 +333,9 @@
                         <a href="#"><i class="fa-solid fa-graduation-cap"></i> Daktil Edu</a>
                         <a href="#"><i class="fa-solid fa-briefcase"></i> Daktil Commercials</a>
                         <div class="dropdown-divider"></div>
-                        <a href="settings.html" style="color:var(--primary); background:var(--primary-light);"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
+                        <a href="{% url 'learn_settings' %}" style="color:var(--primary); background:var(--primary-light);"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
                         <a href="#"><i class="fa-solid fa-circle-question"></i> Yordam</a>
-                        <a href="/login.html" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Chiqish</a>
+                        <a href="{% url 'login' %}" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Chiqish</a>
                     </div>
                 </div>
             </div>
@@ -345,7 +346,7 @@
         <main class="main-content">
             <!-- Mobile Top Bar -->
             <nav class="mobile-top-bar">
-                <a href="index.html" class="mobile-logo">Daktil</a>
+                <a href="{% url 'index' %}" class="mobile-logo">Daktil</a>
                 <div class="top-stats">
                     <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
                 </div>
@@ -444,19 +445,19 @@
         <!-- Mobile Bottom Nav -->
         <nav class="bottom-nav">
             <div class="bottom-nav-inner">
-                <a href="/learn/index.html" class="nav-tab">
+                <a href="{% url 'learn_index' %}" class="nav-tab">
                     <i class="fa-solid fa-house"></i>
                     <span>O'rganish</span>
                 </a>
-                <a href="/learn/alphabet.html" class="nav-tab">
+                <a href="{% url 'learn_alphabet' %}" class="nav-tab">
                     <i class="fa-solid fa-hand-sparkles"></i>
                     <span>Alifbo</span>
                 </a>
-                <a href="/learn/dictionary.html" class="nav-tab">
+                <a href="{% url 'learn_dictionary' %}" class="nav-tab">
                     <i class="fa-solid fa-book"></i>
                     <span>Lug'at</span>
                 </a>
-                <a href="profile.html" class="nav-tab active">
+                <a href="{% url 'learn_profile' %}" class="nav-tab active">
                     <i class="fa-solid fa-user"></i>
                     <span>Profil</span>
                 </a>

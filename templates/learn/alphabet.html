@@ -1,0 +1,567 @@
+{% extends 'shared/_base.html' %}
+{% load static %}
+{% block title %}Alifbo{% endblock %}
+{% block content %}
+    <style>
+        /* === Hero Header === */
+        .page-hero {
+            text-align: center;
+            padding: 50px 24px 30px;
+            position: relative;
+        }
+        .page-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .page-hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 550px;
+            margin: 0 auto 30px;
+        }
+        .hero-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .hero-glow.left {
+            top: -100px;
+            left: -100px;
+            background: var(--primary);
+        }
+        .hero-glow.right {
+            top: -50px;
+            right: -100px;
+            background: var(--secondary);
+        }
+
+        /* === Filter Bar === */
+        .filter-bar {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            padding: 0 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 12px 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--primary); color: var(--text-main); }
+        .filter-btn.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* === Alphabet Grid === */
+        .alphabet-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-label .count {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        /* === Letter Card === */
+        .letter-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(236,72,153,0.04));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .letter-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
+        }
+        .letter-card:hover::before { opacity: 1; }
+
+        .letter-big {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+        .letter-card:hover .letter-big {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hand-sign {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border-color);
+        }
+        .card-image .card-emoji {
+            font-size: 2.8rem;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+        }
+        .card-image .card-word {
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .letter-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === Detail Modal === */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: var(--danger); }
+
+        .modal-letter {
+            font-family: var(--font-heading);
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .modal-hand-sign {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            box-shadow: 0 8px 30px rgba(99,102,241,0.2);
+            animation: handBounce 2s ease-in-out infinite;
+        }
+        @keyframes handBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(3deg); }
+        }
+
+        .modal-info {
+            margin-top: 20px;
+        }
+        .modal-info h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .modal-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .modal-tag {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .modal-tag.vowel {
+            background: rgba(16,185,129,0.15);
+            color: var(--success);
+        }
+        .modal-tag.consonant {
+            background: rgba(99,102,241,0.15);
+            color: var(--primary);
+        }
+
+        .modal-nav {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .modal-nav button {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-nav button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* === No Results === */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+        .no-results i { font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.4; }
+
+        /* === Responsive === */
+        @media (max-width: 992px) {
+            .app-layout { flex-direction: column; }
+            .sidebar { display: none; }
+            .right-panel { display: none; }
+            .main-content { border-right: none; max-width: 100%; }
+            .mobile-top-bar { display: flex; }
+            .bottom-nav { display: block; }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2rem; }
+            .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+            .letter-big { font-size: 2.2rem; }
+            .modal-card { padding: 30px 24px; }
+            .modal-letter { font-size: 4rem; }
+        }
+
+        @media (max-width: 480px) {
+            .alphabet-grid { grid-template-columns: repeat(3, 1fr); }
+            .filter-bar { flex-direction: column; }
+        }
+    </style>
+
+    <section class="page-hero">
+        <div class="hero-glow left"></div>
+        <div class="hero-glow right"></div>
+        <h1>O'zbek <span>daktil</span> alifbosi</h1>
+        <p>Har bir harfning imo-ishoradagi shakli — qo'l harakatlarini o'rganing va amaliyot qiling</p>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all" onclick="filterLetters('all', this)">Barchasi</button>
+        <button class="filter-btn" data-filter="vowel" onclick="filterLetters('vowel', this)">Unlilar</button>
+        <button class="filter-btn" data-filter="consonant" onclick="filterLetters('consonant', this)">Undoshlar</button>
+    </div>
+
+    <!-- Alphabet Grid -->
+    <section class="alphabet-section">
+
+        <!-- All Letters (alphabetical) -->
+        <div class="section-label" id="all-label">
+            Barcha harflar
+            <span class="count" id="all-count">29</span>
+        </div>
+        <div class="alphabet-grid" id="all-grid"></div>
+
+        <!-- Vowels -->
+        <div class="section-label" id="vowel-label" style="display:none;">
+            <i class="fa-solid fa-circle" style="color: var(--success); font-size: 0.6rem;"></i>
+            Unli harflar
+            <span class="count" id="vowel-count">6</span>
+        </div>
+        <div class="alphabet-grid" id="vowel-grid" style="display:none;"></div>
+
+        <!-- Consonants -->
+        <div class="section-label" id="consonant-label" style="display:none;">
+            <i class="fa-solid fa-circle" style="color: var(--primary); font-size: 0.6rem;"></i>
+            Undosh harflar
+            <span class="count" id="consonant-count">23</span>
+        </div>
+        <div class="alphabet-grid" id="consonant-grid" style="display:none;"></div>
+    </section>
+        
+    <script>
+    // Full Uzbek alphabet data with relevant images
+    const alphabet = [
+        { letter: "A", name: "A", type: "vowel", hand: "✋", emoji: "🍎", word: "Olma", desc: "Kaft ochiq holda ko'rsatiladi. O'zbek alifbosining birinchi harfi.", pron: "a" },
+        { letter: "B", name: "Be", type: "consonant", hand: "🤚", emoji: "👶", word: "Bola", desc: "Barmoqlar yig'ilgan, bosh barmoq yoniga qo'yiladi.", pron: "b" },
+        { letter: "D", name: "De", type: "consonant", hand: "👆", emoji: "🌳", word: "Daraxt", desc: "Ko'rsatkich barmoq yuqoriga, qolganlari yig'ilgan.", pron: "d" },
+        { letter: "E", name: "E", type: "vowel", hand: "🖐️", emoji: "🚪", word: "Eshik", desc: "Barmoqlar ochiq, kaft tashqariga qaragan holda.", pron: "e" },
+        { letter: "F", name: "Ef", type: "consonant", hand: "🤏", emoji: "🧪", word: "Fan", desc: "Bosh va ko'rsatkich barmoqlar bir-biriga tegadi.", pron: "f" },
+        { letter: "G", name: "Ge", type: "consonant", hand: "👈", emoji: "💐", word: "Gul", desc: "Ko'rsatkich barmoq yon tomonga qaratiladi.", pron: "g" },
+        { letter: "H", name: "Ha", type: "consonant", hand: "🫱", emoji: "🌬️", word: "Havo", desc: "Kaft yon tomonga qaragan, barmoqlar yopiq.", pron: "h" },
+        { letter: "I", name: "I", type: "vowel", hand: "☝️", emoji: "🐍", word: "Ilon", desc: "Faqat ko'rsatkich barmoq yuqoriga ko'tariladi.", pron: "i" },
+        { letter: "J", name: "Je", type: "consonant", hand: "🤞", emoji: "🗺️", word: "Joy", desc: "Ko'rsatkich va o'rta barmoqlar chalkashtiriladi.", pron: "j" },
+        { letter: "K", name: "Ka", type: "consonant", hand: "🫴", emoji: "📖", word: "Kitob", desc: "Barmoqlar yuqoriga ochilgan, kaft oldinga.", pron: "k" },
+        { letter: "L", name: "El", type: "consonant", hand: "🤟", emoji: "🍋", word: "Limon", desc: "Bosh, ko'rsatkich va jimjiloq barmoqlar ochiq.", pron: "l" },
+        { letter: "M", name: "Em", type: "consonant", hand: "✊", emoji: "🏫", word: "Maktab", desc: "Barmoqlar to'liq yig'ilgan musht holati.", pron: "m" },
+        { letter: "N", name: "En", type: "consonant", hand: "🫰", emoji: "🍞", word: "Non", desc: "Bosh barmoq ko'rsatkich va o'rta barmoqlar orasida.", pron: "n" },
+        { letter: "O", name: "O", type: "vowel", hand: "👌", emoji: "🔥", word: "Olov", desc: "Bosh va ko'rsatkich barmoqlar doira hosil qiladi.", pron: "o" },
+        { letter: "P", name: "Pe", type: "consonant", hand: "👇", emoji: "🦋", word: "Parvona", desc: "Ko'rsatkich barmoq pastga qaratilgan.", pron: "p" },
+        { letter: "Q", name: "Qe", type: "consonant", hand: "🤘", emoji: "☀️", word: "Quyosh", desc: "Ko'rsatkich va jimjiloq barmoqlar ko'tarilgan.", pron: "q" },
+        { letter: "R", name: "Er", type: "consonant", hand: "✌️", emoji: "🖼️", word: "Rasm", desc: "Ko'rsatkich va o'rta barmoqlar V shaklida.", pron: "r" },
+        { letter: "S", name: "Es", type: "consonant", hand: "🖖", emoji: "💧", word: "Suv", desc: "Barmoqlar ochiq, o'rta va nomsiz orasida bo'shliq.", pron: "s" },
+        { letter: "T", name: "Te", type: "consonant", hand: "👍", emoji: "⛰️", word: "Tog'", desc: "Bosh barmoq yuqoriga ko'tarilgan.", pron: "t" },
+        { letter: "U", name: "U", type: "vowel", hand: "👋", emoji: "🏠", word: "Uy", desc: "Qo'l silkitish harakati bilan ifodalanadi.", pron: "u" },
+        { letter: "V", name: "Ve", type: "consonant", hand: "✌️", emoji: "⏰", word: "Vaqt", desc: "Ikki barmoq V shaklida ko'tariladi.", pron: "v" },
+        { letter: "X", name: "Xa", type: "consonant", hand: "🤜", emoji: "✉️", word: "Xat", desc: "Musht holati, bosh barmoq o'ng tomonda.", pron: "x" },
+        { letter: "Y", name: "Ye", type: "consonant", hand: "🫵", emoji: "💚", word: "Yurak", desc: "Ko'rsatkich barmoq oldinga qaratilgan.", pron: "y" },
+        { letter: "Z", name: "Ze", type: "consonant", hand: "👊", emoji: "🪜", word: "Zinа", desc: "Musht holati, ko'rsatkich barmoq engashgan.", pron: "z" },
+        { letter: "O'", name: "O'", type: "vowel", hand: "🫳", emoji: "🎮", word: "O'yin", desc: "Qo'l pastga qaratilgan holda doira shakli.", pron: "oʻ" },
+        { letter: "G'", name: "G'e", type: "consonant", hand: "🤙", emoji: "🧱", word: "G'isht", desc: "Bosh barmoq va jimjiloq ochiq, qolganlar yig'iq.", pron: "gʻ" },
+        { letter: "Sh", name: "Sha", type: "consonant", hand: "🤲", emoji: "🍬", word: "Shakar", desc: "Ikkala kaft birlashtirilgan holda.", pron: "sh" },
+        { letter: "Ch", name: "Che", type: "consonant", hand: "🤌", emoji: "🍵", word: "Choy", desc: "Barmoq uchlari bir nuqtada yig'ilgan.", pron: "ch" },
+        { letter: "Ng", name: "Ng", type: "consonant", hand: "🫶", emoji: "🏗️", word: "Inshoot", desc: "Ikkala qo'l birlashtirilgan holda yurak shakli.", pron: "ng" }
+    ];
+
+    let currentFilter = 'all';
+    let currentModalIndex = -1;
+
+    function renderGrid(filter) {
+        const allGrid = document.getElementById('all-grid');
+        const allLabel = document.getElementById('all-label');
+        const vowelGrid = document.getElementById('vowel-grid');
+        const consonantGrid = document.getElementById('consonant-grid');
+        const vowelLabel = document.getElementById('vowel-label');
+        const consonantLabel = document.getElementById('consonant-label');
+
+        allGrid.innerHTML = '';
+        vowelGrid.innerHTML = '';
+        consonantGrid.innerHTML = '';
+
+        if (filter === 'all') {
+            // Show single grid, alphabetical order (already sorted in data)
+            allLabel.style.display = 'flex';
+            allGrid.style.display = 'grid';
+            vowelLabel.style.display = 'none';
+            vowelGrid.style.display = 'none';
+            consonantLabel.style.display = 'none';
+            consonantGrid.style.display = 'none';
+
+            document.getElementById('all-count').textContent = alphabet.length;
+
+            alphabet.forEach(l => {
+                allGrid.appendChild(createCard(l));
+            });
+        } else {
+            allLabel.style.display = 'none';
+            allGrid.style.display = 'none';
+
+            if (filter === 'vowel') {
+                vowelLabel.style.display = 'flex';
+                vowelGrid.style.display = 'grid';
+                consonantLabel.style.display = 'none';
+                consonantGrid.style.display = 'none';
+                const vowels = alphabet.filter(l => l.type === 'vowel');
+                document.getElementById('vowel-count').textContent = vowels.length;
+                vowels.forEach(l => vowelGrid.appendChild(createCard(l)));
+            } else {
+                vowelLabel.style.display = 'none';
+                vowelGrid.style.display = 'none';
+                consonantLabel.style.display = 'flex';
+                consonantGrid.style.display = 'grid';
+                const consonants = alphabet.filter(l => l.type === 'consonant');
+                document.getElementById('consonant-count').textContent = consonants.length;
+                consonants.forEach(l => consonantGrid.appendChild(createCard(l)));
+            }
+        }
+    }
+
+    function createCard(l) {
+        const idx = alphabet.indexOf(l);
+        const card = document.createElement('div');
+        card.className = 'letter-card';
+        card.onclick = () => openModal(idx);
+        card.innerHTML = `
+            <div class="card-image">
+                <span class="card-emoji">${l.emoji}</span>
+                <span class="card-word">${l.word}</span>
+            </div>
+            <div class="letter-big">${l.letter}</div>
+            <div class="hand-sign">${l.hand}</div>
+            <div class="letter-name">${l.name}</div>
+        `;
+        return card;
+    }
+
+    function filterLetters(type, btn) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGrid(type);
+    }
+
+    // Modal
+    function openModal(index) {
+        currentModalIndex = index;
+        const l = alphabet[index];
+        document.getElementById('modalLetter').textContent = l.letter;
+        document.getElementById('modalHand').textContent = l.hand;
+        document.getElementById('modalName').textContent = l.name + ' harfi';
+        document.getElementById('modalDesc').textContent = l.desc;
+        
+        const tag = document.getElementById('modalTag');
+        if (l.type === 'vowel') {
+            tag.textContent = 'Unli';
+            tag.className = 'modal-tag vowel';
+        } else {
+            tag.textContent = 'Undosh';
+            tag.className = 'modal-tag consonant';
+        }
+        
+        document.getElementById('letterModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('letterModal').classList.remove('active');
+    }
+
+    function navigateLetter(dir) {
+        let next = currentModalIndex + dir;
+        if (next < 0) next = alphabet.length - 1;
+        if (next >= alphabet.length) next = 0;
+        openModal(next);
+    }
+
+    document.getElementById('letterModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') navigateLetter(-1);
+        if (e.key === 'ArrowRight') navigateLetter(1);
+    });
+
+    // Init
+    renderGrid('all');
+    </script>
+
+{% endblock %}
