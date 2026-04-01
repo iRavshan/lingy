@@ -481,6 +481,126 @@ function handleAudioUpload(input) {
     }
 }
 
+// ============== SIGN TO TEXT LOGIC ==============
+
+function resetSlResultAndLoad() {
+    document.getElementById('sl-result-placeholder').style.display = 'none';
+    document.getElementById('sl-result-content').style.display = 'none';
+    document.getElementById('sl-result-loader').style.display = 'flex';
+    
+    document.getElementById('btn-read-aloud').disabled = true;
+    document.getElementById('btn-copy-text').disabled = true;
+    
+    document.getElementById('sl-text-status').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Tahlil ketmoqda';
+    document.getElementById('sl-text-status').style.backgroundColor = 'var(--bg-card)';
+    document.getElementById('sl-text-status').style.color = 'var(--text-main)';
+}
+
+function showSlTextResult(text) {
+    document.getElementById('sl-result-loader').style.display = 'none';
+    document.getElementById('sl-result-content').style.display = 'block';
+    
+    const statusBadge = document.getElementById('sl-text-status');
+    statusBadge.innerHTML = '<i class="fa-solid fa-check-circle"></i> Tayyor';
+    statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.2)'; 
+    statusBadge.style.color = 'var(--success)';
+    
+    document.getElementById('btn-read-aloud').disabled = false;
+    document.getElementById('btn-copy-text').disabled = false;
+    
+    document.getElementById('sl-result-content').innerHTML = `<span style="color:var(--primary);">"${text}"</span>`;
+    window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Imo-ishora matnga muvaffaqiyatli o\'girildi!', type: 'success'}}));
+}
+
+let currentStream = null;
+
+function toggleCameraScan() {
+    const videoElem = document.getElementById('camera-stream');
+    const placeholder = document.getElementById('camera-placeholder');
+    const btnBox = document.getElementById('btn-toggle-camera');
+
+    // If Camera is already ON, stop it
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        currentStream = null;
+        
+        videoElem.style.display = 'none';
+        videoElem.srcObject = null;
+        placeholder.style.display = 'block';
+        
+        // Reset button UI
+        if(btnBox) {
+            btnBox.innerHTML = 'Kamerani yoqish <i class="fa-solid fa-video"></i>';
+        }
+        window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Kamera o\'chirildi.', type: 'warning'}}));
+        return;
+    }
+
+    // Attempt to start Camera
+    window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Kameraga ruxsat so\'ralmoqda...', type: 'info'}}));
+    
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                currentStream = stream;
+                videoElem.srcObject = stream;
+                videoElem.style.display = 'block';
+                videoElem.play();
+                
+                placeholder.style.display = 'none';
+                document.getElementById('sl-video-upload').value = '';
+                
+                if(btnBox) {
+                    btnBox.innerHTML = 'Kamerani to\'xtatish <i class="fa-solid fa-video-slash"></i>';
+                }
+                
+                resetSlResultAndLoad();
+                
+                // Mock API processing while camera is on
+                setTimeout(() => {
+                    if (currentStream) { // only show result if camera wasn't disabled yet
+                        showSlTextResult("Xayrli kun, ishlaringiz yaxshimi?");
+                    }
+                }, 4000);
+            })
+            .catch((err) => {
+                console.error("Kamera xatosi:", err);
+                window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Kameraga ulanib bo\'lmadi! Ruxsatni sozlang.', type: 'error'}}));
+            });
+    } else {
+        window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Brauzeringiz kamerani qo\'llab quvvatlamaydi.', type: 'error'}}));
+    }
+}
+
+function simulateVideoSignScan(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Fayl yuklandi. Tahlil boshlanmoqda...', type: 'success'}}));
+        
+        document.getElementById('camera-placeholder').innerHTML = `
+            <div style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;">
+                <i class="fa-solid fa-video-slash"></i>
+            </div>
+            <h4>Fayl tahlil qilinmoqda...</h4>
+            <p class="text-primary text-sm mt-2">${file.name}</p>
+        `;
+        
+        resetSlResultAndLoad();
+        
+        // Mock processing
+        setTimeout(() => {
+            showSlTextResult("Bu " + file.name + " faylidan chiqarilgan matn namunasi.");
+            document.getElementById('camera-placeholder').innerHTML = `
+                <i class="fa-solid fa-video text-muted" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                <h4>Kamerangizni yoqing yoki tayyor fayl yuklang</h4>
+                <p class="text-muted text-sm mt-2">Imo-ishorani kompyuter o'qiydi va uni matnga aylantiradi.</p>
+            `;
+            input.value = ''; // format it again
+        }, 3000);
+    }
+}
+
+
 // ======== HERO MOCKUP ANIMATION ENGINE ========
 (function heroMockupAnimation() {
     const phaseMic = document.getElementById('hero-phase-mic');

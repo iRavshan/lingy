@@ -181,6 +181,9 @@
                     <button class="mode-btn" data-mode="video-to-sl" onclick="switchAppMode('video-to-sl')">
                         <i class="fa-solid fa-photo-film"></i> Videoga tarjima qo'shish
                     </button>
+                    <button class="mode-btn" data-mode="sl-to-text" onclick="switchAppMode('sl-to-text')">
+                        <i class="fa-solid fa-hands-bubbles"></i> Imo-ishoradan matnga
+                    </button>
                 </div>
             </div>
             
@@ -392,6 +395,76 @@
                                 Saqlash <i class="fa-solid fa-cloud-arrow-down"></i>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE 3: Sign Language To Text -->
+            <div id="mode-sl-to-text" class="app-grid mode-section" style="display: none;">
+                <!-- Camera Input Card -->
+                <div class="glass-card input-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-camera text-primary"></i> 
+                            <h3>Kamera yoki Video orqali kiritish</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="input-container video-capture-container" style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; border-radius:12px; border:2px dashed var(--border-color); padding: 20px;">
+                        <video id="camera-stream" style="display: none; width: 100%; border-radius: 8px;"></video>
+                        <div id="camera-placeholder">
+                            <i class="fa-solid fa-video text-muted" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <h4>Kamerangizni yoqing yoki tayyor fayl yuklang</h4>
+                            <p class="text-muted text-sm mt-2">Imo-ishorani kompyuter ko'rish (CV) yordamida o'qiydi va uni matnga, so'ngra ovozga o'girib beradi.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer" style="justify-content: center; gap: 15px;">
+                        <button id="btn-toggle-camera" class="btn-primary" onclick="toggleCameraScan()">
+                            Kamerani yoqish <i class="fa-solid fa-video"></i>
+                        </button>
+                        <input type="file" id="sl-video-upload" accept="video/*" style="display:none;" onchange="simulateVideoSignScan(this)">
+                        <button class="btn-outline" onclick="document.getElementById('sl-video-upload').click()">
+                            Yuklash <i class="fa-solid fa-file-video"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Text Result Card -->
+                <div class="glass-card video-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-font text-primary"></i> 
+                            <h3 id="sl-text-title">Tahlil qilingan matn</h3>
+                        </div>
+                        <span class="status-badge" id="sl-text-status">
+                            <i class="fa-solid fa-circle"></i> Kutmoqda
+                        </span>
+                    </div>
+                    
+                    <div class="video-container" style="background:var(--bg-main); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; height: 100%; min-height: 250px;">
+                        <div id="sl-result-placeholder" style="text-align:center; color: var(--text-muted); width: 100%;">
+                            <i class="fa-solid fa-comment-dots" style="font-size: 2.5rem; margin-bottom: 15px; opacity:0.5;"></i>
+                            <p>O'qilgan imo-ishoralar mana shu yerda matn shaklida hosil bo'ladi.</p>
+                        </div>
+                        
+                        <div id="sl-result-loader" style="display:none; flex-direction:column; align-items:center; width: 100%;">
+                            <div class="spinner" style="margin-bottom:10px;"></div>
+                            <span class="text-muted" style="font-size: 0.9rem;">Imo-ishoralar tanilmoqda...</span>
+                        </div>
+                        
+                        <div id="sl-result-content" style="display:none; font-size: 1.5rem; font-weight: 500; font-family: var(--font-heading); color: var(--text-main); text-align: center; width: 100%;">
+                            <!-- Dynamically filled later -->
+                        </div>
+                    </div>
+                    
+                    <div class="video-controls" style="justify-content: center;">
+                        <button class="btn-outline" id="btn-read-aloud" onclick="window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Ovoz tayyorlanmoqda (Demo)...', type: 'info'}}))" disabled>
+                            Ovoz chiqarib o'qish <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <button class="btn-icon" id="btn-copy-text" title="Nusxa olish" onclick="window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Matn nusxalandi.', type: 'success'}}))" disabled>
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -8,10 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+'''
 #Content Security Policy
 CSP_FRAME_ANCESTORS = ("'self'",)
 CSP_REPORT_ONLY = True
@@ -33,7 +34,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'https://remu.uz',
     'https://www.remu.uz',
-]  
+] 
+''' 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
