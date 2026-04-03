@@ -7,6 +7,15 @@
     <title>{% block title %}O'rganish{% endblock %} - Remu</title>
     <meta name="description" content="O'zbek imo-ishora tilini Duolingo uslubida bosqichma-bosqich o'rganing.">
 
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0B0B13">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Remu">
+    <meta name="msapplication-TileColor" content="#0B0B13">
+    <meta name="msapplication-TileImage" content="{% static '/img/favicon/android-chrome-192x192.png' %}">
+
     <link rel="apple-touch-icon" sizes="180x180" href="{% static '/img/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static '/img/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static '/img/favicon/favicon-16x16.png' %}">
@@ -877,5 +886,16 @@
         </nav>
         
     </div>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js', { scope: '/' })
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>

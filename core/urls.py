@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import home_view, about_view
+from .views import home_view, about_view, service_worker_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('about/', about_view, name='about'),
     path('learn/', include('apps.learn.urls')),
     path('user/', include('apps.users.urls')),
+    path('sw.js', service_worker_view, name='service-worker'),
 ]

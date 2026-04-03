@@ -7,10 +7,20 @@
     <title>O'zbek Imo-ishora Tili Tarjimoni</title>
     <meta name="description" content="O'zbek Imo-ishora Tili Tarjimoni - matn va nutqni real vaqt rejimida imo-ishora tili videosiga aylantiramiz.">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'assets/img/favicon/site.webmanifest' %}">
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0B0B13">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Remu">
+    <meta name="msapplication-TileColor" content="#0B0B13">
+    <meta name="msapplication-TileImage" content="{% static '/img/favicon/android-chrome-192x192.png' %}">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static '/img/favicon/site.webmanifest' %}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -788,6 +798,16 @@
         (function(u){var s=document.createElement('script');s.async=true;s.src=u;
         var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);
         })('https://widget.replain.cc/dist/client.js');
+    </script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js', { scope: '/' })
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
     </script>
 </body>
 </html>
