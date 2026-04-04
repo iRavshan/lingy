@@ -79,7 +79,7 @@
         /* === Search Bar === */
         .search-section {
             max-width: 600px;
-            margin: 30px auto 10px;
+            margin: 0px auto 30px;
             padding: 0 24px;
         }
         .search-wrapper {
@@ -125,42 +125,7 @@
             opacity: 0.7;
         }
 
-        /* === Category Tabs === */
-        .category-bar {
-            max-width: 1200px;
-            margin: 25px auto 30px;
-            padding: 0 24px;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .category-bar::-webkit-scrollbar { display: none; }
-
-        .cat-btn {
-            padding: 10px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-family: var(--font-body);
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .cat-btn:hover { border-color: var(--primary); color: var(--text-main); }
-        .cat-btn.active {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary);
-            font-weight: 600;
-        }
-        .cat-btn .cat-emoji { font-size: 1.1rem; }
+        /* Horizontal categories removed, grid acts as category menu */
 
         /* === Words Grid === */
         .words-section {
@@ -232,23 +197,6 @@
             z-index: 1;
         }
 
-        .word-hand {
-            margin-top: 10px;
-            width: 44px;
-            height: 44px;
-            margin-left: auto;
-            margin-right: auto;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            position: relative;
-            z-index: 1;
-        }
-
         /* === No Results === */
         .no-results {
             text-align: center;
@@ -285,45 +233,161 @@
         }
         .modal-overlay.active { display: flex; }
 
-        .modal-card {
+        .modal-wrapper {
+            display: flex;
+            align-items: stretch;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px 35px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 95vw;
+        }
+
+        .modal-card {
+            width: 100vw;
+            max-width: 440px;
             text-align: center;
             position: relative;
-            animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            background: var(--bg-secondary);
         }
         @keyframes modalIn {
             from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
+        .practice-panel {
+            width: 0;
+            opacity: 0;
+            background: var(--bg-card);
+            border-left: 1px dashed transparent;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            white-space: nowrap;
         }
-        .modal-close:hover { color: var(--danger); }
+        .modal-wrapper.practice-active .practice-panel {
+            width: 700px;
+            opacity: 1;
+            padding: 30px;
+            border-left-color: var(--border-color);
+            white-space: normal;
+        }
 
-        .modal-emoji {
-            font-size: 5rem;
-            display: block;
+        .btn-practice {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(99,102,241,0.25);
+        }
+        .btn-practice:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99,102,241,0.4);
+        }
+
+        .webcam-container {
+            flex-grow: 1;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .webcam-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+        .webcam-overlay {
+            position: absolute;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .modal-video-header {
+            width: 100%;
+            height: 240px;
+            background: #000;
+            position: relative;
+        }
+        .modal-video-header video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-video-controls {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-btn-icon {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s;
+        }
+        .modal-btn-icon:hover { background: rgba(0,0,0,0.8); }
+
+        .modal-body {
+            padding: 30px;
+            background: var(--bg-secondary);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-syllables {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            opacity: 0.6;
             margin-bottom: 8px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+            font-weight: 500;
         }
 
         .modal-word-uz {
             font-family: var(--font-heading);
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -336,44 +400,6 @@
             color: var(--text-muted);
             font-size: 1rem;
             margin-bottom: 20px;
-        }
-
-        .modal-hand-box {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            background: var(--bg-card);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 8px 25px rgba(99,102,241,0.2);
-            animation: handBounce 2s ease-in-out infinite;
-        }
-        @keyframes handBounce {
-            0%, 100% { transform: scale(1) rotate(0); }
-            50% { transform: scale(1.05) rotate(3deg); }
-        }
-
-        .modal-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
-
-        .modal-cat-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: var(--primary-light);
-            color: var(--primary);
         }
 
         .modal-nav {
@@ -411,7 +437,8 @@
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2rem; }
             .words-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-            .modal-card { padding: 30px 24px; }
+            .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
+            .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
         }
         @media (max-width: 480px) {
             .words-grid { grid-template-columns: repeat(2, 1fr); }
@@ -435,12 +462,7 @@
         <div class="search-count" id="searchCount"></div>
     </div>
 
-    <!-- Category Tabs -->
-    <div class="category-bar" id="categoryBar">
-        <button class="cat-btn active" data-cat="all" onclick="filterCat('all', this)">
-            <span class="cat-emoji">📚</span> Barchasi
-        </button>
-    </div>
+    <!-- Remove category tabs -> The words section acts as a master grid -->
 
     <!-- Words Grid -->
     <section class="words-section">
@@ -454,17 +476,45 @@
         
     <!-- Detail Modal -->
     <div class="modal-overlay" id="wordModal">
-        <div class="modal-card">
-            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-            <span class="modal-emoji" id="mEmoji">👋</span>
-            <div class="modal-word-uz" id="mWordUz">Salom</div>
-            <div class="modal-word-en" id="mWordEn">Hello</div>
-            <div class="modal-hand-box" id="mHand">👋</div>
-            <div class="modal-desc" id="mDesc">Salomlashish uchun ishlatiladigan imo-ishora.</div>
-            <div class="modal-cat-badge" id="mCat"><i class="fa-solid fa-tag"></i> Salomlashish</div>
-            <div class="modal-nav">
-                <button onclick="navWord(-1)" title="Oldingi"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="navWord(1)" title="Keyingi"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="modal-wrapper" id="modalWrapper" onclick="event.stopPropagation()">
+            <div class="modal-card" id="modalContent">
+                <!-- Video Header -->
+                <div class="modal-video-header">
+                    <video id="modalVideo" src="" autoplay loop muted playsinline></video>
+                    <div class="modal-video-controls">
+                        <button class="modal-btn-icon" onclick="toggleMute(event)" title="Ovozni o'chirish/yoqish">
+                            <i class="fa-solid fa-volume-xmark" id="muteIcon"></i>
+                        </button>
+                        <button class="modal-btn-icon" onclick="closeModal()" title="Yopish">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="modal-syllables" id="mSyllables">Sa - lom</div>
+                    <div class="modal-word-uz" id="mWordUz">Salom</div>
+                    <div class="modal-word-en" id="mWordEn" style="display: none;">Hello</div>
+                    
+                    <button class="btn-practice" onclick="togglePractice()"><i class="fa-solid fa-camera"></i> Mashq qilish</button>
+
+                    <div class="modal-nav">
+                        <button onclick="navWord(-1)" title="Oldingi"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="navWord(1)" title="Keyingi"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="practice-panel" id="practicePanel">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <h3 style="font-family: var(--font-heading); font-size:1.2rem;">Sizning navbatingiz</h3>
+                    <button class="modal-btn-icon" onclick="togglePractice()" style="width:30px; height:30px; font-size:1rem; background:var(--bg-secondary); border:1px solid var(--border-color); color:var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px; text-align:left; white-space: normal;">Imo-ishorani xuddi ko'rsatilganidek takrorlashga urinib ko'ring.</p>
+                <div class="webcam-container">
+                    <video id="userWebcam" autoplay playsinline muted></video>
+                    <div class="webcam-overlay" id="webcamStatus">Kamera ulanmoqda...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -575,19 +625,7 @@ let currentSearch = '';
 let currentModalIdx = -1;
 let filteredWords = [...words];
 
-// Build category buttons
-function buildCatBar() {
-    const bar = document.getElementById('categoryBar');
-    categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'cat-btn';
-        btn.dataset.cat = cat.id;
-        btn.onclick = () => filterCat(cat.id, btn);
-        btn.innerHTML = `<span class="cat-emoji">${cat.emoji}</span> ${cat.name}`;
-        bar.appendChild(btn);
-    });
-}
-
+// Category buttons and filtering
 function getFiltered() {
     let result = [...words];
     if (currentCat !== 'all') {
@@ -608,6 +646,25 @@ function renderGrid() {
     const noRes = document.getElementById('noResults');
     grid.innerHTML = '';
 
+    if (!currentSearch && currentCat === 'all') {
+        grid.style.display = 'grid';
+        noRes.style.display = 'none';
+
+        categories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.onclick = () => filterCat(cat.id);
+            card.innerHTML = `
+                <span class="word-emoji" style="font-size: 3.5rem;">${cat.emoji}</span>
+                <div class="word-uz" style="font-size: 1.25rem;">${cat.name}</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.getElementById('searchCount').textContent = `Jami: ${categories.length} ta mavzu`;
+        return;
+    }
+
     filteredWords = getFiltered();
 
     if (filteredWords.length === 0) {
@@ -617,6 +674,19 @@ function renderGrid() {
         grid.style.display = 'grid';
         noRes.style.display = 'none';
 
+        if (!currentSearch && currentCat !== 'all') {
+            const backCard = document.createElement('div');
+            backCard.className = 'word-card';
+            backCard.style.background = 'var(--primary-light)';
+            backCard.style.borderColor = 'var(--primary)';
+            backCard.onclick = () => filterCat('all');
+            backCard.innerHTML = `
+                <span class="word-emoji" style="font-size: 2.5rem; margin-top: 10px;"><i class="fa-solid fa-arrow-left" style="color: var(--primary);"></i></span>
+                <div class="word-uz" style="font-size: 1.15rem; color: var(--primary); margin-top: 15px;">Mavzularga qaytish</div>
+            `;
+            grid.appendChild(backCard);
+        }
+
         filteredWords.forEach((w, i) => {
             const card = document.createElement('div');
             card.className = 'word-card';
@@ -624,13 +694,11 @@ function renderGrid() {
             card.innerHTML = `
                 <span class="word-emoji">${w.emoji}</span>
                 <div class="word-uz">${w.uz}</div>
-                <div class="word-hand">${w.hand}</div>
             `;
             grid.appendChild(card);
         });
     }
 
-    // Update count
     const countEl = document.getElementById('searchCount');
     if (currentSearch) {
         countEl.textContent = `${filteredWords.length} ta natija topildi`;
@@ -639,11 +707,10 @@ function renderGrid() {
     }
 }
 
-function filterCat(catId, btn) {
+function filterCat(catId) {
     currentCat = catId;
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     renderGrid();
+    window.scrollTo({ top: 300, behavior: 'smooth' });
 }
 
 // Search
@@ -664,24 +731,60 @@ function clearSearch() {
     renderGrid();
 }
 
+// Map for syllables
+const syllableMap = {
+    "salom": "sa-lom", "xayr": "xayr", "rahmat": "rah-mat", "iltimos": "il-ti-mos", "kechirasiz": "ke-chi-ra-siz", "ha": "ha", "yo'q": "yo'q", 
+    "ona": "o-na", "ota": "o-ta", "aka": "a-ka", "opa": "o-pa", "bola": "bo-la", "bobo": "bo-bo", "buvi": "bu-vi", "oila": "o-i-la", 
+    "non": "non", "suv": "suv", "choy": "choy", "olma": "ol-ma", "palov": "pa-lov", "go'sht": "go'sht", "meva": "me-va", "sut": "sut", 
+    "mushuk": "mu-shuk", "it": "it", "qush": "qush", "baliq": "ba-liq", "ot": "ot", "sigir": "si-gir", 
+    "qizil": "qi-zil", "ko'k": "ko'k", "yashil": "ya-shil", "oq": "oq", "qora": "qo-ra", "sariq": "sa-riq", 
+    "bir": "bir", "ikki": "ik-ki", "uch": "uch", "to'rt": "to'rt", "besh": "besh", "o'n": "o'n", 
+    "xursand": "xur-sand", "g'amgin": "g'am-gin", "qo'rqinchli": "qo'r-qinch-li", "hayron": "hay-ron", "sevgi": "sev-gi", "charchagan": "char-cha-gan", 
+    "uy": "uy", "maktab": "mak-tab", "ish": "ish", "ovqat": "ov-qat", "kitob": "ki-tob", "telefon": "te-le-fon", "mashina": "ma-shi-na", "do'kon": "do'-kon", 
+    "quyosh": "qu-yosh", "oy": "oy", "yomg'ir": "yom-g'ir", "gul": "gul", "daraxt": "da-raxt", "tog'": "tog'", 
+    "ismim": "is-mim", "yosh": "yosh", "qaerdan": "qa-er-dan", "tanishganimdan xursandman": "ta-nish-ga-nim-dan xur-sand-man"
+};
+
+function getSyllables(word) {
+    let lw = word.toLowerCase();
+    let syls = syllableMap[lw] ? syllableMap[lw].split('-').join(' - ') : word;
+    return syls.charAt(0).toUpperCase() + syls.slice(1);
+}
+
 // Modal
 function openModal(filteredIdx) {
     currentModalIdx = filteredIdx;
     const w = filteredWords[filteredIdx];
-    document.getElementById('mEmoji').textContent = w.emoji;
     document.getElementById('mWordUz').textContent = w.uz;
-    document.getElementById('mWordEn').textContent = w.en;
-    document.getElementById('mHand').textContent = w.hand;
-    document.getElementById('mDesc').textContent = w.desc;
-
-    const cat = categories.find(c => c.id === w.cat);
-    document.getElementById('mCat').innerHTML = `<i class="fa-solid fa-tag"></i> ${cat ? cat.name : w.cat}`;
+    document.getElementById('mSyllables').textContent = getSyllables(w.uz);
+    
+    // Setup Video
+    const videoEl = document.getElementById('modalVideo');
+    videoEl.src = '/static/img/pron/' + w.uz + '.mp4';
+    videoEl.play().catch(e => console.log('Autoplay prevented or waiting for interaction'));
 
     document.getElementById('wordModal').classList.add('active');
 }
 
+function toggleMute(e) {
+    if(e) e.stopPropagation();
+    const v = document.getElementById('modalVideo');
+    const icon = document.getElementById('muteIcon');
+    v.muted = !v.muted;
+    if(v.muted) {
+        icon.className = 'fa-solid fa-volume-xmark';
+    } else {
+        icon.className = 'fa-solid fa-volume-high';
+    }
+}
+
 function closeModal() {
     document.getElementById('wordModal').classList.remove('active');
+    document.getElementById('modalVideo').pause();
+    const wrapper = document.getElementById('modalWrapper');
+    if (wrapper.classList.contains('practice-active')) {
+        togglePractice();
+    }
 }
 
 function navWord(dir) {
@@ -689,6 +792,44 @@ function navWord(dir) {
     if (next < 0) next = filteredWords.length - 1;
     if (next >= filteredWords.length) next = 0;
     openModal(next);
+}
+
+// Practice / Webcam Logic
+let stream = null;
+
+function togglePractice() {
+    const wrapper = document.getElementById('modalWrapper');
+    const isActive = wrapper.classList.toggle('practice-active');
+    if (isActive) {
+        startWebcam();
+    } else {
+        stopWebcam();
+    }
+}
+
+async function startWebcam() {
+    const video = document.getElementById('userWebcam');
+    const status = document.getElementById('webcamStatus');
+    status.style.display = 'block';
+    status.textContent = 'Kamera ulanmoqda...';
+
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        status.style.display = 'none';
+    } catch (err) {
+        console.error("Camera error:", err);
+        status.textContent = 'Kamera ruxsati berilmadi yoki xato yuz berdi';
+    }
+}
+
+function stopWebcam() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+    }
+    const video = document.getElementById('userWebcam');
+    video.srcObject = null;
 }
 
 document.getElementById('wordModal').addEventListener('click', (e) => {
@@ -702,7 +843,6 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Init
-buildCatBar();
 renderGrid();
 </script>
 

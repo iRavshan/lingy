@@ -143,17 +143,23 @@
             font-weight: 800;
             line-height: 1;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, var(--text-main), var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             position: relative;
             z-index: 1;
+            transition: color 0.3s, transform 0.3s;
         }
-        .letter-card:hover .letter-big {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
+        .letter-big.letter-vowel {
+            color: #ef4444; /* Red */
+        }
+        .letter-card:hover .letter-big.letter-vowel {
+            color: #dc2626;
+            transform: scale(1.1);
+        }
+        .letter-big.letter-consonant {
+            color: #3b82f6; /* Blue */
+        }
+        .letter-card:hover .letter-big.letter-consonant {
+            color: #2563eb;
+            transform: scale(1.1);
         }
 
         .hand-sign {
@@ -221,63 +227,155 @@
         }
         .modal-overlay.active { display: flex; }
 
-        .modal-card {
+        .modal-wrapper {
+            display: flex;
+            align-items: stretch;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 95vw;
+        }
+
+        .modal-card {
+            width: 100vw;
+            max-width: 440px;
             text-align: center;
             position: relative;
-            animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            background: var(--bg-secondary);
         }
+
+        .practice-panel {
+            width: 0;
+            opacity: 0;
+            background: var(--bg-card);
+            border-left: 1px dashed transparent;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .modal-wrapper.practice-active .practice-panel {
+            width: 700px;
+            opacity: 1;
+            padding: 30px;
+            border-left-color: var(--border-color);
+            white-space: normal;
+        }
+
+        .btn-practice {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(99,102,241,0.25);
+        }
+        .btn-practice:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99,102,241,0.4);
+        }
+
+        .webcam-container {
+            flex-grow: 1;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .webcam-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+        .webcam-overlay {
+            position: absolute;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
         @keyframes modalIn {
             from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-close {
+        .modal-video-header {
+            width: 100%;
+            height: 240px;
+            background: #000;
+            position: relative;
+        }
+        .modal-video-header video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-video-controls {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-btn-icon {
+            background: rgba(0,0,0,0.5);
+            color: white;
             border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .modal-close:hover { color: var(--danger); }
-
-        .modal-letter {
-            font-family: var(--font-heading);
-            font-size: 5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
-
-        .modal-hand-sign {
-            width: 120px;
-            height: 120px;
-            margin: 20px auto;
-            background: var(--bg-card);
-            border: 2px solid var(--primary);
-            border-radius: 24px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
-            box-shadow: 0 8px 30px rgba(99,102,241,0.2);
+            font-size: 1.1rem;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s;
         }
-        @keyframes handBounce {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(3deg); }
+        .modal-btn-icon:hover { background: rgba(0,0,0,0.8); }
+
+        .modal-body {
+            padding: 0 30px 40px 30px;
+            background: var(--bg-secondary);
         }
+
+        .modal-letter {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-top: 20px;
+        }
+        .modal-letter.letter-vowel { color: #ef4444; }
+        .modal-letter.letter-consonant { color: #3b82f6; }
 
         .modal-info {
             margin-top: 20px;
@@ -355,8 +453,8 @@
             .page-hero h1 { font-size: 2rem; }
             .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
             .letter-big { font-size: 2.2rem; }
-            .modal-card { padding: 30px 24px; }
-            .modal-letter { font-size: 4rem; }
+            .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
+            .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -408,18 +506,51 @@
         
     <!-- Letter Modal -->
     <div class="modal-overlay" id="letterModal">
-        <div class="modal-card" id="modalContent" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-            <div class="modal-letter" id="modalLetter">A</div>
-            <div class="modal-hand-sign" id="modalHand"></div>
-            <div class="modal-tag" id="modalTag">Unli</div>
-            <div class="modal-info">
-                <h3 id="modalName" style="display:none;"></h3> <!-- Hidden name as requested -->
-                <p id="modalDesc"></p>
+        <div class="modal-wrapper" id="modalWrapper" onclick="event.stopPropagation()">
+            <div class="modal-card" id="modalContent">
+                <!-- Video Header -->
+                <div class="modal-video-header">
+                    <video id="modalVideo" src="" autoplay loop muted playsinline></video>
+                    <div class="modal-video-controls">
+                        <button class="modal-btn-icon" onclick="toggleMute(event)" title="Ovozni o'chirish/yoqish">
+                            <i class="fa-solid fa-volume-xmark" id="muteIcon"></i>
+                        </button>
+                        <button class="modal-btn-icon" onclick="closeModal()" title="Yopish">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="modal-letter" id="modalLetter">A</div>
+                    <div style="margin-top: 10px;">
+                        <div class="modal-tag" id="modalTag">Unli</div>
+                    </div>
+                    <div class="modal-info">
+                        <h3 id="modalName" style="display:none;"></h3>
+                        <p id="modalDesc"></p>
+                    </div>
+                    
+                    <button class="btn-practice" onclick="togglePractice()"><i class="fa-solid fa-camera"></i> Mashq qilish</button>
+
+                    <div class="modal-nav">
+                        <button onclick="navigateLetter(-1)" title="Oldingi harf"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="navigateLetter(1)" title="Keyingi harf"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-nav">
-                <button onclick="navigateLetter(-1)" title="Oldingi harf"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="navigateLetter(1)" title="Keyingi harf"><i class="fa-solid fa-chevron-right"></i></button>
+
+            <!-- Practice Panel -->
+            <div class="practice-panel" id="practicePanel">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="font-family: var(--font-heading); font-size:1.2rem;">Sizning navbatingiz</h3>
+                    <button class="modal-btn-icon" onclick="togglePractice()" style="width:30px; height:30px; font-size:1rem; background:var(--bg-secondary); border:1px solid var(--border-color); color:var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px; text-align:left; white-space: normal;">Harfni xuddi ko'rsatilganidek takrorlashga urinib ko'ring</p>
+                <div class="webcam-container">
+                    <video id="userWebcam" autoplay playsinline muted></video>
+                    <div class="webcam-overlay" id="webcamStatus">Kamera ulanmoqda...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -427,35 +558,35 @@
     <script>
     // Full Uzbek alphabet data with relevant images
     const alphabet = [
-        { letter: "A", name: "A", type: "vowel", hand: "✋", emoji: "🍎", word: "Olma", desc: "Kaft ochiq holda ko'rsatiladi. O'zbek alifbosining birinchi harfi.", pron: "a" },
-        { letter: "B", name: "Be", type: "consonant", hand: "🤚", emoji: "👶", word: "Bola", desc: "Barmoqlar yig'ilgan, bosh barmoq yoniga qo'yiladi.", pron: "b" },
-        { letter: "D", name: "De", type: "consonant", hand: "👆", emoji: "🌳", word: "Daraxt", desc: "Ko'rsatkich barmoq yuqoriga, qolganlari yig'ilgan.", pron: "d" },
-        { letter: "E", name: "E", type: "vowel", hand: "🖐️", emoji: "🚪", word: "Eshik", desc: "Barmoqlar ochiq, kaft tashqariga qaragan holda.", pron: "e" },
-        { letter: "F", name: "Ef", type: "consonant", hand: "🤏", emoji: "🧪", word: "Fan", desc: "Bosh va ko'rsatkich barmoqlar bir-biriga tegadi.", pron: "f" },
-        { letter: "G", name: "Ge", type: "consonant", hand: "👈", emoji: "💐", word: "Gul", desc: "Ko'rsatkich barmoq yon tomonga qaratiladi.", pron: "g" },
-        { letter: "H", name: "Ha", type: "consonant", hand: "🫱", emoji: "🌬️", word: "Havo", desc: "Kaft yon tomonga qaragan, barmoqlar yopiq.", pron: "h" },
-        { letter: "I", name: "I", type: "vowel", hand: "☝️", emoji: "🐍", word: "Ilon", desc: "Faqat ko'rsatkich barmoq yuqoriga ko'tariladi.", pron: "i" },
-        { letter: "J", name: "Je", type: "consonant", hand: "🤞", emoji: "🗺️", word: "Joy", desc: "Ko'rsatkich va o'rta barmoqlar chalkashtiriladi.", pron: "j" },
-        { letter: "K", name: "Ka", type: "consonant", hand: "🫴", emoji: "📖", word: "Kitob", desc: "Barmoqlar yuqoriga ochilgan, kaft oldinga.", pron: "k" },
-        { letter: "L", name: "El", type: "consonant", hand: "🤟", emoji: "🍋", word: "Limon", desc: "Bosh, ko'rsatkich va jimjiloq barmoqlar ochiq.", pron: "l" },
-        { letter: "M", name: "Em", type: "consonant", hand: "✊", emoji: "🏫", word: "Maktab", desc: "Barmoqlar to'liq yig'ilgan musht holati.", pron: "m" },
-        { letter: "N", name: "En", type: "consonant", hand: "🫰", emoji: "🍞", word: "Non", desc: "Bosh barmoq ko'rsatkich va o'rta barmoqlar orasida.", pron: "n" },
-        { letter: "O", name: "O", type: "vowel", hand: "👌", emoji: "🔥", word: "Olov", desc: "Bosh va ko'rsatkich barmoqlar doira hosil qiladi.", pron: "o" },
-        { letter: "P", name: "Pe", type: "consonant", hand: "👇", emoji: "🦋", word: "Parvona", desc: "Ko'rsatkich barmoq pastga qaratilgan.", pron: "p" },
-        { letter: "Q", name: "Qe", type: "consonant", hand: "🤘", emoji: "☀️", word: "Quyosh", desc: "Ko'rsatkich va jimjiloq barmoqlar ko'tarilgan.", pron: "q" },
-        { letter: "R", name: "Er", type: "consonant", hand: "✌️", emoji: "🖼️", word: "Rasm", desc: "Ko'rsatkich va o'rta barmoqlar V shaklida.", pron: "r" },
-        { letter: "S", name: "Es", type: "consonant", hand: "🖖", emoji: "💧", word: "Suv", desc: "Barmoqlar ochiq, o'rta va nomsiz orasida bo'shliq.", pron: "s" },
-        { letter: "T", name: "Te", type: "consonant", hand: "👍", emoji: "⛰️", word: "Tog'", desc: "Bosh barmoq yuqoriga ko'tarilgan.", pron: "t" },
-        { letter: "U", name: "U", type: "vowel", hand: "👋", emoji: "🏠", word: "Uy", desc: "Qo'l silkitish harakati bilan ifodalanadi.", pron: "u" },
-        { letter: "V", name: "Ve", type: "consonant", hand: "✌️", emoji: "⏰", word: "Vaqt", desc: "Ikki barmoq V shaklida ko'tariladi.", pron: "v" },
-        { letter: "X", name: "Xa", type: "consonant", hand: "🤜", emoji: "✉️", word: "Xat", desc: "Musht holati, bosh barmoq o'ng tomonda.", pron: "x" },
-        { letter: "Y", name: "Ye", type: "consonant", hand: "🫵", emoji: "💚", word: "Yurak", desc: "Ko'rsatkich barmoq oldinga qaratilgan.", pron: "y" },
-        { letter: "Z", name: "Ze", type: "consonant", hand: "👊", emoji: "🪜", word: "Zinа", desc: "Musht holati, ko'rsatkich barmoq engashgan.", pron: "z" },
-        { letter: "O'", name: "O'", type: "vowel", hand: "🫳", emoji: "🎮", word: "O'yin", desc: "Qo'l pastga qaratilgan holda doira shakli.", pron: "oʻ" },
-        { letter: "G'", name: "G'e", type: "consonant", hand: "🤙", emoji: "🧱", word: "G'isht", desc: "Bosh barmoq va jimjiloq ochiq, qolganlar yig'iq.", pron: "gʻ" },
-        { letter: "Sh", name: "Sha", type: "consonant", hand: "🤲", emoji: "🍬", word: "Shakar", desc: "Ikkala kaft birlashtirilgan holda.", pron: "sh" },
-        { letter: "Ch", name: "Che", type: "consonant", hand: "🤌", emoji: "🍵", word: "Choy", desc: "Barmoq uchlari bir nuqtada yig'ilgan.", pron: "ch" },
-        { letter: "Ng", name: "Ng", type: "consonant", hand: "🫶", emoji: "🏗️", word: "Inshoot", desc: "Ikkala qo'l birlashtirilgan holda yurak shakli.", pron: "ng" }
+        { letter: "A", type: "vowel", emoji: "🍎", word: "Olma", desc: "Kaft ochiq holda ko'rsatiladi. O'zbek alifbosining birinchi harfi.", pron: "a" },
+        { letter: "B", type: "consonant", emoji: "👶", word: "Bola", desc: "Barmoqlar yig'ilgan, bosh barmoq yoniga qo'yiladi.", pron: "b" },
+        { letter: "D", type: "consonant", emoji: "🌳", word: "Daraxt", desc: "Ko'rsatkich barmoq yuqoriga, qolganlari yig'ilgan.", pron: "d" },
+        { letter: "E", type: "vowel", emoji: "🚪", word: "Eshik", desc: "Barmoqlar ochiq, kaft tashqariga qaragan holda.", pron: "e" },
+        { letter: "F", type: "consonant", emoji: "🧪", word: "Fan", desc: "Bosh va ko'rsatkich barmoqlar bir-biriga tegadi.", pron: "f" },
+        { letter: "G", type: "consonant", emoji: "💐", word: "Gul", desc: "Ko'rsatkich barmoq yon tomonga qaratiladi.", pron: "g" },
+        { letter: "H", type: "consonant", emoji: "🌬️", word: "Havo", desc: "Kaft yon tomonga qaragan, barmoqlar yopiq.", pron: "h" },
+        { letter: "I", type: "vowel", emoji: "🐍", word: "Ilon", desc: "Faqat ko'rsatkich barmoq yuqoriga ko'tariladi.", pron: "i" },
+        { letter: "J", type: "consonant", emoji: "🗺️", word: "Joy", desc: "Ko'rsatkich va o'rta barmoqlar chalkashtiriladi.", pron: "j" },
+        { letter: "K", type: "consonant", emoji: "📖", word: "Kitob", desc: "Barmoqlar yuqoriga ochilgan, kaft oldinga.", pron: "k" },
+        { letter: "L", type: "consonant", emoji: "🍋", word: "Limon", desc: "Bosh, ko'rsatkich va jimjiloq barmoqlar ochiq.", pron: "l" },
+        { letter: "M", type: "consonant", emoji: "🏫", word: "Maktab", desc: "Barmoqlar to'liq yig'ilgan musht holati.", pron: "m" },
+        { letter: "N", type: "consonant", emoji: "🍞", word: "Non", desc: "Bosh barmoq ko'rsatkich va o'rta barmoqlar orasida.", pron: "n" },
+        { letter: "O", type: "vowel", emoji: "🔥", word: "Olov", desc: "Bosh va ko'rsatkich barmoqlar doira hosil qiladi.", pron: "o" },
+        { letter: "P", type: "consonant", emoji: "🦋", word: "Parvona", desc: "Ko'rsatkich barmoq pastga qaratilgan.", pron: "p" },
+        { letter: "Q", type: "consonant", emoji: "☀️", word: "Quyosh", desc: "Ko'rsatkich va jimjiloq barmoqlar ko'tarilgan.", pron: "q" },
+        { letter: "R", type: "consonant", emoji: "🖼️", word: "Rasm", desc: "Ko'rsatkich va o'rta barmoqlar V shaklida.", pron: "r" },
+        { letter: "S", type: "consonant", emoji: "💧", word: "Suv", desc: "Barmoqlar ochiq, o'rta va nomsiz orasida bo'shliq.", pron: "s" },
+        { letter: "T", type: "consonant", emoji: "⛰️", word: "Tog'", desc: "Bosh barmoq yuqoriga ko'tarilgan.", pron: "t" },
+        { letter: "U", type: "vowel", emoji: "🏠", word: "Uy", desc: "Qo'l silkitish harakati bilan ifodalanadi.", pron: "u" },
+        { letter: "V", type: "consonant", emoji: "⏰", word: "Vaqt", desc: "Ikki barmoq V shaklida ko'tariladi.", pron: "v" },
+        { letter: "X", type: "consonant", emoji: "✉️", word: "Xat", desc: "Musht holati, bosh barmoq o'ng tomonda.", pron: "x" },
+        { letter: "Y", type: "consonant", emoji: "💚", word: "Yurak", desc: "Ko'rsatkich barmoq oldinga qaratilgan.", pron: "y" },
+        { letter: "Z", type: "consonant", emoji: "🪜", word: "Zinа", desc: "Musht holati, ko'rsatkich barmoq engashgan.", pron: "z" },
+        { letter: "Oʻ", type: "vowel", emoji: "🎮", word: "O'yin", desc: "Qo'l pastga qaratilgan holda doira shakli.", pron: "oʻ" },
+        { letter: "Gʻ", type: "consonant", emoji: "🧱", word: "G'isht", desc: "Bosh barmoq va jimjiloq ochiq, qolganlar yig'iq.", pron: "gʻ" },
+        { letter: "Sh", type: "consonant", emoji: "🍬", word: "Shakar", desc: "Ikkala kaft birlashtirilgan holda.", pron: "sh" },
+        { letter: "Ch", type: "consonant", emoji: "🍵", word: "Choy", desc: "Barmoq uchlari bir nuqtada yig'ilgan.", pron: "ch" },
+        { letter: "Ng", type: "consonant", emoji: "🏗️", word: "Inshoot", desc: "Ikkala qo'l birlashtirilgan holda yurak shakli.", pron: "ng" }
     ];
 
     let currentFilter = 'all';
@@ -520,12 +651,14 @@
         let imgChar = l.letter.toLowerCase().charAt(0);
         let imgSrc = '/static/img/alphabet/' + imgChar + '.png';
 
+        const colorClass = l.type === 'vowel' ? 'letter-vowel' : 'letter-consonant';
+
         card.innerHTML = `
             <div class="card-image">
                 <span class="card-emoji">${l.emoji}</span>
                 <span class="card-word">${l.word}</span>
             </div>
-            <div class="letter-big">${l.letter}</div>
+            <div class="letter-big ${colorClass}">${l.letter}<span style="font-size: 2.5rem; margin-left: 2px">${l.letter.toLowerCase()}</span></div>
             <div class="hand-sign" style="background:transparent; border:none;">
                 <img src="${imgSrc}" alt="${l.letter}" style="width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1));" onerror="this.outerHTML='<span>${l.hand}</span>'">
             </div>
@@ -544,13 +677,14 @@
     function openModal(index) {
         currentModalIndex = index;
         const l = alphabet[index];
-        document.getElementById('modalLetter').textContent = l.letter;
+        const modalLetter = document.getElementById('modalLetter');
+        modalLetter.innerHTML = `${l.letter}<span style="font-size: 3.2rem; font-family: var(--font-body); margin-left: 3px;">${l.letter.toLowerCase()}</span>`;
+        modalLetter.className = 'modal-letter ' + (l.type === 'vowel' ? 'letter-vowel' : 'letter-consonant');
         
-        // Use image or fallback to hand emoji
-        let imgChar = l.letter.toLowerCase().charAt(0);
-        let imgSrc = '/static/img/alphabet/' + imgChar + '.png';
-        const imgHtml = `<img src="${imgSrc}" style="width:75%; height:75%; object-fit:contain;" onerror="this.outerHTML='&lt;span&gt;${l.hand}&lt;/span&gt;'">`;
-        document.getElementById('modalHand').innerHTML = imgHtml;
+        // Setup Video
+        const videoEl = document.getElementById('modalVideo');
+        videoEl.src = '/static/img/pron/' + l.letter + '.mp4';
+        videoEl.play().catch(e => console.log('Autoplay prevented or waiting for interaction'));
         
         document.getElementById('modalDesc').textContent = l.desc;
         
@@ -566,8 +700,60 @@
         document.getElementById('letterModal').classList.add('active');
     }
 
+    let webcamStream = null;
+
+    function togglePractice() {
+        const wrapper = document.getElementById('modalWrapper');
+        wrapper.classList.toggle('practice-active');
+        
+        if (wrapper.classList.contains('practice-active')) {
+            startWebcam();
+        } else {
+            stopWebcam();
+        }
+    }
+
+    async function startWebcam() {
+        const status = document.getElementById('webcamStatus');
+        const video = document.getElementById('userWebcam');
+        status.style.display = 'block';
+        status.textContent = 'Kamera ulanmoqda...';
+        try {
+            webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = webcamStream;
+            status.style.display = 'none';
+        } catch (err) {
+            status.textContent = 'Kameraga ulanib bo\'lmadi 😔';
+            console.error(err);
+        }
+    }
+
+    function stopWebcam() {
+        if (webcamStream) {
+            webcamStream.getTracks().forEach(track => track.stop());
+            webcamStream = null;
+        }
+    }
+
     function closeModal() {
         document.getElementById('letterModal').classList.remove('active');
+        document.getElementById('modalVideo').pause();
+        const wrapper = document.getElementById('modalWrapper');
+        if (wrapper.classList.contains('practice-active')) {
+            togglePractice();
+        }
+    }
+
+    function toggleMute(e) {
+        if(e) e.stopPropagation();
+        const v = document.getElementById('modalVideo');
+        const icon = document.getElementById('muteIcon');
+        v.muted = !v.muted;
+        if(v.muted) {
+            icon.className = 'fa-solid fa-volume-xmark';
+        } else {
+            icon.className = 'fa-solid fa-volume-high';
+        }
     }
 
     function navigateLetter(dir) {
