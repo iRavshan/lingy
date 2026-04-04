@@ -208,47 +208,26 @@
         }
         .btn-submit:active { transform: translateY(0); }
 
-        /* Social Login */
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin: 25px 0;
-            font-weight: 500;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .divider::before { margin-right: 15px; }
-        .divider::after { margin-left: 15px; }
-
-        .social-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .btn-social {
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            background: transparent;
+        .message-alert {
+            padding: 14px 18px;
             border-radius: 12px;
-            color: var(--text-main);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: var(--font-body);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
             font-weight: 600;
+            line-height: 1.5;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
-        .btn-social:hover { background: var(--bg-card); border-color: var(--primary); color: var(--primary); }
-        .btn-social img { width: 20px; height: 20px; }
+        .error-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
 
         .auth-footer {
             text-align: center;
@@ -278,7 +257,7 @@
 
     <!-- Navigation -->
     <nav class="top-nav">
-        <a href="{% url 'home' %}" class="logo">
+        <a href="{% url 'path' %}" class="logo">
             <img src="{% static '/img/logo.png' %}" alt="" style="width: 32px"> Remu
         </a>
         <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-moon"></i></button>
@@ -292,9 +271,12 @@
         </div>
 
         {% if messages %}
-            <div class="messages" style="margin-bottom: 20px; text-align: center;">
+            <div class="message-alert error-alert">
                 {% for message in messages %}
-                    <p style="color: var(--danger); font-size: 0.95rem; font-weight: 600;">{{ message }}</p>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-top: 4px;"></i>
+                        <span>{{ message }}</span>
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -303,13 +285,13 @@
             {% csrf_token %}
             <div class="input-group">
                 <label>Elektron pochta</label>
-                <input type="email" name="email" class="input-field" placeholder="ismingiz@email.com" required>
+                <input type="email" name="email" class="input-field" placeholder="Pochta manzilingiz" required>
                 <i class="fa-solid fa-envelope input-icon"></i>
             </div>
             
             <div class="input-group" style="margin-bottom: 10px;">
-                <label>Maxfiy so'z</label>
-                <input type="password" name="password" class="input-field" placeholder="••••••••" required>
+                <label>Parol</label>
+                <input type="password" name="password" class="input-field" placeholder="Parol" required>
                 <i class="fa-solid fa-lock input-icon"></i>
             </div>
             
@@ -317,17 +299,6 @@
 
             <button type="submit" class="btn-submit">Tizimga kirish</button>
         </form>
-
-        <div class="divider">yoki davom eting</div>
-
-        <div class="social-btns">
-            <button class="btn-social">
-                <i class="fa-brands fa-google" style="color:#ea4335"></i> Google
-            </button>
-            <button class="btn-social">
-                <i class="fa-brands fa-facebook" style="color:#1877f2"></i> Facebook
-            </button>
-        </div>
 
         <div class="auth-footer">
             Akkauntingiz yo'qmi? <a href="{% url 'signup' %}">Ro'yxatdan o'tish</a>

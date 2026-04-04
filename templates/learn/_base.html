@@ -822,6 +822,9 @@
                 <a href="{% url 'path' %}" class="{% if request.resolver_match.url_name == 'path' %}active{% endif %}">
                     <i class="fa-solid fa-house"></i> O'rganish
                 </a>
+                <a href="{% url 'translator' %}" class="{% if request.resolver_match.url_name == 'translator' %}active{% endif %}">
+                    <i class="fa-solid fa-hands-asl-interpreting"></i> Tarjimon
+                </a>
                 <a href="{% url 'alphabet' %}" class="{% if request.resolver_match.url_name == 'alphabet' %}active{% endif %}">
                     <i class="fa-solid fa-hand-sparkles"></i> Alifbo
                 </a>
@@ -839,9 +842,9 @@
                         <a href="#"><i class="fa-solid fa-graduation-cap"></i> Daktil Edu</a>
                         <a href="#"><i class="fa-solid fa-briefcase"></i> Daktil Commercials</a>
                         <div class="dropdown-divider"></div>
-                        <a href="#"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
-                        <a href="#"><i class="fa-solid fa-circle-question"></i> Yordam</a>
-                        <a href="{% url 'login' %}" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Chiqish</a>
+                        <a href="{% url 'settings' %}"><i class="fa-solid fa-gear"></i> Sozlamalar</a>
+                        <a href="{% url 'contact' %}"><i class="fa-solid fa-circle-question"></i> Yordam</a>
+                        <a href="{% url 'logout' %}" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Chiqish</a>
                     </div>
                 </div>
             </div>
@@ -863,12 +866,18 @@
             {% endblock %}
         </main>
 
+        {% block right_panel %}{% endblock %}
+
         <!-- Mobile Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="bottom-nav-inner">
                 <a href="{% url 'path' %}" class="nav-tab {% if request.resolver_match.url_name == 'path' %}active{% endif %}">
                     <i class="fa-solid fa-house"></i>
                     <span>O'rganish</span>
+                </a>
+                <a href="{% url 'translator' %}" class="nav-tab {% if request.resolver_match.url_name == 'translator' %}active{% endif %}">
+                    <i class="fa-solid fa-hands-asl-interpreting"></i>
+                    <span>Tarjimon</span>
                 </a>
                 <a href="{% url 'alphabet' %}" class="nav-tab {% if request.resolver_match.url_name == 'alphabet' %}active{% endif %}">
                     <i class="fa-solid fa-hand-sparkles"></i>

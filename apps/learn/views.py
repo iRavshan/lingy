@@ -8,3 +8,6 @@ def alphabet_view(request):
 
 def dictionary_view(request):
     return render(request, 'learn/dictionary.html')
+
+def translator_view(request):
+    return render(request, 'learn/translator.html')

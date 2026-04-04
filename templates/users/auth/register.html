@@ -199,46 +199,26 @@
         }
         .btn-submit:active { transform: translateY(0); }
 
-        /* Social Login */
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin: 20px 0;
-            font-weight: 500;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .divider::before { margin-right: 15px; }
-        .divider::after { margin-left: 15px; }
-
-        .social-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .btn-social {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            background: transparent;
+        .message-alert {
+            padding: 14px 18px;
             border-radius: 12px;
-            color: var(--text-main);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: var(--font-body);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
             font-weight: 600;
+            line-height: 1.5;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
-        .btn-social:hover { background: var(--bg-card); border-color: var(--primary); color: var(--primary); }
+        .error-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
 
         .auth-footer {
             text-align: center;
@@ -282,9 +262,12 @@
         </div>
 
         {% if messages %}
-            <div class="messages" style="margin-bottom: 20px; text-align: center;">
+            <div class="message-alert error-alert">
                 {% for message in messages %}
-                    <p style="color: var(--danger); font-size: 0.95rem; font-weight: 600;">{{ message }}</p>
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-top: 4px;"></i>
+                        <span>{{ message }}</span>
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -292,7 +275,7 @@
         <form action="{% url 'signup' %}" method="POST">
             {% csrf_token %}
             <div class="input-group">
-                <label>To'liq ismingiz</label>
+                <label>Ismingiz</label>
                 <input type="text" name="full_name" class="input-field" placeholder="Masalan: Sardorbek" required>
                 <i class="fa-solid fa-user input-icon"></i>
             </div>
@@ -304,25 +287,14 @@
             </div>
             
             <div class="input-group">
-                <label>Maxfiy so'z</label>
+                <label>Parol</label>
                 <input type="password" name="password" class="input-field" placeholder="••••••••" required>
                 <i class="fa-solid fa-lock input-icon"></i>
             </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 15px; margin-top: 5px;">Ro'yxatdan o'tish orqali siz bizning <a href="{% url 'terms' %}" style="color: var(--primary); text-decoration: none;">Foydalanish shartlari</a> va <a href="{% url 'privacy' %}" style="color: var(--primary); text-decoration: none;">Maxfiylik siyosatiga</a> rozilik bildirasiz.</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 15px; margin-top: 5px;">Ro'yxatdan o'tish orqali siz bizning <a href="{% url 'terms' %}" style="color: var(--primary); text-decoration: none;">foydalanish shartlari</a> va <a href="{% url 'privacy' %}" style="color: var(--primary); text-decoration: none;">maxfiylik siyosatiga</a> rozilik bildirasiz.</p>
             
             <button type="submit" class="btn-submit">Ro'yxatdan o'tish</button>
         </form>
-
-        <div class="divider">yoki davom eting</div>
-
-        <div class="social-btns">
-            <button class="btn-social">
-                <i class="fa-brands fa-google" style="color:#ea4335"></i> Google
-            </button>
-            <button class="btn-social">
-                <i class="fa-brands fa-apple" style="font-size: 1.2rem;"></i> Apple
-            </button>
-        </div>
 
         <div class="auth-footer">
             Akkauntingiz bormi? <a href="{% url 'login' %}">Tizimga kirish</a>

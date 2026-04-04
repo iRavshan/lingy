@@ -1,0 +1,250 @@
+{% extends 'learn/_base.html' %}
+{% block title %}Onlayn tarjimon{% endblock %}
+
+{% block content %}
+<style>
+    .translator-hub {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .translator-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .translator-header h1 {
+        font-family: var(--font-heading);
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: var(--text-main);
+    }
+    .translator-header p {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+    
+    .translator-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    @media (max-width: 768px) {
+        .translator-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+    
+    .t-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    
+    .t-card-header {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.1);
+    }
+    .t-card-title {
+        font-weight: 700;
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--primary);
+    }
+    
+    .t-input-area {
+        padding: 24px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .t-textarea {
+        width: 100%;
+        min-height: 220px;
+        background: transparent;
+        border: none;
+        resize: none;
+        color: var(--text-main);
+        font-size: 1.15rem;
+        font-family: var(--font-body);
+        outline: none;
+        line-height: 1.6;
+    }
+    .t-textarea::placeholder {
+        color: var(--text-muted);
+        opacity: 0.6;
+    }
+    
+    .t-actions {
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border-color);
+        background: rgba(0,0,0,0.05);
+    }
+    
+    .btn-action {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1.1rem;
+    }
+    .btn-action:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+        background: var(--primary-light);
+        transform: translateY(-2px);
+    }
+    
+    .btn-translate {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(99,102,241,0.25);
+    }
+    .btn-translate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+    }
+    .btn-translate:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 10px rgba(99,102,241,0.2);
+    }
+    
+    .t-video-area {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 320px;
+        background: #000;
+        position: relative;
+    }
+    .t-video-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        color: rgba(255,255,255,0.4);
+        text-align: center;
+        padding: 20px;
+    }
+    .t-video-placeholder i {
+        font-size: 3.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .t-video-controls {
+        position: absolute;
+        bottom: 20px;
+        display: none; /* Add flex logic when video plays */
+        gap: 20px;
+        background: rgba(0,0,0,0.6);
+        padding: 12px 25px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .t-video-controls button {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .t-video-controls button:hover {
+        color: var(--primary);
+        transform: scale(1.1);
+    }
+</style>
+
+<div class="translator-hub">
+    <div class="translator-header">
+        <h1>Surdo tarjimon</h1>
+        <p>Istalgan so'z yoki gapni yozing va uning imo-ishoradagi holatini o'rganing.</p>
+    </div>
+
+    <div class="translator-grid">
+        <!-- Input Card -->
+        <div class="t-card">
+            <div class="t-card-header">
+                <div class="t-card-title">
+                    <i class="fa-solid fa-keyboard"></i> O'zbek tili
+                </div>
+                <button class="btn-action" title="Tozalash" onclick="document.getElementById('t-input').value=''">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+            <div class="t-input-area">
+                <textarea id="t-input" class="t-textarea" placeholder="Matnni bu yerga kiriting... Masalan: Maktabga borgim kelyapti" autofocus></textarea>
+            </div>
+            <div class="t-actions">
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn-action" title="Ovoz bilan kiritish (Tez kunda)">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                </div>
+                <button class="btn-translate">
+                    Hoziroq tarjima <i class="fa-solid fa-language" style="margin-left: 8px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Video Output Card -->
+        <div class="t-card">
+            <div class="t-card-header">
+                <div class="t-card-title">
+                    <i class="fa-solid fa-video"></i> UzSL Tarjima
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> Kutmoqda
+                </div>
+            </div>
+            <div class="t-video-area">
+                <!-- Placeholder when no video is playing -->
+                <div class="t-video-placeholder">
+                    <i class="fa-solid fa-hands-asl-interpreting"></i>
+                    <p style="font-size: 0.95rem;">Natijani ko'rish uchun "Hoziroq tarjima"<br>tugmasini bosing</p>
+                </div>
+                
+                <!-- Video Controls (hidden until playing) -->
+                <div class="t-video-controls">
+                    <button><i class="fa-solid fa-rotate-left"></i></button>
+                    <button><i class="fa-solid fa-pause"></i></button>
+                    <button><i class="fa-solid fa-gear"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

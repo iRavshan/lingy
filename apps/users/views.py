@@ -15,7 +15,7 @@ def login_view(request):
             login(request, user)
             return redirect('path')
         else:
-            messages.error(request, "E-pochta yoki parol noto'g'ri kiritildi.")
+            messages.error(request, "Elektron pochta yoki parol noto'g'ri kiritildi.")
             
     return render(request, 'users/auth/login.html')
 
@@ -49,7 +49,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-
+@login_required
 def auth_success_view(request):
     return render(request, 'users/auth/auth_success.html')
 
