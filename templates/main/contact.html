@@ -1,0 +1,194 @@
+{% extends 'main/_base.html' %}
+{% block title %}Biz bilan aloqa | Remu{% endblock %}
+
+{% block content %}
+    <style>
+        .page-content {
+            padding: 120px 0 60px;
+            color: var(--text-main);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+        }
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .info-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+        .info-text p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ Styles */
+        .faq-section {
+            margin-top: 80px;
+        }
+        .faq-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--text-main);
+        }
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .faq-item details {
+            width: 100%;
+        }
+        .faq-item summary {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .faq-item summary::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        .faq-item details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .faq-item .faq-content {
+            padding: 0 20px 20px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: -5px;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <section class="page-content">
+        <div class="container" style="max-width: 1000px;">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 15px;"><span class="text-gradient">Aloqa</span></h1>
+                <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6;">Savollaringiz bormi yoki loyihada hamkorlik qilmoqchimisiz? Bizga yozing, biz albatta javob beramiz.</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Manzil</h3>
+                        <p>Qarshi shahri, Islom Karimov ko'chasi</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Email</h3>
+                        <a href="mailto:remu@gmail.com" target="_blank">remu@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="info-text">
+                        <h3>Telefon</h3>
+                        <a href="tel:+998904439023">+998904439023</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2 class="faq-title">Ko'p beriladigan <span class="text-gradient">savollar</span></h2>
+                
+                <div class="faq-item">
+                    <details>
+                        <summary>Remu platformasidan foydalanish bepulmi?</summary>
+                        <div class="faq-content">
+                            Ha, hozirgi kunda Remu platformasining asosiy funksiyalaridan foydalanish butunlay bepul. Loyihamiz ijtimoiy hisoblangani uchun keng jamoatchilik uchun ochiq.
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="faq-item">
+                    <details>
+                        <summary>Imo-ishora tilini qanday o'rganishim mumkin?</summary>
+                        <div class="faq-content">
+                            "O'rganish" bo'limi orqali alifbo, lug'at va video qo'llanmalarni ko'rib chiqishingiz mumkin. Shuningdek, darslarni tugatib, yakunida maxsus sertifikatga ham ega bo'lish imkoniyati bor.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>Ilovani oflayn rejimda ishlata olamanmi?</summary>
+                        <div class="faq-content">
+                            Qisman. Tizim maxsus (PWA) texnologiyasi asosida yaratilgan. Saytni qurilmangizga o'rnatib olsangiz, uning ba'zi elementlari va siz asrab qo'ygan lug'atlaringiz internetsiz ham ishlaydi.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>Xatolik topsam qayerga murojaat qilishim kerak?</summary>
+                        <div class="faq-content">
+                            Agar ilovada biror xatolik topsangiz yoki qandaydir g'oyalaringiz bo'lsa, xuddi shu aloqa formasi orqali bizga xabar berishingizni so'raymiz. Har qanday taklif albatta ko'rib chiqiladi.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

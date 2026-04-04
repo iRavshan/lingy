@@ -9,8 +9,16 @@ def home_view(request):
 def about_view(request):
     return render(request, 'main/about.html')
 
+def terms_view(request):
+    return render(request, 'main/terms.html')
+
+def privacy_view(request):
+    return render(request, 'main/privacy.html')
+
+def contact_view(request):
+    return render(request, 'main/contact.html')
+
 def service_worker_view(request):
-    """Serve service worker from root scope for PWA."""
     sw_path = os.path.join(settings.BASE_DIR, 'static', 'sw.js')
     with open(sw_path, 'r') as f:
-        return HttpResponse(f.read(), content_type='application/javascript')
+        return HttpResponse(f.read(), content_type='application/javascript')

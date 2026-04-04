@@ -1,0 +1,66 @@
+{% extends 'main/_base.html' %}
+{% block title %}Maxfiylik siyosati{% endblock %}
+{% load static %}
+{% block content %}
+    <style>
+        .page-content {
+            padding: 120px 0 60px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .page-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .page-content h2 {
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .page-content p {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+        .page-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+        .page-content li {
+            margin-bottom: 10px;
+        }
+    </style>
+    <!-- Content -->
+    <section class="page-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="glass-panel" style="padding: 40px; border-radius: 16px;">
+                <h1>Maxfiylik <span class="text-gradient">Siyosati</span></h1>
+                
+                <p>Oxirgi yangilanish: 2026-yil, 4-Aprel.</p>
+                <p>Biz foydalanuvchilarimizning xavfsizligi va shaxsiy ma'lumotlarining daxlsizligiga alohida ahamiyat beramiz. Ushbu maxfiylik siyosati biz sizning ma'lumotlaringizni qanday yig'ishimiz va himoya qilishimizni bekgilaydi.</p>
+                
+                <h2>1. Yig'iladigan ma'lumotlar turkumlar</h2>
+                <p>Biz faqatgina xizmatni ko'rsatish va platformani yaxshilash maqsadida quyidagi shaxsiy bo'lmagan va shaxsiy ma'lumotlarni yig'ishimiz mumkin:</p>
+                <ul>
+                    <li><strong>Ro'yxatdan o'tish ma'lumotlari:</strong> Siz taqdim etgan ism, manzil, e-mail.</li>
+                    <li><strong>Foydalanish tarixi:</strong> O'zingiz ruxsat bergan hollarda qurilma modeli yoki o'qish/sinf natijalari.</li>
+                    <li><strong>Kamera/Mikrofon ma'lumotlari:</strong> Faqat funksiya orqali ko'rish rejimiga o'tganda (video-tarjimon), ushbu video kadrlar tarjima qilish uchun lokal yoki serverda qayta ishlanadi va uzluksiz o'chirib yuboriladi, saqlanmaydi.</li>
+                </ul>
+
+                <h2>2. Ma'lumotlarni qanday ishlatamiz?</h2>
+                <p>Ma'lumotlaringiz shaxsiy profilingizda dars jarayonini tahlil qilish, tajribangizni oshirish hamda xizmatda uchraydigan kamchiliklarni to'g'rilash uchun qo'llaniladi.</p>
+
+                <h2>3. Ma'lumotni saqlash xavfsizligi</h2>
+                <p>Biz barcha texnik va dasturiy ta'minotni maksimal darajada xavfsiz boshqaramiz. Tizim foydalanuvchi ma'lumotlarini uchinchi shaxslarga ulanishiga yo'l qo'ymaydi.</p>
+
+                <h2>4. O'zgartirish kiritish</h2>
+                <p>Maxfiylik siyosatida o'zgartirishlar yuzaga kelishi mumkin, mazkur sahifa orqali barcha qoidalar tekshirib borilishi kerak.</p>
+
+                <h2>5. Aloqa</h2>
+                <p>O'zingizni tashvishga solgan savol bor bo'lsa, xohlagan ijtimoiy tarmoq doirasida <a href="{% url 'about' %}" style="color: var(--secondary);">Biz bilan aloqaga</a> chiqing.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'main/_base.html' %}
+{% block title %}Foydalanish shartlari{% endblock %}
+{% load static %}
+{% block content %}
+    <style>
+        .page-content {
+            padding: 120px 0 60px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .page-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .page-content h2 {
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .page-content p {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+        .page-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+        .page-content li {
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <!-- Content -->
+    <section class="page-content">
+        <div class="container" style="max-width: 800px;">
+            <div class="glass-panel" style="padding: 40px; border-radius: 16px;">
+                <h1>Foydalanish <span class="text-gradient">Shartlari</span></h1>
+                
+                <p>Oxirgi yangilanish: 2026-yil, 4-Aprel.</p>
+                <p>Ushbu Foydalanish shartlari ("Shartlar") siz va UzSL Tarjimon (O'zbek Imo-ishora Tili Tarjimoni) o'rtasidagi huquq va majburiyatlarni belgilaydi. Bizning platformamizdan foydalanish orqali siz ushbu shartlarga rozi bo'lasiz.</p>
+                
+                <h2>1. Xizmat maqsadi</h2>
+                <p>Bizning xizmatimiz sun'iy intellekt orqali matn yoki nutqni imo-ishora tiliga o'girish imkoniyatini taqdim etadi. Platforma faqat ta'lim, muloqotni rivojlantirish va ijtimoiy yordam ko'rsatish maqsadlariga xizmat qiladi.</p>
+                
+                <h2>2. Foydalanuvchi majburiyatlari</h2>
+                <ul>
+                    <li>Platformadan noqonuniy yo'llar bilan foydalanmaslik.</li>
+                    <li>Tizim ishlashiga putur yetkazuvchi harakatlar, xususan zararli kodlar yoki spam jo'natmaslik.</li>
+                    <li>Agarda hisob yaratsangiz (Account), uning xavfsizligi va parolini sir saqlashingiz sizning javobgarligingizdadir.</li>
+                </ul>
+
+                <h2>3. Intellektual mulk</h2>
+                <p>Ushbu platformadagi barcha materiallar (dizayn, logotiplar, matn, videodasturlar, tarjima algoritmlari) UzSL Tarjimon jamoasiga tegishli hisoblanadi. Ulardan ruxsatsiz foydalanish va nusxa olish qat'iyan man etiladi.</p>
+
+                <h2>4. O'zgartirish kiritish</h2>
+                <p>Biz istalgan vaqtda ushbu foydalanish shartlariga o'zgartirish kiritish huquqini o'zimizda saqlab qolamiz. O'zgarishlar e'lon qilingan vaqtdan kuchga kiradi.</p>
+
+                <h2>5. Bog'lanish</h2>
+                <p>Agar sizda ushbu shartlar yuzasidan biron-bir savol bo'lsa, iltimos <a href="{% url 'about' %}" style="color: var(--primary);">Biz haqimizda</a> sahifasidagi manzillar orqali biz bilan bog'laning.</p>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
