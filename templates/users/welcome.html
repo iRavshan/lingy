@@ -1,0 +1,568 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xush kelibsiz — Remu</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="{% static 'learn/assets/theme.js' %}"></script>
+
+    <style>
+        :root, [data-theme="dark"] {
+            --bg-main: #0B0B13;
+            --bg-card: rgba(22, 24, 43, 0.7);
+            --bg-secondary: #131422;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: rgba(99, 102, 241, 0.12);
+            --secondary: #ec4899;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --glass-blur: blur(20px);
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f4f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-secondary: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient background glows */
+        .glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glow-1 { width: 500px; height: 500px; top: -150px; left: -100px; background: var(--primary); opacity: 0.08; }
+        .glow-2 { width: 400px; height: 400px; bottom: -100px; right: -50px; background: var(--secondary); opacity: 0.06; }
+        .glow-3 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--primary); opacity: 0.04; }
+
+        /* Main container */
+        .onboarding-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 560px;
+            padding: 24px;
+        }
+
+        /* Step card */
+        .step {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: stepIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .step.active {
+            display: flex;
+        }
+        @keyframes stepIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Progress bar */
+        .progress-wrap {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            margin-bottom: 50px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Step icon */
+        .step-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .step-icon.purple { background: var(--primary-light); color: var(--primary); }
+        .step-icon.pink { background: rgba(236, 72, 153, 0.12); color: var(--secondary); }
+        .step-icon.green { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+        .step-icon.gold { background: rgba(251, 191, 36, 0.12); color: #f59e0b; }
+
+        .step-icon::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px dashed var(--border-color);
+            animation: iconSpin 12s linear infinite;
+        }
+        @keyframes iconSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .step-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .step-title span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 420px;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        /* Options list */
+        .options {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px 22px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-align: left;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: var(--glass-blur);
+        }
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+        }
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .option-btn .opt-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .option-btn.selected .opt-icon {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .option-btn .opt-text {
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        /* Features grid (welcome step) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+            margin-bottom: 35px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .feature-card .fc-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .feature-card .fc-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .feature-card .fc-desc {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            line-height: 1.4;
+        }
+
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+        .btn-next {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            box-shadow: 0 5px 0 #4338ca, 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #4338ca, 0 12px 25px rgba(99, 102, 241, 0.4);
+        }
+        .btn-next:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #4338ca;
+        }
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-skip {
+            padding: 16px 24px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 16px;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-skip:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+        }
+
+        /* Final step celebration */
+        .celebration-emoji {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: celebBounce 1s ease-in-out infinite;
+        }
+        @keyframes celebBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            top: -20px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            to { top: 110vh; transform: rotate(720deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .step-title { font-size: 1.6rem; }
+            .step-desc { font-size: 0.95rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .option-btn { padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+
+    <div class="onboarding-container">
+        <div class="progress-wrap">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <!-- Step 0: Welcome -->
+        <div class="step active" id="step-0">
+            <div class="step-icon purple">
+                <i class="fa-solid fa-hands-asl-interpreting"></i>
+            </div>
+            <h1 class="step-title">Xush kelibsiz, <span>{{ user.first_name }}</span>!</h1>
+            <p class="step-desc">Remu — O'zbek imo-ishora tilini interaktiv va qiziqarli tarzda o'rganish platformasi</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="fc-icon">🤟</span>
+                    <div class="fc-title">Alifbo</div>
+                    <div class="fc-desc">Daktil alifbosini bosqichma-bosqich o'rganing</div>
+                </div>
+                <div class="feature-card">
+                    <span class="fc-icon">📖</span>
+                    <div class="fc-title">Lug'at</div>
+                    <div class="fc-desc">Kundalik so'zlarning imo-ishoradagi ko'rinishi</div>
+                </div>
+                <div class="feature-card">
+                    <span class="fc-icon">📹</span>
+                    <div class="fc-title">Mashq</div>
+                    <div class="fc-desc">Veb-kamera orqali real-time amaliyot</div>
+                </div>
+                <div class="feature-card">
+                    <span class="fc-icon">🏆</span>
+                    <div class="fc-title">Sertifikat</div>
+                    <div class="fc-desc">Kursni tugatib sertifikat oling</div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-next" onclick="goStep(1)">Boshlash <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 1: Purpose -->
+        <div class="step" id="step-1">
+            <div class="step-icon pink">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h1 class="step-title">Nima uchun <span>imo-ishora</span> tilini o'rganmoqchisiz?</h1>
+            <p class="step-desc">Bu bizga sizga mos o'quv rejasini tavsiya qilishga yordam beradi</p>
+
+            <div class="options" id="purposeOptions">
+                <button class="option-btn" data-value="deaf_family" onclick="selectOption(this, 'purpose')">
+                    <span class="opt-icon">👨‍👩‍👧</span>
+                    <span class="opt-text">Oilamda eshitish qobiliyati cheklangan shaxs bor</span>
+                </button>
+                <button class="option-btn" data-value="professional" onclick="selectOption(this, 'purpose')">
+                    <span class="opt-icon">💼</span>
+                    <span class="opt-text">Kasbiy maqsadda (tarjimon, o'qituvchi va h.k.)</span>
+                </button>
+                <button class="option-btn" data-value="curiosity" onclick="selectOption(this, 'purpose')">
+                    <span class="opt-icon">💡</span>
+                    <span class="opt-text">Qiziqish va shaxsiy rivojlanish uchun</span>
+                </button>
+                <button class="option-btn" data-value="student" onclick="selectOption(this, 'purpose')">
+                    <span class="opt-icon">🎓</span>
+                    <span class="opt-text">O'quv jarayonida talab qilinadi</span>
+                </button>
+                <button class="option-btn" data-value="community" onclick="selectOption(this, 'purpose')">
+                    <span class="opt-icon">🤝</span>
+                    <span class="opt-text">Jamiyatda yordam berish uchun</span>
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-skip" onclick="goStep(2)">O'tkazib yuborish</button>
+                <button class="btn-next" id="btn-purpose" disabled onclick="goStep(2)">Keyingi <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 2: Level -->
+        <div class="step" id="step-2">
+            <div class="step-icon green">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h1 class="step-title">Hozirgi <span>darajangiz</span> qanday?</h1>
+            <p class="step-desc">Biz sizga eng mos bosqichdan boshlanishingizni ta'minlaymiz</p>
+
+            <div class="options" id="levelOptions">
+                <button class="option-btn" data-value="beginner" onclick="selectOption(this, 'level')">
+                    <span class="opt-icon">🌱</span>
+                    <span class="opt-text">Hech narsa bilmayman — noldan boshlayman</span>
+                </button>
+                <button class="option-btn" data-value="basic" onclick="selectOption(this, 'level')">
+                    <span class="opt-icon">📝</span>
+                    <span class="opt-text">Bir nechta so'z va harflarni bilaman</span>
+                </button>
+                <button class="option-btn" data-value="intermediate" onclick="selectOption(this, 'level')">
+                    <span class="opt-icon">🚀</span>
+                    <span class="opt-text">Oddiy gaplarni tushunaman va ishlataman</span>
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-skip" onclick="goStep(3)">O'tkazib yuborish</button>
+                <button class="btn-next" id="btn-level" disabled onclick="goStep(3)">Keyingi <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 3: Daily Goal -->
+        <div class="step" id="step-3">
+            <div class="step-icon gold">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <h1 class="step-title">Kundalik <span>maqsadingiz</span>?</h1>
+            <p class="step-desc">Qancha vaqt ajratishingiz mumkin — har qanday tezlik bilan o'rganish mumkin</p>
+
+            <div class="options" id="goalOptions">
+                <button class="option-btn" data-value="casual" onclick="selectOption(this, 'goal')">
+                    <span class="opt-icon">☕</span>
+                    <span class="opt-text">Kuniga 5 daqiqa — bo'sh vaqtimda</span>
+                </button>
+                <button class="option-btn" data-value="regular" onclick="selectOption(this, 'goal')">
+                    <span class="opt-icon">📚</span>
+                    <span class="opt-text">Kuniga 15 daqiqa — muntazam</span>
+                </button>
+                <button class="option-btn" data-value="serious" onclick="selectOption(this, 'goal')">
+                    <span class="opt-icon">🔥</span>
+                    <span class="opt-text">Kuniga 30+ daqiqa — jiddiy o'rganaman</span>
+                </button>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-skip" onclick="submitOnboarding()">O'tkazib yuborish</button>
+                <button class="btn-next" id="btn-goal" disabled onclick="submitOnboarding()">Tayyor! <i class="fa-solid fa-check" style="margin-left:8px;"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 4: Celebration -->
+        <div class="step" id="step-4">
+            <div class="confetti-container" id="confettiBox"></div>
+            <div class="celebration-emoji">🎉</div>
+            <h1 class="step-title">Hammasi <span>tayyor</span>!</h1>
+            <p class="step-desc">Siz endi o'rganishni boshlashga tayyorsiz. Har kuni bir necha daqiqa ajrating — natija sizni hayratda qoldiradi!</p>
+
+            <div class="nav-buttons" style="margin-top: 10px;">
+                <button class="btn-next" onclick="window.location.href='{% url 'path' %}'">
+                    O'rganishni boshlash <i class="fa-solid fa-rocket" style="margin-left:8px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 5; // 0-4
+        const answers = { purpose: '', level: '', goal: '' };
+
+        function goStep(n) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            currentStep = n;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById('progressFill').style.width = `${(currentStep / (totalSteps - 1)) * 100}%`;
+
+            if (n === 4) {
+                launchConfetti();
+            }
+        }
+
+        function selectOption(btn, field) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            answers[field] = btn.dataset.value;
+
+            // Enable the next button
+            const btnMap = { purpose: 'btn-purpose', level: 'btn-level', goal: 'btn-goal' };
+            document.getElementById(btnMap[field]).disabled = false;
+        }
+
+        function submitOnboarding() {
+            // Send answers to backend
+            fetch('{% url "welcome" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(answers)
+            }).then(res => {
+                goStep(4);
+            }).catch(err => {
+                console.error(err);
+                goStep(4);
+            });
+        }
+
+        function launchConfetti() {
+            const box = document.getElementById('confettiBox');
+            const colors = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+            for (let i = 0; i < 80; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.width = (Math.random() * 8 + 5) + 'px';
+                c.style.height = (Math.random() * 8 + 5) + 'px';
+                c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                c.style.animationDelay = (Math.random() * 1.5) + 's';
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                box.appendChild(c);
+            }
+        }
+    </script>
+</body>
+</html>

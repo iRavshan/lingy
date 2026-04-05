@@ -204,10 +204,175 @@ renderPath();
 {% endblock %}
 
 {% block right_panel %}
+<style>
+    .streak-wrapper {
+        position: relative;
+    }
+    .streak-panel {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        width: 300px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 200;
+        pointer-events: none;
+    }
+    .streak-wrapper:hover .streak-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+    .streak-panel::before {
+        content: '';
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 14px;
+        height: 14px;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        border-left: 1px solid var(--border-color);
+    }
+    .streak-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .streak-header .streak-num {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #f97316;
+        line-height: 1;
+    }
+    .streak-header .streak-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        margin-top: 4px;
+    }
+    .streak-week {
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+    .streak-day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+    }
+    .streak-day .day-name {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    .streak-day .day-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        border: 2px solid var(--border-color);
+        background: var(--bg-card);
+        transition: all 0.2s;
+    }
+    .streak-day .day-icon.active {
+        background: rgba(249, 115, 22, 0.15);
+        border-color: #f97316;
+        color: #f97316;
+    }
+    .streak-day .day-icon.freeze {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: #6366f1;
+        color: #6366f1;
+    }
+    .streak-day .day-icon.missed {
+        background: var(--bg-card);
+        border-color: var(--border-color);
+        color: var(--text-muted);
+        opacity: 0.5;
+    }
+    .streak-day .day-icon.future {
+        background: var(--bg-card);
+        border-color: var(--border-color);
+        color: var(--text-muted);
+        opacity: 0.3;
+    }
+    .streak-day .day-icon.today {
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+    }
+    .streak-day .day-icon.today.freeze {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    .streak-freeze-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        background: rgba(99, 102, 241, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 12px;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+    }
+    .streak-freeze-info i {
+        color: #6366f1;
+        font-size: 1.2rem;
+    }
+    .streak-freeze-info strong {
+        color: var(--text-main);
+    }
+</style>
+
 <aside class="right-panel">
     <div class="panel-stats">
-        <div class="stat-item stat-fire" title="Uzlukluksizlik kunlari">
-            <i class="fa-solid fa-fire"></i> <span id="streakCountDesktop">3</span>
+        <div class="streak-wrapper">
+            <div class="stat-item stat-fire" title="Uzlukluksizlik kunlari" style="cursor: pointer;">
+                <i class="fa-solid fa-fire"></i> <span id="streakCountDesktop">{{ streak_count|default:'0' }}</span>
+            </div>
+            <div class="streak-panel">
+                <div class="streak-header">
+                    <div class="streak-num">{{ streak_count|default:'0' }}</div>
+                    <div class="streak-label">kunlik seriya</div>
+                </div>
+                <div class="streak-week">
+                    {% for day in weekly_streak %}
+                    <div class="streak-day">
+                        <span class="day-name">{{ day.name }}</span>
+                        <div class="day-icon {{ day.status }}{% if day.is_today %} today{% endif %}">
+                            {% if day.status == 'active' %}
+                                <i class="fa-solid fa-fire"></i>
+                            {% elif day.status == 'freeze' %}
+                                <i class="fa-solid fa-fire" style="color: #6366f1;"></i>
+                            {% elif day.status == 'missed' %}
+                                <i class="fa-solid fa-xmark"></i>
+                            {% else %}
+                                <i class="fa-solid fa-minus"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="streak-freeze-info">
+                    <i class="fa-solid fa-snowflake"></i>
+                    <span>Streak muzlatish: <strong>{{ streak_freezes_left }}/3</strong> qoldi</span>
+                </div>
+            </div>
         </div>
         <div class="stat-item stat-bolt" title="Yig'ilgan tajriba (XP)">
             <i class="fa-solid fa-bolt"></i> <span id="gemCountDesktop">120 XP</span>

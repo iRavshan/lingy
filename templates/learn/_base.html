@@ -857,7 +857,7 @@
             <nav class="mobile-top-bar">
                 <a href="#" class="mobile-logo">Remu</a>
                 <div class="top-stats">
-                    <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span id="streakCountMobile">3</span></div>
+                    <div class="stat-item stat-fire"><i class="fa-solid fa-fire"></i> <span id="streakCountMobile">{{ streak_count|default:'0' }}</span></div>
                     <div class="stat-item stat-bolt"><i class="fa-solid fa-bolt"></i> <span id="gemCountMobile">120</span></div>
                     <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-sun"></i></button>
                 </div>

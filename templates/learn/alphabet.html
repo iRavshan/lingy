@@ -558,35 +558,35 @@
     <script>
     // Full Uzbek alphabet data with relevant images
     const alphabet = [
-        { letter: "A", type: "vowel", emoji: "🍎", word: "Olma", desc: "Kaft ochiq holda ko'rsatiladi. O'zbek alifbosining birinchi harfi.", pron: "a" },
+        { letter: "A", type: "vowel", emoji: "🌹", word: "Atirgul", desc: "Kaft ochiq holda ko'rsatiladi. O'zbek alifbosining birinchi harfi.", pron: "a" },
         { letter: "B", type: "consonant", emoji: "👶", word: "Bola", desc: "Barmoqlar yig'ilgan, bosh barmoq yoniga qo'yiladi.", pron: "b" },
         { letter: "D", type: "consonant", emoji: "🌳", word: "Daraxt", desc: "Ko'rsatkich barmoq yuqoriga, qolganlari yig'ilgan.", pron: "d" },
         { letter: "E", type: "vowel", emoji: "🚪", word: "Eshik", desc: "Barmoqlar ochiq, kaft tashqariga qaragan holda.", pron: "e" },
-        { letter: "F", type: "consonant", emoji: "🧪", word: "Fan", desc: "Bosh va ko'rsatkich barmoqlar bir-biriga tegadi.", pron: "f" },
+        { letter: "F", type: "consonant", emoji: "🐘", word: "Fil", desc: "Bosh va ko'rsatkich barmoqlar bir-biriga tegadi.", pron: "f" },
         { letter: "G", type: "consonant", emoji: "💐", word: "Gul", desc: "Ko'rsatkich barmoq yon tomonga qaratiladi.", pron: "g" },
         { letter: "H", type: "consonant", emoji: "🌬️", word: "Havo", desc: "Kaft yon tomonga qaragan, barmoqlar yopiq.", pron: "h" },
         { letter: "I", type: "vowel", emoji: "🐍", word: "Ilon", desc: "Faqat ko'rsatkich barmoq yuqoriga ko'tariladi.", pron: "i" },
-        { letter: "J", type: "consonant", emoji: "🗺️", word: "Joy", desc: "Ko'rsatkich va o'rta barmoqlar chalkashtiriladi.", pron: "j" },
+        { letter: "J", type: "consonant", emoji: "🐥", word: "Jo'ja", desc: "Ko'rsatkich va o'rta barmoqlar chalkashtiriladi.", pron: "j" },
         { letter: "K", type: "consonant", emoji: "📖", word: "Kitob", desc: "Barmoqlar yuqoriga ochilgan, kaft oldinga.", pron: "k" },
         { letter: "L", type: "consonant", emoji: "🍋", word: "Limon", desc: "Bosh, ko'rsatkich va jimjiloq barmoqlar ochiq.", pron: "l" },
         { letter: "M", type: "consonant", emoji: "🏫", word: "Maktab", desc: "Barmoqlar to'liq yig'ilgan musht holati.", pron: "m" },
         { letter: "N", type: "consonant", emoji: "🍞", word: "Non", desc: "Bosh barmoq ko'rsatkich va o'rta barmoqlar orasida.", pron: "n" },
         { letter: "O", type: "vowel", emoji: "🔥", word: "Olov", desc: "Bosh va ko'rsatkich barmoqlar doira hosil qiladi.", pron: "o" },
-        { letter: "P", type: "consonant", emoji: "🦋", word: "Parvona", desc: "Ko'rsatkich barmoq pastga qaratilgan.", pron: "p" },
+        { letter: "P", type: "consonant", emoji: "💵", word: "Pul", desc: "Ko'rsatkich barmoq pastga qaratilgan.", pron: "p" },
         { letter: "Q", type: "consonant", emoji: "☀️", word: "Quyosh", desc: "Ko'rsatkich va jimjiloq barmoqlar ko'tarilgan.", pron: "q" },
         { letter: "R", type: "consonant", emoji: "🖼️", word: "Rasm", desc: "Ko'rsatkich va o'rta barmoqlar V shaklida.", pron: "r" },
         { letter: "S", type: "consonant", emoji: "💧", word: "Suv", desc: "Barmoqlar ochiq, o'rta va nomsiz orasida bo'shliq.", pron: "s" },
-        { letter: "T", type: "consonant", emoji: "⛰️", word: "Tog'", desc: "Bosh barmoq yuqoriga ko'tarilgan.", pron: "t" },
+        { letter: "T", type: "consonant", emoji: "🎂", word: "Tort", desc: "Bosh barmoq yuqoriga ko'tarilgan.", pron: "t" },
         { letter: "U", type: "vowel", emoji: "🏠", word: "Uy", desc: "Qo'l silkitish harakati bilan ifodalanadi.", pron: "u" },
-        { letter: "V", type: "consonant", emoji: "⏰", word: "Vaqt", desc: "Ikki barmoq V shaklida ko'tariladi.", pron: "v" },
+        { letter: "V", type: "consonant", emoji: "🚲", word: "Velosiped", desc: "Ikki barmoq V shaklida ko'tariladi.", pron: "v" },
         { letter: "X", type: "consonant", emoji: "✉️", word: "Xat", desc: "Musht holati, bosh barmoq o'ng tomonda.", pron: "x" },
-        { letter: "Y", type: "consonant", emoji: "💚", word: "Yurak", desc: "Ko'rsatkich barmoq oldinga qaratilgan.", pron: "y" },
+        { letter: "Y", type: "consonant", emoji: "❤️", word: "Yurak", desc: "Ko'rsatkich barmoq oldinga qaratilgan.", pron: "y" },
         { letter: "Z", type: "consonant", emoji: "🪜", word: "Zinа", desc: "Musht holati, ko'rsatkich barmoq engashgan.", pron: "z" },
-        { letter: "Oʻ", type: "vowel", emoji: "🎮", word: "O'yin", desc: "Qo'l pastga qaratilgan holda doira shakli.", pron: "oʻ" },
+        { letter: "Oʻ", type: "vowel", emoji: "🦆", word: "O'rdak", desc: "Qo'l pastga qaratilgan holda doira shakli.", pron: "oʻ" },
         { letter: "Gʻ", type: "consonant", emoji: "🧱", word: "G'isht", desc: "Bosh barmoq va jimjiloq ochiq, qolganlar yig'iq.", pron: "gʻ" },
-        { letter: "Sh", type: "consonant", emoji: "🍬", word: "Shakar", desc: "Ikkala kaft birlashtirilgan holda.", pron: "sh" },
+        { letter: "Sh", type: "consonant", emoji: "🦁", word: "Sher", desc: "Ikkala kaft birlashtirilgan holda.", pron: "sh" },
         { letter: "Ch", type: "consonant", emoji: "🍵", word: "Choy", desc: "Barmoq uchlari bir nuqtada yig'ilgan.", pron: "ch" },
-        { letter: "Ng", type: "consonant", emoji: "🏗️", word: "Inshoot", desc: "Ikkala qo'l birlashtirilgan holda yurak shakli.", pron: "ng" }
+        { letter: "Ng", type: "consonant", emoji: "🥒", word: "Bodring", desc: "Ikkala qo'l birlashtirilgan holda yurak shakli.", pron: "ng" }
     ];
 
     let currentFilter = 'all';

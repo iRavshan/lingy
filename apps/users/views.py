@@ -3,6 +3,9 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from .models import UserProfile
+import json
 
 def login_view(request):
     if request.method == 'POST':
@@ -38,11 +41,39 @@ def signup_view(request):
                 user.last_name = parts[1]
             user.save()
             
+            # Create user profile
+            UserProfile.objects.create(user=user)
+            
             # Log user in directly
-            login(request, user)
-            return redirect('path')
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('welcome')
             
     return render(request, 'users/auth/register.html')
+
+@login_required
+def welcome_view(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            if data.get('purpose'):
+                profile.purpose = data['purpose']
+            if data.get('level'):
+                profile.level = data['level']
+            if data.get('goal'):
+                profile.daily_goal = data['goal']
+            profile.onboarding_completed = True
+            profile.save()
+            return JsonResponse({'status': 'ok'})
+        except Exception:
+            return JsonResponse({'status': 'error'}, status=400)
+    
+    # If onboarding already done, go to path
+    if profile.onboarding_completed:
+        return redirect('path')
+    
+    return render(request, 'users/welcome.html')
 
 @login_required
 def logout_view(request):
