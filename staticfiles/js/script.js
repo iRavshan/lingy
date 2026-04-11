@@ -604,62 +604,7 @@ function switchAppMode(mode) {
     document.getElementById(`mode-${mode}`).style.display = 'grid'; // Note: app-grid uses CSS grid so it needs grid
 }
 
-// Inner Tabs Logic (For Mode 2 Video input tabs)
-function switchVideoTab(tabId) {
-    // Find the current mode's card
-    const container = document.getElementById('mode-video-to-sl');
-    
-    // Update buttons
-    container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    container.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
 
-    // Hide all tabs
-    container.querySelectorAll('.tab-content').forEach(tab => {
-        tab.style.display = 'none';
-        tab.classList.remove('active');
-    });
-
-    // Show selected tab
-    const selectedTab = document.getElementById(`tab-${tabId}`);
-    if(selectedTab) {
-        selectedTab.style.display = 'flex';
-        selectedTab.classList.add('active');
-    }
-
-    // Update Header
-    const title = document.getElementById('video-input-title');
-    const icon = document.getElementById('video-input-icon');
-    if(tabId === 'fayl-video') {
-        title.innerText = "Mahalliy Video fayl";
-        icon.className = "fa-solid fa-cloud-arrow-up text-primary";
-    } else if(tabId === 'havola-video') {
-        title.innerText = "YouTube / Havola";
-        icon.className = "fa-brands fa-youtube text-danger";
-    }
-}
-
-// File Upload Logic
-function handleFileSelect(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        document.getElementById('file-upload-box').style.display = 'none';
-        document.getElementById('selected-file-info').style.display = 'flex';
-        
-        document.getElementById('file-name').innerText = file.name;
-        
-        let fileSize = (file.size / (1024 * 1024)).toFixed(2);
-        document.getElementById('file-size').innerText = `${fileSize} MB`;
-        
-        document.getElementById('file-translate-btn').disabled = false;
-    }
-}
-
-function clearFileSelection() {
-    document.getElementById('file-upload').value = '';
-    document.getElementById('selected-file-info').style.display = 'none';
-    document.getElementById('file-upload-box').style.display = 'flex';
-    document.getElementById('file-translate-btn').disabled = true;
-}
 
 // Bridge: global simulateTranslation triggers the scoped startTranslationMock via button click
 function simulateTranslation() {
@@ -667,32 +612,6 @@ function simulateTranslation() {
     if (btn) btn.click();
 }
 
-// Picture in Picture simulation logic
-function simulateVideoGeneration() {
-    window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Fayl tarjimasi boshlandi...', type: 'success'}}));
-    
-    // UI Loading state
-    document.getElementById('video-pip-placeholder').style.display = 'none';
-    document.getElementById('loading-pip-overlay').style.display = 'flex';
-    document.getElementById('video-pip-status').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Jarayon ketmoqda';
-    document.getElementById('video-pip-status').style.backgroundColor = 'var(--bg-card)';
-    document.getElementById('video-pip-status').style.color = 'var(--text-main)';
-
-    // Mock API Delay
-    setTimeout(() => {
-        document.getElementById('loading-pip-overlay').style.display = 'none';
-        document.getElementById('pip-result-mockup').style.display = 'block';
-        
-        const statusBadge = document.getElementById('video-pip-status');
-        statusBadge.innerHTML = '<i class="fa-solid fa-check-circle"></i> Tayyor';
-        statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
-        statusBadge.style.color = 'var(--success)';
-        
-        document.getElementById('download-pip-btn').disabled = false;
-        
-        window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Tarjimon videoga muvaffaqiyatli ulashib xotiraga saqlandi!', type: 'success'}}));
-    }, 3500);
-}
 
 // Audio upload logic for Text-to-SL Mode
 function handleAudioUpload(input) {

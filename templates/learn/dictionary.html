@@ -425,6 +425,186 @@
             border-color: var(--primary);
         }
 
+        /* === Word Card Image === */
+        .word-card-img {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        .word-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* === Practice/Quiz Banners === */
+        .fc-banners {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 900px;
+            margin: 10px auto 40px;
+            padding: 0 24px;
+        }
+        .fc-banner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 30px;
+            border-radius: 18px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .fc-banner:hover { transform: translateY(-3px); }
+        .fc-banner-practice {
+            background: linear-gradient(145deg, rgba(99,102,241,0.08), rgba(99,102,241,0.02));
+        }
+        .fc-banner-practice:hover {
+            background: linear-gradient(145deg, rgba(99,102,241,0.14), rgba(99,102,241,0.05));
+            box-shadow: 0 10px 30px rgba(99,102,241,0.15);
+        }
+        .fc-banner-quiz {
+            background: linear-gradient(145deg, rgba(245,158,11,0.08), rgba(239,68,68,0.02));
+        }
+        .fc-banner-quiz:hover {
+            background: linear-gradient(145deg, rgba(245,158,11,0.14), rgba(239,68,68,0.05));
+            box-shadow: 0 10px 30px rgba(245,158,11,0.15);
+        }
+        .fc-banner-icon {
+            width: 56px; height: 56px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .fc-banner-practice .fc-banner-icon {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .fc-banner-quiz .fc-banner-icon {
+            background: rgba(245,158,11,0.12);
+            color: #f59e0b;
+        }
+        .fc-banner-text h3 {
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .fc-banner-text p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+        .fc-banner-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 1rem;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .fc-banner:hover .fc-banner-arrow { transform: translateX(4px); }
+
+        /* === Spell Animation === */
+        .btn-spell {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            background: rgba(245,158,11,0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-spell:hover {
+            background: rgba(245,158,11,0.18);
+            transform: translateY(-1px);
+        }
+
+        .spell-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            border-radius: 24px;
+            gap: 20px;
+        }
+        .spell-overlay.active { display: flex; }
+        .spell-letter-display {
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spell-letter-display img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.3s;
+        }
+        .spell-current-letter {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+        }
+        .spell-word-track {
+            display: flex;
+            gap: 6px;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .spell-word-track span {
+            color: rgba(255,255,255,0.25);
+            transition: color 0.3s;
+        }
+        .spell-word-track span.active {
+            color: #f59e0b;
+        }
+        .spell-word-track span.done {
+            color: rgba(255,255,255,0.7);
+        }
+        .spell-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spell-close:hover { background: rgba(255,255,255,0.2); }
+
         /* === Responsive === */
         @media (max-width: 992px) {
             .app-layout { flex-direction: column; }
@@ -439,6 +619,7 @@
             .words-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
             .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
             .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
+            .fc-banners { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
             .words-grid { grid-template-columns: repeat(2, 1fr); }
@@ -451,6 +632,30 @@
         <h1>Kundalik <span>so'zlar</span> lug'ati</h1>
         <p>Har kuni ishlatiladigan so'zlarning imo-ishoradagi ko'rinishini o'rganing</p>
     </section>
+
+    <!-- Practice/Quiz Banners -->
+    <div class="fc-banners">
+        <a href="{% url 'dict_practice' %}" class="fc-banner fc-banner-practice">
+            <div class="fc-banner-icon">
+                <i class="fa-solid fa-clone"></i>
+            </div>
+            <div class="fc-banner-text">
+                <h3>Mashq qilish</h3>
+                <p>So'zlarni o'z tezligingizda takrorlang</p>
+            </div>
+            <i class="fa-solid fa-arrow-right fc-banner-arrow"></i>
+        </a>
+        <a href="{% url 'dict_quiz' %}" class="fc-banner fc-banner-quiz">
+            <div class="fc-banner-icon">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <div class="fc-banner-text">
+                <h3>Sinov</h3>
+                <p>Bilimingizni sinab natijangizni ko'ring</p>
+            </div>
+            <i class="fa-solid fa-arrow-right fc-banner-arrow"></i>
+        </a>
+    </div>
 
     <!-- Search -->
     <div class="search-section">
@@ -497,11 +702,22 @@
                     <div class="modal-word-en" id="mWordEn" style="display: none;">Hello</div>
                     
                     <button class="btn-practice" onclick="togglePractice()"><i class="fa-solid fa-camera"></i> Mashq qilish</button>
+                    <button class="btn-spell" onclick="startSpelling()"><i class="fa-solid fa-hand-sparkles"></i> Harflab ko'rsatish</button>
 
                     <div class="modal-nav">
                         <button onclick="navWord(-1)" title="Oldingi"><i class="fa-solid fa-chevron-left"></i></button>
                         <button onclick="navWord(1)" title="Keyingi"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
+                </div>
+
+                <!-- Spell Animation Overlay -->
+                <div class="spell-overlay" id="spellOverlay">
+                    <button class="spell-close" onclick="stopSpelling()"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="spell-letter-display" id="spellDisplay">
+                        <img id="spellImg" src="" alt="">
+                    </div>
+                    <div class="spell-current-letter" id="spellLetter">A</div>
+                    <div class="spell-word-track" id="spellTrack"></div>
                 </div>
             </div>
             
@@ -691,8 +907,14 @@ function renderGrid() {
             const card = document.createElement('div');
             card.className = 'word-card';
             card.onclick = () => openModal(i);
+
+            const wordKey = w.uz.toLowerCase().replace(/ /g, '_');
+            const imgSrc = '/static/img/img_words/' + wordKey + '.png';
+
             card.innerHTML = `
-                <span class="word-emoji">${w.emoji}</span>
+                <div class="word-card-img" id="wcImg_${i}">
+                    <img src="${imgSrc}" alt="${w.uz}" onerror="wordImgFallback(this, '${w.emoji}')">
+                </div>
                 <div class="word-uz">${w.uz}</div>
             `;
             grid.appendChild(card);
@@ -841,6 +1063,113 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') navWord(-1);
     if (e.key === 'ArrowRight') navWord(1);
 });
+
+// Word card image fallback
+function wordImgFallback(img, emoji) {
+    const container = img.parentElement;
+    if (emoji) {
+        container.innerHTML = '<span style="font-size:3rem; line-height:1; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));">' + emoji + '</span>';
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+// Spelling animation
+let spellTimer = null;
+let spellAnimId = null;
+
+function getLetterParts(word) {
+    const parts = [];
+    const digraphs = ['sh', 'ch', 'ng'];
+    const special = ["o'", "g'"];
+    let i = 0;
+    const lower = word.toLowerCase();
+    while (i < lower.length) {
+        if (i < lower.length - 1) {
+            const two = lower.substring(i, i + 2);
+            if (digraphs.includes(two) || special.includes(two)) {
+                parts.push(two);
+                i += 2;
+                continue;
+            }
+        }
+        if (lower[i] !== ' ') {
+            parts.push(lower[i]);
+        }
+        i++;
+    }
+    return parts;
+}
+
+function startSpelling() {
+    const w = filteredWords[currentModalIdx];
+    if (!w) return;
+
+    const overlay = document.getElementById('spellOverlay');
+    const track = document.getElementById('spellTrack');
+    const display = document.getElementById('spellImg');
+    const letterEl = document.getElementById('spellLetter');
+
+    const letters = getLetterParts(w.uz);
+    
+    // Build track
+    track.innerHTML = '';
+    letters.forEach((l, i) => {
+        const span = document.createElement('span');
+        span.textContent = l.toUpperCase();
+        span.id = 'spellTrackChar_' + i;
+        track.appendChild(span);
+    });
+
+    overlay.classList.add('active');
+    // Hide the video
+    document.getElementById('modalVideo').pause();
+
+    let idx = 0;
+    function showNext() {
+        if (idx >= letters.length) {
+            // Loop back after pause
+            setTimeout(() => {
+                if (!overlay.classList.contains('active')) return;
+                // Reset all
+                letters.forEach((_, j) => {
+                    const sp = document.getElementById('spellTrackChar_' + j);
+                    if (sp) { sp.className = ''; }
+                });
+                idx = 0;
+                showNext();
+            }, 1500);
+            return;
+        }
+
+        const letter = letters[idx];
+        letterEl.textContent = letter.toUpperCase();
+        display.src = '/static/img/alphabet/' + letter + '.png';
+
+        // Update track
+        for (let j = 0; j < letters.length; j++) {
+            const sp = document.getElementById('spellTrackChar_' + j);
+            if (!sp) continue;
+            if (j < idx) sp.className = 'done';
+            else if (j === idx) sp.className = 'active';
+            else sp.className = '';
+        }
+
+        idx++;
+        spellTimer = setTimeout(showNext, 1200);
+    }
+
+    showNext();
+}
+
+function stopSpelling() {
+    const overlay = document.getElementById('spellOverlay');
+    overlay.classList.remove('active');
+    if (spellTimer) { clearTimeout(spellTimer); spellTimer = null; }
+    // Resume video
+    const videoEl = document.getElementById('modalVideo');
+    videoEl.play().catch(() => {});
+}
 
 // Init
 renderGrid();
