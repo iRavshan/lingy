@@ -32,8 +32,8 @@ SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     'localhost', 
     '127.0.0.1',
-    'remu.uz',
-    'www.remu.uz',
+    'https://remu.uz',
+    'https://www.remu.uz',
 ] 
 
 
