@@ -45,6 +45,7 @@
             text-align: center;
             padding: 50px 24px 20px;
             position: relative;
+            overflow: hidden;
         }
         .page-hero h1 {
             font-family: var(--font-heading);
@@ -64,17 +65,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        .hero-glow {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.12;
-            pointer-events: none;
-        }
-        .hero-glow.left { top: -100px; left: -100px; background: var(--primary); }
-        .hero-glow.right { top: -50px; right: -100px; background: var(--secondary); }
+
 
         /* === Search Bar === */
         .search-section {
@@ -627,8 +618,6 @@
     </style>
 
     <section class="page-hero">
-        <div class="hero-glow left"></div>
-        <div class="hero-glow right"></div>
         <h1>Kundalik <span>so'zlar</span> lug'ati</h1>
         <p>Har kuni ishlatiladigan so'zlarning imo-ishoradagi ko'rinishini o'rganing</p>
     </section>

@@ -8,6 +8,7 @@
             text-align: center;
             padding: 50px 24px 30px;
             position: relative;
+            overflow: hidden;
         }
         .page-hero h1 {
             font-family: var(--font-heading);
@@ -27,25 +28,7 @@
             max-width: 550px;
             margin: 0 auto 10px;
         }
-        .hero-glow {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
-            pointer-events: none;
-        }
-        .hero-glow.left {
-            top: -100px;
-            left: -100px;
-            background: var(--primary);
-        }
-        .hero-glow.right {
-            top: -50px;
-            right: -100px;
-            background: var(--secondary);
-        }
+
 
         /* === Filter Bar === */
         .filter-bar {
@@ -472,21 +455,25 @@
         }
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2rem; }
-            .alphabet-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
-            .letter-big { font-size: 2.2rem; }
+            .alphabet-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .letter-big { font-size: 3rem; }
             .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
             .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
         }
 
         @media (max-width: 480px) {
-            .alphabet-grid { grid-template-columns: repeat(3, 1fr); }
+            .alphabet-grid { grid-template-columns: 1fr; gap: 16px; }
+            .letter-card { min-height: 140px; }
+            .letter-big { font-size: 3.8rem; }
+            .letter-small { font-size: 3.5rem; }
+            .card-left { width: 40%; }
+            .card-word-img { width: 90px; height: 90px; }
+            .syllables { font-size: 0.95rem; }
             .filter-bar { flex-direction: column; }
         }
     </style>
 
     <section class="page-hero">
-        <div class="hero-glow left"></div>
-        <div class="hero-glow right"></div>
         <h1>O'zbek <span>daktil</span> alifbosi</h1>
         <p>Har bir harfning imo-ishoradagi shakli — qo'l harakatlarini o'rganing va amaliyot qiling</p>
     </section>
