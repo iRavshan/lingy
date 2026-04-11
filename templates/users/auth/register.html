@@ -4,8 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ro'yxatdan o'tish — UzSL</title>
+    <title>Ro'yxatdan o'tish - Remu Academy</title>
     
+    <meta name="theme-color" content="#0B0B13">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Remu">
+    <meta name="msapplication-TileColor" content="#0B0B13">
+    <meta name="msapplication-TileImage" content="{% static '/img/favicon/android-chrome-192x192.png' %}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="/manifest.json">
+
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,7 +309,9 @@
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 15px; margin-top: 5px;">Ro'yxatdan o'tish orqali siz bizning <a href="{% url 'terms' %}" style="color: var(--primary); text-decoration: none;">foydalanish shartlari</a> va <a href="{% url 'privacy' %}" style="color: var(--primary); text-decoration: none;">maxfiylik siyosatiga</a> rozilik bildirasiz.</p>
 
-            <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITE_KEY }}" data-theme="dark" data-callback="onTurnstileSuccess" style="margin-bottom: 16px; display: flex; justify-content: center;"></div>
+            <div style="margin-bottom: 16px; display: flex; justify-content: center;">
+                <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITE_KEY }}" data-theme="dark" data-callback="onTurnstileSuccess"></div>
+            </div>
 
             <button type="submit" class="btn-submit" id="submitBtn" disabled style="opacity: 0.5; cursor: not-allowed;">Ro'yxatdan o'tish</button>
         </form>

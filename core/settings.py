@@ -26,16 +26,16 @@ SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+'''
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost', 
-    'http://127.0.0.1',
-    'https://remu.uz',
-    'https://www.remu.uz',
+    'localhost', 
+    '127.0.0.1',
+    'remu.uz',
+    'www.remu.uz',
 ] 
-''' 
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
