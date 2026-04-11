@@ -15,6 +15,9 @@
     <!-- Theme Manager -->
     <script src="{% static 'learn/assets/theme.js' %}"></script>
 
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
     <style>
         :root, [data-theme="dark"] {
             --bg-main: #0B0B13;
@@ -297,7 +300,9 @@
             
             <a href="#" class="forgot-pass">Parolni unutdingizmi?</a>
 
-            <button type="submit" class="btn-submit">Tizimga kirish</button>
+            <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITE_KEY }}" data-theme="dark" data-callback="onTurnstileSuccess" style="margin-bottom: 16px; display: flex; justify-content: center;"></div>
+
+            <button type="submit" class="btn-submit" id="submitBtn" disabled style="opacity: 0.5; cursor: not-allowed;">Tizimga kirish</button>
         </form>
 
         <div class="auth-footer">
@@ -307,6 +312,13 @@
 
     <!-- Script to match the theme toggle perfectly -->
     <script>
+        function onTurnstileSuccess(token) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        }
+
         function updateToggleIcon() {
             const btn = document.querySelector('.theme-toggle i');
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';

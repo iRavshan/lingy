@@ -1,0 +1,202 @@
+:root {
+    /* Duolingo original ranglar palitrasi */
+    --primary-green: #58cc02;
+    --dark-green: #46a302;
+    --error-red: #ff4b4b;
+    --dark-red: #ea2b2b;
+    --text-color: #4b4b4b;
+    --gray-light: #e5e5e5;
+    --gray-border: #afafaf;
+    --blue-sky: #1cb0f6;
+}
+
+body {
+    font-family: 'Segoe UI', 'Din Round', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: var(--text-color);
+    -webkit-tap-highlight-color: transparent; /* Mobil uchun ko'k ramkani olib tashlash */
+}
+
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 95vh;
+}
+
+/* Progress Bar qismi */
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+.close-btn {
+    font-size: 28px;
+    color: var(--gray-border);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 16px;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 100%;
+    background-color: var(--primary-green);
+    width: 0%;
+    border-radius: 12px;
+    transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Yaltiroq effekt berish */
+    background-image: linear-gradient(rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
+}
+
+.heart-container {
+    font-weight: bold;
+    color: #ff4b4b;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Savol va Tasvir */
+#question-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.sign-display {
+    text-align: center;
+    margin: 30px 0;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign-display img {
+    max-width: 250px;
+    width: 100%;
+    border-radius: 20px;
+    border: 2px solid var(--gray-light);
+    padding: 10px;
+    background: #fdfdfd;
+}
+
+/* Variant tugmalari */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 100px; /* Feedback panel uchun joy */
+}
+
+.option-btn {
+    padding: 20px 15px;
+    border: 2px solid var(--gray-light);
+    border-bottom: 5px solid var(--gray-light);
+    border-radius: 16px;
+    background: white;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.1s;
+    outline: none;
+}
+
+.option-btn:hover:not(.correct):not(.wrong) {
+    background-color: #f7f7f7;
+}
+
+.option-btn:active {
+    border-bottom-width: 2px;
+    transform: translateY(3px);
+}
+
+/* Holat ranglari */
+.option-btn.correct {
+    background-color: #d7ffb8;
+    border-color: var(--primary-green);
+    color: var(--dark-green);
+    border-bottom-color: var(--dark-green);
+}
+
+.option-btn.wrong {
+    background-color: #ffdfe0;
+    border-color: var(--error-red);
+    color: var(--error-red);
+    border-bottom-color: var(--error-red);
+}
+
+/* Feedback Panel */
+.feedback-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 0;
+    display: none; /* JavaScript 'show' class orqali boshqaradi */
+    justify-content: center;
+    border-top: 2px solid rgba(0,0,0,0.05);
+    z-index: 100;
+}
+
+.feedback-panel.show {
+    display: flex;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.feedback-content {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#feedback-title {
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Next Button */
+#next-btn {
+    padding: 14px 45px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--dark-green);
+    transition: all 0.1s;
+}
+
+#next-btn:active {
+    box-shadow: 0 2px 0 var(--dark-green);
+    transform: translateY(3px);
+}
+
+.hidden { display: none; }

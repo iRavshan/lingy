@@ -15,6 +15,9 @@
     <!-- Theme Manager -->
     <script src="{% static 'learn/assets/theme.js' %}"></script>
 
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
     <style>
         :root, [data-theme="dark"] {
             --bg-main: #0B0B13;
@@ -292,8 +295,10 @@
                 <i class="fa-solid fa-lock input-icon"></i>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 15px; margin-top: 5px;">Ro'yxatdan o'tish orqali siz bizning <a href="{% url 'terms' %}" style="color: var(--primary); text-decoration: none;">foydalanish shartlari</a> va <a href="{% url 'privacy' %}" style="color: var(--primary); text-decoration: none;">maxfiylik siyosatiga</a> rozilik bildirasiz.</p>
-            
-            <button type="submit" class="btn-submit">Ro'yxatdan o'tish</button>
+
+            <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITE_KEY }}" data-theme="dark" data-callback="onTurnstileSuccess" style="margin-bottom: 16px; display: flex; justify-content: center;"></div>
+
+            <button type="submit" class="btn-submit" id="submitBtn" disabled style="opacity: 0.5; cursor: not-allowed;">Ro'yxatdan o'tish</button>
         </form>
 
         <div class="auth-footer">
@@ -303,6 +308,13 @@
 
     <!-- Script Theme Integration -->
     <script>
+        function onTurnstileSuccess(token) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        }
+
         function updateToggleIcon() {
             const btn = document.querySelector('.theme-toggle i');
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
