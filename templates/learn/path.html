@@ -207,135 +207,128 @@ renderPath();
 <style>
     .streak-wrapper {
         position: relative;
+        --s-top-bg: #ffebb5;
+        --s-top-text: #f97316;
+        --s-icon-bg: #ffe4a0;
+        --s-circle-inactive: #e5e7eb;
+        --s-border: rgba(0,0,0,0.1);
+    }
+    [data-theme="dark"] .streak-wrapper {
+        --s-top-bg: #431407;
+        --s-top-text: #f97316;
+        --s-icon-bg: #7c2d12;
+        --s-circle-inactive: #374151;
+        --s-border: rgba(255,255,255,0.1);
     }
     .streak-panel {
         position: absolute;
-        top: calc(100% + 12px);
+        top: calc(100% + 14px);
         left: 50%;
         transform: translateX(-50%) translateY(8px);
-        width: 300px;
+        width: 320px;
         background: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        border: 1px solid var(--s-border);
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
         opacity: 0;
         visibility: hidden;
         transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 200;
         pointer-events: none;
     }
-    .streak-wrapper:hover .streak-panel {
+    .streak-wrapper:hover .streak-panel,
+    .streak-wrapper.active .streak-panel {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
         pointer-events: auto;
     }
+    /* The pointing tail */
     .streak-panel::before {
         content: '';
         position: absolute;
-        top: -7px;
+        top: -6px;
         left: 50%;
         transform: translateX(-50%) rotate(45deg);
-        width: 14px;
-        height: 14px;
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
-        border-left: 1px solid var(--border-color);
+        width: 16px;
+        height: 16px;
+        background: var(--s-top-bg);
+        border-top: 1px solid var(--s-border);
+        border-left: 1px solid var(--s-border);
+        border-radius: 3px 0 0 0;
+        z-index: -1;
     }
-    .streak-header {
+    .streak-panel-top {
+        background: var(--s-top-bg);
+        padding: 24px 20px 20px;
         text-align: center;
-        margin-bottom: 20px;
+        border-radius: 15px 15px 0 0;
     }
-    .streak-header .streak-num {
+    .streak-top-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--s-icon-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 12px;
+        font-size: 1.8rem;
+        color: var(--s-top-text);
+    }
+    .streak-title-text {
+        font-weight: 700;
+        color: var(--s-top-text);
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+    }
+    .streak-days-text {
         font-family: var(--font-heading);
-        font-size: 2.5rem;
         font-weight: 800;
-        color: #f97316;
-        line-height: 1;
+        color: var(--s-top-text);
+        font-size: 2.2rem;
+        line-height: 1.1;
     }
-    .streak-header .streak-label {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        font-weight: 600;
-        margin-top: 4px;
+    .streak-panel-bottom {
+        padding: 24px 20px 20px;
+        background: var(--bg-secondary);
+        border-radius: 0 0 15px 15px;
     }
     .streak-week {
         display: flex;
         justify-content: space-between;
-        gap: 6px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
     }
     .streak-day {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        flex: 1;
+        gap: 10px;
     }
     .streak-day .day-name {
-        font-size: 0.7rem;
+        font-size: 0.85rem;
+        font-weight: 600;
         color: var(--text-muted);
-        font-weight: 700;
-        text-transform: uppercase;
     }
-    .streak-day .day-icon {
-        width: 36px;
-        height: 36px;
+    .streak-day .day-circle {
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        border: 2px solid var(--border-color);
-        background: var(--bg-card);
-        transition: all 0.2s;
+        background: var(--s-circle-inactive);
     }
-    .streak-day .day-icon.active {
-        background: rgba(249, 115, 22, 0.15);
-        border-color: #f97316;
-        color: #f97316;
+    .streak-day .day-circle.active {
+        background: var(--s-top-text);
     }
-    .streak-day .day-icon.freeze {
-        background: rgba(99, 102, 241, 0.15);
-        border-color: #6366f1;
-        color: #6366f1;
+    .streak-message {
+        border-top: 1px solid var(--s-border);
+        padding-top: 16px;
+        text-align: center;
+        font-weight: 700;
+        color: #0ea5e9;
+        font-size: 1rem;
     }
-    .streak-day .day-icon.missed {
-        background: var(--bg-card);
-        border-color: var(--border-color);
-        color: var(--text-muted);
-        opacity: 0.5;
-    }
-    .streak-day .day-icon.future {
-        background: var(--bg-card);
-        border-color: var(--border-color);
-        color: var(--text-muted);
-        opacity: 0.3;
-    }
-    .streak-day .day-icon.today {
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
-    }
-    .streak-day .day-icon.today.freeze {
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-    }
-    .streak-freeze-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 14px;
-        background: rgba(99, 102, 241, 0.08);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 12px;
-        font-size: 0.82rem;
-        color: var(--text-muted);
-    }
-    .streak-freeze-info i {
-        color: #6366f1;
-        font-size: 1.2rem;
-    }
-    .streak-freeze-info strong {
-        color: var(--text-main);
+    .streak-message i {
+        color: #0ea5e9;
     }
 </style>
 
@@ -346,31 +339,25 @@ renderPath();
                 <i class="fa-solid fa-fire"></i> <span id="streakCountDesktop">{{ streak_count|default:'0' }}</span>
             </div>
             <div class="streak-panel">
-                <div class="streak-header">
-                    <div class="streak-num">{{ streak_count|default:'0' }}</div>
-                    <div class="streak-label">kunlik seriya</div>
-                </div>
-                <div class="streak-week">
-                    {% for day in weekly_streak %}
-                    <div class="streak-day">
-                        <span class="day-name">{{ day.name }}</span>
-                        <div class="day-icon {{ day.status }}{% if day.is_today %} today{% endif %}">
-                            {% if day.status == 'active' %}
-                                <i class="fa-solid fa-fire"></i>
-                            {% elif day.status == 'freeze' %}
-                                <i class="fa-solid fa-fire" style="color: #6366f1;"></i>
-                            {% elif day.status == 'missed' %}
-                                <i class="fa-solid fa-xmark"></i>
-                            {% else %}
-                                <i class="fa-solid fa-minus"></i>
-                            {% endif %}
-                        </div>
+                <div class="streak-panel-top">
+                    <div class="streak-top-icon">
+                        <i class="fa-solid fa-fire"></i>
                     </div>
-                    {% endfor %}
+                    <div class="streak-title-text">Streak</div>
+                    <div class="streak-days-text">{{ streak_count|default:'0' }} days</div>
                 </div>
-                <div class="streak-freeze-info">
-                    <i class="fa-solid fa-snowflake"></i>
-                    <span>Streak muzlatish: <strong>{{ streak_freezes_left }}/3</strong> qoldi</span>
+                <div class="streak-panel-bottom">
+                    <div class="streak-week">
+                        {% for day in weekly_streak %}
+                        <div class="streak-day">
+                            <span class="day-name">{{ day.name|truncatechars:4 }}</span>
+                            <div class="day-circle {% if day.status == 'active' or day.status == 'freeze' %}active{% endif %}"></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="streak-message">
+                        Keep the fire burning! <i class="fa-solid fa-fire"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -407,4 +394,27 @@ renderPath();
         </div>
     </div>
 </aside>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const streakWrapper = document.querySelector('.streak-wrapper');
+    if (streakWrapper) {
+        const statFire = streakWrapper.querySelector('.stat-fire');
+        if (statFire) {
+            statFire.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                streakWrapper.classList.toggle('active');
+            });
+        }
+        
+        // Clicks outside disappear the widget
+        document.addEventListener('click', (e) => {
+            if (!streakWrapper.contains(e.target)) {
+                streakWrapper.classList.remove('active');
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
