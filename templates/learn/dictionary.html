@@ -734,103 +734,116 @@
 
 <script>
 const categories = [
-    { id: "salomlashish", name: "Salomlashish", emoji: "👋" },
-    { id: "oila", name: "Oila", emoji: "👨‍👩‍👧‍👦" },
-    { id: "oziq-ovqat", name: "Oziq-ovqat", emoji: "🍽️" },
-    { id: "hayvonlar", name: "Hayvonlar", emoji: "🐾" },
+    { id: "Tanishuv", name: "Tanishuv", emoji: "👋" },
+    { id: "Qarindoshlar", name: "Qarindoshlar", emoji: "👨‍👩‍👧‍👦" },
+    { id: "Mevalar", name: "Mevalar", emoji: "🍎" },
+    { id: "Sabzavotlar", name: "Sabzavotlar", emoji: "🥕" },
+    { id: "Uyhayvonlari", name: "Uy hayvonlari", emoji: "🐶" },
+    { id: "Yovvoyihayvonlar", name: "Yovvoyi hayvonlar", emoji: "🐾" },
     { id: "ranglar", name: "Ranglar", emoji: "🎨" },
     { id: "raqamlar", name: "Raqamlar", emoji: "🔢" },
     { id: "hissiyotlar", name: "His-tuyg'ular", emoji: "😊" },
-    { id: "kundalik", name: "Kundalik hayot", emoji: "🏠" },
     { id: "tabiat", name: "Tabiat", emoji: "🌿" },
-    { id: "tanishish", name: "Tanishish", emoji: "🤝" }
+    { id: "Davlatlar", name: "Davlatlar", emoji: "🌎" },
+    
 ];
 
 const words = [
-    // Salomlashish
-    { uz: "Salom", emoji: "👋", hand: "🤚", cat: "salomlashish", desc: "Qo'lni ko'tarib tepaga silkitish harakati." },
-    { uz: "Xayr", emoji: "👋", hand: "🫡", cat: "salomlashish", desc: "Qo'l silkitib hayrlashtirish." },
-    { uz: "Rahmat", emoji: "🙏", hand: "🙏", cat: "salomlashish", desc: "Ikkala kaft yuz oldida birlashtiriladi." },
-    { uz: "Iltimos", emoji: "🤲", hand: "🤲", cat: "salomlashish", desc: "Kaftlar yuqoriga ochiq holda ko'rsatiladi." },
-    { uz: "Kechirasiz", emoji: "😔", hand: "✊", cat: "salomlashish", desc: "Musht ko'krak ustiga qo'yilib aylantiladi." },
-    { uz: "Ha", emoji: "✅", hand: "👍", cat: "salomlashish", desc: "Bosh barmoq yuqoriga ko'tariladi." },
-    { uz: "Yo'q", emoji: "❌", hand: "🙅", cat: "salomlashish", desc: "Qo'llar chap-o'ngga harakatlantiriladi." },
+    // Tanishuv
+    { uz: "Salom", emoji: "👋", cat: "salomlashish",  },
+    { uz: "Xayr", emoji: "👋", cat: "salomlashish",  },
+    { uz: "Rahmat", emoji: "🙏", cat: "salomlashish",  },
+    { uz: "Iltimos", emoji: "🤲", cat: "salomlashish",  },
+    { uz: "Kechirasiz", emoji: "😔", cat: "salomlashish",  },
+    { uz: "Ha", emoji: "✅", cat: "salomlashish",  },
+    { uz: "Yo'q", emoji: "❌", cat: "salomlashish", },
 
-    // Oila
-    { uz: "Ona", emoji: "👩", hand: "🫶", cat: "oila", desc: "Bosh barmoq iyak ostiga qo'yiladi." },
-    { uz: "Ota", emoji: "👨", hand: "🫡", cat: "oila", desc: "Bosh barmoq peshona oldiga qo'yiladi." },
-    { uz: "Aka", emoji: "👦", hand: "✌️", cat: "oila", desc: "Ikki barmoq tepada ko'rsatiladi." },
-    { uz: "Opa", emoji: "👧", hand: "☝️", cat: "oila", desc: "Ko'rsatkich barmoq yuz yonida harakatlanadi." },
-    { uz: "Bola", emoji: "👶", hand: "🤱", cat: "oila", desc: "Qo'llar bola ko'tarish harakatini takrorlaydi." },
-    { uz: "Bobo", emoji: "👴", hand: "🧔", cat: "oila", desc: "Bosh barmoq iyak ostida pastga harakatlanadi." },
-    { uz: "Buvi", emoji: "👵", hand: "🤶", cat: "oila", desc: "Bosh barmoqlar ikkala yoq ustiga qo'yiladi." },
-    { uz: "Oila", emoji: "👨‍👩‍👧", hand: "🫂", cat: "oila", desc: "Ikkala qo'l birlashtiriladi." },
+    // Oila/qarindosh
+    { uz: "Ona", emoji: "👩", cat: "oila", },
+    { uz: "Ota", emoji: "👨", cat: "oila", },
+    { uz: "Aka", emoji: "👦", cat: "oila", },
+    { uz: "Opa", emoji: "👧", cat: "oila", },
+    { uz: "Bola", emoji: "👶", cat: "oila", },
+    { uz: "Bobo", emoji: "👴", cat: "oila", },
+    { uz: "Buvi", emoji: "👵", cat: "oila", },
+    { uz: "Oila", emoji: "👨‍👩‍👧", cat: "oila", },
 
-    // Oziq-ovqat
-    { uz: "Non", emoji: "🍞", hand: "🤲", cat: "oziq-ovqat", desc: "Qo'llar non sindirgandek harakatlanadi." },
-    { uz: "Suv", emoji: "💧", hand: "🤏", cat: "oziq-ovqat", desc: "Bosh barmoq og'izga yaqinlashtiriladi." },
-    { uz: "Choy", emoji: "🍵", hand: "☕", cat: "oziq-ovqat", desc: "Qo'l stakan ushlag‌andek harakatlanadi." },
-    { uz: "Olma", emoji: "🍎", hand: "✊", cat: "oziq-ovqat", desc: "Musht yoq oldiga qo'yiladi va aylantiriladi." },
-    { uz: "Palov", emoji: "🍚", hand: "🫰", cat: "oziq-ovqat", desc: "Barmoqlar osh yeyishni ifodalaydi." },
-    { uz: "Go'sht", emoji: "🥩", hand: "🤌", cat: "oziq-ovqat", desc: "Qo'l go'sht ko'rsatish ishorasi." },
-    { uz: "Meva", emoji: "🍇", hand: "👌", cat: "oziq-ovqat", desc: "Barmoqlar yumaloq shakl hosil qiladi." },
-    { uz: "Sut", emoji: "🥛", hand: "🤛", cat: "oziq-ovqat", desc: "Musht pastga-yuqoriga harakatlanadi." },
+    // Mevalar
+    { uz: "Olma", emoji: "🍎", cat: "mevalar", },
+    { uz: "Banan", emoji: "🍌", cat: "mevalar", },
+    { uz: "", emoji: "🍵", cat: "mevalar", },
+    { uz: "Olma", emoji: "🍎", cat: "mevalar", },
+    { uz: "Palov", emoji: "🍚", cat: "mevalar", },
+    { uz: "Go'sht", emoji: "🥩", cat: "mevalar", },
+    { uz: "Meva", emoji: "🍇", cat: "mevalar", },
+    { uz: "Sut", emoji: "🥛", cat: "mevalar", },
+
+    // Sabzavotlar
+    { uz: "Tarvuz", cat: "Sabzavotlar", },
+    { uz: "Qovun", cat: "Sabzavotlar", },
+    { uz: "No'xat", cat: "Sabzavotlar", },
+    { uz: "Jo'xori", cat: "Sabzavotlar", },
+    { uz: "Sarimsoq piyoz", cat: "Sabzavotlar", },
+    { uz: "Lavlagi", cat: "Sabzavotlar", },
+    { uz: "Rediska", cat: "Sabzavotlar", },
+    { uz: "Turp", cat: "Sabzavotlar", },
+    { uz: "Sholg'om", cat: "Sabzavotlar", },
 
     // Hayvonlar
-    { uz: "Mushuk", emoji: "🐱", hand: "🤏", cat: "hayvonlar", desc: "Bosh barmoq va ko'rsatkich yuz yonida mo'ylov shaklida." },
-    { uz: "It", emoji: "🐕", hand: "🫳", cat: "hayvonlar", desc: "Qo'l pastga qaratib chapak uriladi." },
-    { uz: "Qush", emoji: "🐦", hand: "🤌", cat: "hayvonlar", desc: "Barmoqlar tumshuq shaklida ochiladi-yopiladi." },
-    { uz: "Baliq", emoji: "🐟", hand: "🫱", cat: "hayvonlar", desc: "Kaft gorizontal harakatlantiriladi." },
-    { uz: "Ot", emoji: "🐴", hand: "✌️", cat: "hayvonlar", desc: "Ikki barmoq quloqni ifodalaydi." },
-    { uz: "Sigir", emoji: "🐄", hand: "🤘", cat: "hayvonlar", desc: "Ko'rsatkich va jimjiloq shox shaklida." },
+    { uz: "Mushuk", emoji: "🐱", cat: "hayvonlar", },
+    { uz: "It", emoji: "🐕", cat: "hayvonlar", },
+    { uz: "Qush", emoji: "🐦", cat: "hayvonlar", },
+    { uz: "Baliq", emoji: "🐟", cat: "hayvonlar", },
+    { uz: "Ot", emoji: "🐴", cat: "hayvonlar", },
+    { uz: "Sigir", emoji: "🐄", cat: "hayvonlar", },
 
     // Ranglar
-    { uz: "Qizil", emoji: "🔴", hand: "☝️", cat: "ranglar", desc: "Ko'rsatkich barmoq labga tegadi." },
-    { uz: "Ko'k", emoji: "🔵", hand: "🤙", cat: "ranglar", desc: "Jimjiloq barmoq ko'rsatiladi." },
-    { uz: "Yashil", emoji: "🟢", hand: "🖐️", cat: "ranglar", desc: "Kaft barglardek silkinadi." },
-    { uz: "Oq", emoji: "⚪", hand: "🤚", cat: "ranglar", desc: "Kaft ko'krakdan oldinga harakatlanadi." },
-    { uz: "Qora", emoji: "⚫", hand: "👆", cat: "ranglar", desc: "Ko'rsatkich barmoq qosh ustida yuritiladi." },
-    { uz: "Sariq", emoji: "🟡", hand: "🤟", cat: "ranglar", desc: "Y harfi shaklida qo'l silkinadi." },
+    { uz: "Qizil", emoji: "🔴", cat: "ranglar", },
+    { uz: "Ko'k", emoji: "🔵", cat: "ranglar",},
+    { uz: "Yashil", emoji: "🟢", cat: "ranglar", },
+    { uz: "Oq", emoji: "⚪", cat: "ranglar", },
+    { uz: "Qora", emoji: "⚫", cat: "ranglar", },
+    { uz: "Sariq", emoji: "🟡", cat: "ranglar", },
 
     // Raqamlar
-    { uz: "Bir", emoji: "1️⃣", hand: "☝️", cat: "raqamlar", desc: "Bitta ko'rsatkich barmoq ko'tariladi." },
-    { uz: "Ikki", emoji: "2️⃣", hand: "✌️", cat: "raqamlar", desc: "Ikki barmoq V shaklida ko'tariladi." },
-    { uz: "Uch", emoji: "3️⃣", hand: "🤟", cat: "raqamlar", desc: "Uchta barmoq ko'tariladi." },
-    { uz: "To'rt", emoji: "4️⃣", hand: "🖐️", cat: "raqamlar", desc: "To'rtta barmoq ko'tariladi, bosh barmoq yig'iq." },
-    { uz: "Besh", emoji: "5️⃣", hand: "🖐️", cat: "raqamlar", desc: "Beshta barmoq to'liq ochiladi." },
-    { uz: "O'n", emoji: "🔟", hand: "🤲", cat: "raqamlar", desc: "Ikkala qo'l barmoqlari ochiladi." },
+    { uz: "Bir", emoji: "1️⃣", cat: "raqamlar", },
+    { uz: "Ikki", emoji: "2️⃣", cat: "raqamlar", },
+    { uz: "Uch", emoji: "3️⃣", cat: "raqamlar", },
+    { uz: "To'rt", emoji: "4️⃣", cat: "raqamlar", },
+    { uz: "Besh", emoji: "5️⃣", cat: "raqamlar", },
+    { uz: "O'n", emoji: "🔟", cat: "raqamlar", },
 
     // His-tuyg'ular
-    { uz: "Xursand", emoji: "😊", hand: "👐", cat: "hissiyotlar", desc: "Ikkala kaft yuqoriga ochiladi." },
-    { uz: "G'amgin", emoji: "😢", hand: "👇", cat: "hissiyotlar", desc: "Barmoqlar yuz bo'ylab pastga tushadi." },
-    { uz: "Qo'rqinchli", emoji: "😨", hand: "🤚", cat: "hissiyotlar", desc: "Kaftlar ko'krakdan oldinga itariladi." },
-    { uz: "Hayron", emoji: "😲", hand: "🖐️", cat: "hissiyotlar", desc: "Kaftlar yuz yonida ochilib ko'tariladi." },
-    { uz: "Sevgi", emoji: "❤️", hand: "🫶", cat: "hissiyotlar", desc: "Ikkala qo'l yurak shaklini hosil qiladi." },
-    { uz: "Charchagan", emoji: "😩", hand: "🫠", cat: "hissiyotlar", desc: "Qo'llar pastga tushib holsizlikni ifodalaydi." },
+    { uz: "Xursand", emoji: "😊", cat: "hissiyotlar", },
+    { uz: "G'amgin", emoji: "😢", cat: "hissiyotlar", },
+    { uz: "Qo'rqinchli", emoji: "😨", cat: "hissiyotlar", },
+    { uz: "Hayron", emoji: "😲", cat: "hissiyotlar", },
+    { uz: "Sevgi", emoji: "❤️", cat: "hissiyotlar", },
+    { uz: "Charchagan", emoji: "😩", cat: "hissiyotlar",},
 
     // Kundalik hayot
-    { uz: "Uy", emoji: "🏠", hand: "🏠", cat: "kundalik", desc: "Barmoqlar tom shaklini hosil qiladi." },
-    { uz: "Maktab", emoji: "🏫", hand: "📖", cat: "kundalik", desc: "Kaftlar kitob ochilganday harakatlanadi." },
-    { uz: "Ish", emoji: "💼", hand: "✊", cat: "kundalik", desc: "Mushtlar bir-biriga uriladi." },
-    { uz: "Ovqat", emoji: "🍽️", hand: "🤌", cat: "kundalik", desc: "Barmoqlar og'izga yo'naltiriladi." },
-    { uz: "Kitob", emoji: "📖", hand: "🤲", cat: "kundalik", desc: "Kaftlar kitob ochilganday ochiladi." },
-    { uz: "Telefon", emoji: "📱", hand: "🤙", cat: "kundalik", desc: "Bosh barmoq va jimjiloq quloq yonida." },
-    { uz: "Mashina", emoji: "🚗", hand: "🫱", cat: "kundalik", desc: "Qo'llar rul ushlagandek aylantiriladi." },
-    { uz: "Do'kon", emoji: "🏪", hand: "💰", cat: "kundalik", desc: "Barmoqlar pul sanash harakatini takrorlaydi." },
+    { uz: "Uy", emoji: "🏠", cat: "kundalik",},
+    { uz: "Maktab", emoji: "🏫", cat: "kundalik", },
+    { uz: "Ish", emoji: "💼", cat: "kundalik", },
+    { uz: "Ovqat", emoji: "🍽️", cat: "kundalik", },
+    { uz: "Kitob", emoji: "📖", cat: "kundalik", },
+    { uz: "Telefon", emoji: "📱", cat: "kundalik", },
+    { uz: "Mashina", emoji: "🚗", cat: "kundalik", },
+    { uz: "Do'kon", emoji: "🏪", cat: "kundalik", },
 
     // Tabiat
-    { uz: "Quyosh", emoji: "☀️", hand: "🌟", cat: "tabiat", desc: "Barmoqlar yuqoriga ochiladi — nur shakli." },
-    { uz: "Oy", emoji: "🌙", hand: "🤏", cat: "tabiat", desc: "Qo'l C shaklida yarim doira hosil qiladi." },
-    { uz: "Yomg'ir", emoji: "🌧️", hand: "🖐️", cat: "tabiat", desc: "Barmoqlar yuqoridan pastga silkinadi." },
-    { uz: "Gul", emoji: "🌸", hand: "🤌", cat: "tabiat", desc: "Barmoqlar gul ochganday ochiladi." },
-    { uz: "Daraxt", emoji: "🌳", hand: "🤚", cat: "tabiat", desc: "Bilek — tana, barmoqlar — shoxlar." },
-    { uz: "Tog'", emoji: "⛰️", hand: "🫶", cat: "tabiat", desc: "Barmoqlar uchburchak cho'qqi shaklida." },
+    { uz: "Quyosh", emoji: "☀️", cat: "tabiat", },
+    { uz: "Oy", emoji: "🌙", cat: "tabiat", },
+    { uz: "Yomg'ir", emoji: "🌧️",   cat: "tabiat", },
+    { uz: "Gul", emoji: "🌸", cat: "tabiat", },
+    { uz: "Daraxt", emoji: "🌳", cat: "tabiat", },
+    { uz: "Tog'", emoji: "⛰️", cat: "tabiat", },
 
     // Tanishish
-    { uz: "Ismim", emoji: "🏷️", hand: "👆", cat: "tanishish", desc: "Ko'rsatkich barmoq ko'krakka yo'naltiriladi." },
-    { uz: "Yosh", emoji: "🎂", hand: "☝️", cat: "tanishish", desc: "Barmoqlar sonni ko'rsatadi." },
-    { uz: "Qaerdan", emoji: "📍", hand: "🫵", cat: "tanishish", desc: "Ko'rsatkich barmoq so'roq bilan harakatlanadi." },
-    { uz: "Tanishganimdan xursandman", emoji: "🤝", hand: "🤝", cat: "tanishish", desc: "Qo'l berib ko'rishish harakati." }
+    { uz: "Ismim", emoji: "🏷️", cat: "tanishish", },
+    { uz: "Yosh", emoji: "🎂", cat: "tanishish", },
+    { uz: "Qaerdan", emoji: "📍", cat: "tanishish", },
+    { uz: "Tanishganimdan xursandman", emoji: "🤝", cat: "tanishish", },
 ];
 
 let currentCat = 'all';
@@ -979,7 +992,7 @@ function openModal(filteredIdx) {
     
     // Setup Video
     const videoEl = document.getElementById('modalVideo');
-    videoEl.src = '/static/img/pron/' + w.uz + '.mp4';
+    videoEl.src = '/static/img/pron_words/' + w.uz + '.mp4';
     videoEl.play().catch(e => console.log('Autoplay prevented or waiting for interaction'));
 
     document.getElementById('wordModal').classList.add('active');
