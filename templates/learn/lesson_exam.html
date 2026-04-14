@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dars - Remu</title>
+    <title>Sinov - Remu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,8 +15,9 @@
             --bg-card: rgba(22, 24, 43, 0.7);
             --border-color: rgba(255, 255, 255, 0.12);
             --border-hover: rgba(255, 255, 255, 0.25);
-            --primary: #58cc02; /* Duolingo Green */
-            --primary-shadow: #58a700;
+            /* Exam variant colors (purple/indigo theme) */
+            --primary: #8b5cf6;
+            --primary-shadow: #7c3aed;
             --danger: #ff4b4b;
             --danger-shadow: #ea2b2b;
             --text-main: #ffffff;
@@ -93,6 +94,17 @@
             box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15);
         }
 
+        /* Heart Container */
+        .heart-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ef4444;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
         /* MAIN CONTENT */
         .main-content {
             flex-grow: 1;
@@ -100,7 +112,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 24px 140px; /* space for bottom bar */
+            padding: 20px 24px 140px; 
             max-width: 700px;
             margin: 0 auto;
             width: 100%;
@@ -163,10 +175,10 @@
             box-shadow: 0 0 0 var(--border-color);
         }
         .option-btn.selected {
-            border-color: #84d8ff;
-            background: rgba(132, 216, 255, 0.1);
-            color: #84d8ff;
-            box-shadow: 0 4px 0 #84d8ff;
+            border-color: #c4b5fd;
+            background: rgba(139, 92, 246, 0.1);
+            color: #c4b5fd;
+            box-shadow: 0 4px 0 #c4b5fd;
         }
         .option-btn.disabled {
             pointer-events: none;
@@ -187,8 +199,8 @@
             transition: background 0.3s inset;
         }
         .bottom-bar.correct {
-            background: #d7ffb8;
-            border-top-color: #58a700;
+            background: #eedeff;
+            border-top-color: #8b5cf6;
         }
         .bottom-bar.wrong {
             background: #ffdfe0;
@@ -196,7 +208,7 @@
         }
 
         [data-theme="dark"] .bottom-bar.correct {
-            background: rgba(88, 204, 2, 0.15);
+            background: rgba(139, 92, 246, 0.15);
             border-top-color: var(--primary);
         }
         [data-theme="dark"] .bottom-bar.wrong {
@@ -256,9 +268,8 @@
             box-shadow: 0 4px 0 var(--danger-shadow);
         }
 
-        /* Screen views */
-        #screenLesson, #screenFinish { display: none; }
-        #screenLesson.active, #screenFinish.active { display: flex; }
+        #screenLesson, #screenFinish, #screenFail { display: none; }
+        #screenLesson.active, #screenFinish.active, #screenFail.active { display: flex; }
 
         .finish-container {
             text-align: center;
@@ -266,7 +277,7 @@
             animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .finish-container img { width: 150px; margin-bottom: 20px; }
-        .finish-container h1 { font-family: var(--font-heading); font-size: 2.2rem; color: #ffc800; margin-bottom: 10px; }
+        .finish-container h1 { font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 10px; }
         .finish-container p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
 
         @keyframes bounceIn {
@@ -309,6 +320,9 @@
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
+            <div class="heart-container">
+                <i class="fa-solid fa-heart"></i> <span id="heartCount">3</span>
+            </div>
             <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-sun" id="themeIcon"></i></button>
         </div>
 
@@ -337,9 +351,19 @@
     <div id="screenFinish" class="main-content">
         <div class="finish-container">
             <div style="font-size: 80px; margin-bottom: 20px;">🏆</div>
-            <h1>Ajoyib natija!</h1>
-            <p>Siz darsni muvaffaqiyatli yakunladingiz. <span style="color:#58cc02; font-weight:700;">+10 XP</span></p>
+            <h1 style="color:#eab308;">Sinov topshirildi!</h1>
+            <p>Siz ushbu sinovdan muvaffaqiyatli o'tdingiz. <span style="color:#8b5cf6; font-weight:700;" id="finishXp">+30 XP</span></p>
             <button class="btn-check active" style="width:100%; box-shadow: 0 4px 0 var(--primary-shadow);" onclick="quitLesson()">Davom etish</button>
+        </div>
+    </div>
+
+    <!-- Fail Screen -->
+    <div id="screenFail" class="main-content">
+        <div class="finish-container">
+            <div style="font-size: 80px; margin-bottom: 20px;">💔</div>
+            <h1 style="color:#ef4444;">Sinov yakunlanmadi</h1>
+            <p>Sizda xatolar soni ruxsat etilgan miqdordan oshib ketdi. Yana bir bor urinib ko'ring.</p>
+            <button class="btn-check active" style="width:100%; background:var(--danger); box-shadow: 0 4px 0 var(--danger-shadow);" onclick="window.location.reload()">Qaytadan boshlash</button>
         </div>
     </div>
 
@@ -355,59 +379,73 @@
     let currentQuestionIndex = 0;
     let selectedOption = null;
     let isChecked = false;
+    let hearts = 3;
 
     // Load URL params
     const params = new URLSearchParams(window.location.search);
-    const lettersParam = params.get('letters');
-    if (lettersParam) {
-        targetLetters = lettersParam.split(',').map(s=>s.trim()).filter(s=>s);
+    const cpIndex = parseInt(params.get('cp')) || 1;
+    const passId = `cp${cpIndex}`;
+    const xpReward = parseInt(params.get('xp')) || (cpIndex * 30 + (cpIndex==3?10:0)); // cp1=30, cp2=30, cp3=100
+
+    if (cpIndex === 1) {
+        // A to K (first 10 letters)
+        targetLetters = alphabetDB.slice(0, 10);
+    } else if (cpIndex === 2) {
+        // A to U (all letters up to U, first 20 letters)
+        targetLetters = alphabetDB.slice(0, 20);
+    } else {
+        // All letters
+        targetLetters = alphabetDB;
     }
-    if (targetLetters.length === 0) targetLetters = ['A', 'B']; // fallback
 
     // Generate questions for these letters
     function generateQuestions() {
-        questions = [];
-        // For each letter, create 2 questions (1 image, 1 video)
+        let pool = [];
         targetLetters.forEach(letter => {
-            // Q1: Image
-            questions.push({
+            pool.push({
                 type: 'image',
                 answer: letter,
                 media: `/static/img/alphabet/${letter}.png`,
-                title: "Ushbu imo-ishora qaysi harfni bildiradi?",
+                title: "O'tilgan harflar sinovi:",
                 options: generateOptions(letter)
             });
-            // Q2: Video
-            questions.push({
+            pool.push({
                 type: 'video',
                 answer: letter,
                 media: `/static/img/pron/${letter}.mp4`,
-                title: "Ushbu ishora qaysi harf?",
+                title: "O'tilgan harflar sinovi:",
                 options: generateOptions(letter)
             });
         });
         
-        // Shuffle questions
-        questions.sort(() => Math.random() - 0.5);
+        // Shuffle pool
+        pool.sort(() => Math.random() - 0.5);
+        
+        // For checkpoints, pick exactly 15 random questions so it's not too long
+        questions = pool.slice(0, 15);
     }
 
     function generateOptions(correctAnswer) {
         let opts = new Set([correctAnswer]);
         while(opts.size < 4) {
-            let rnd = alphabetDB[Math.floor(Math.random() * alphabetDB.length)];
+            let rnd = targetLetters[Math.floor(Math.random() * targetLetters.length)];
             opts.add(rnd);
         }
         return Array.from(opts).sort(() => Math.random() - 0.5);
     }
 
     function renderQuestion() {
+        if (hearts <= 0) {
+            failLesson();
+            return;
+        }
+
         selectedOption = null;
         isChecked = false;
         
         const q = questions[currentQuestionIndex];
         document.getElementById('questionTitle').textContent = q.title;
 
-        // Render Media
         const mediaBox = document.getElementById('questionMedia');
         if (q.type === 'image') {
             mediaBox.innerHTML = `<img src="${q.media}" onerror="this.src=''" alt="gesture">`;
@@ -415,7 +453,6 @@
             mediaBox.innerHTML = `<video src="${q.media}" autoplay loop muted playsinline></video>`;
         }
 
-        // Render Options
         const grid = document.getElementById('optionsGrid');
         grid.innerHTML = '';
         q.options.forEach(opt => {
@@ -426,20 +463,19 @@
             grid.appendChild(btn);
         });
 
-        // Reset Bottom Bar
         const bar = document.getElementById('bottomBar');
         bar.className = 'bottom-bar';
         const checkBtn = document.getElementById('btnCheck');
         checkBtn.className = 'btn-check';
         checkBtn.textContent = 'Tekshirish';
 
-        // Progress
         const pct = (currentQuestionIndex / questions.length) * 100;
         document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('heartCount').textContent = hearts;
     }
 
     function selectOption(btnElement, opt) {
-        if (isChecked) return; // cannot change after check
+        if (isChecked) return; 
 
         document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
         btnElement.classList.add('selected');
@@ -453,7 +489,6 @@
         const checkBtn = document.getElementById('btnCheck');
 
         if (!isChecked) {
-            // Checking Answer
             if (!selectedOption) return;
 
             isChecked = true;
@@ -462,7 +497,6 @@
             const icon = document.getElementById('messageIcon');
             const msg = document.getElementById('messageText');
 
-            // Disable other buttons
             document.querySelectorAll('.option-btn').forEach(b => {
                 if (!b.classList.contains('selected')) {
                     b.classList.add('disabled');
@@ -470,26 +504,24 @@
             });
 
             if (selectedOption === q.answer) {
-                // Correct
                 bar.classList.add('correct');
                 icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-                msg.textContent = "To'g'ri javob! Ajoyib.";
+                msg.textContent = "To'g'ri javob!";
                 createConfetti();
             } else {
-                // Wrong
                 bar.classList.add('wrong');
                 icon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
                 msg.textContent = `Noto'g'ri. To'g'ri javob: ${q.answer}`;
-                // Push question to end of array to repeat it
-                questions.push({...q, options: generateOptions(q.answer)});
+                
+                hearts--;
+                document.getElementById('heartCount').textContent = hearts;
             }
 
             checkBtn.textContent = 'Davom etish';
 
         } else {
-            // Go to next question
             currentQuestionIndex++;
-            if (currentQuestionIndex >= questions.length) {
+            if (currentQuestionIndex >= questions.length && hearts > 0) {
                 finishLesson();
             } else {
                 renderQuestion();
@@ -500,17 +532,25 @@
     function finishLesson() {
         document.getElementById('progressBar').style.width = '100%';
         
-        const lessId = params.get('id');
-        const xpPts = parseInt(params.get('xp')) || 10;
-        if (lessId) {
-            let completed = JSON.parse(localStorage.getItem('uzsl_completed_lessons') || '[]');
-            if (!completed.includes(lessId)) {
-                completed.push(lessId);
-                localStorage.setItem('uzsl_completed_lessons', JSON.stringify(completed));
-                let curXp = parseInt(localStorage.getItem('uzsl_total_xp') || '0');
-                localStorage.setItem('uzsl_total_xp', curXp + xpPts);
-            }
+        let finalXpReward = xpReward;
+        if (cpIndex === 1 || cpIndex === 2) {
+            if (hearts === 2) finalXpReward = 20;
+            else if (hearts === 1) finalXpReward = 10;
+        } else if (cpIndex === 3) {
+            // cp3 basexp = 100
+            if (hearts === 2) finalXpReward = 65;
+            else if (hearts === 1) finalXpReward = 30;
         }
+
+        let completed = JSON.parse(localStorage.getItem('uzsl_completed_lessons') || '[]');
+        if (!completed.includes(passId)) {
+            completed.push(passId);
+            localStorage.setItem('uzsl_completed_lessons', JSON.stringify(completed));
+            let curXp = parseInt(localStorage.getItem('uzsl_total_xp') || '0');
+            localStorage.setItem('uzsl_total_xp', curXp + finalXpReward);
+        }
+
+        document.getElementById('finishXp').textContent = `+${finalXpReward} XP`;
 
         setTimeout(() => {
             document.getElementById('screenLesson').classList.remove('active');
@@ -519,13 +559,66 @@
         }, 500);
     }
 
+    function failLesson() {
+        document.getElementById('screenLesson').classList.remove('active');
+        document.getElementById('screenFail').classList.add('active');
+    }
+
     function quitLesson() {
         window.location.href = "{% url 'path' %}";
     }
 
+    function toggleTheme() {
+        const doc = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        if (doc.getAttribute('data-theme') === 'dark') {
+            doc.setAttribute('data-theme', 'light');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('uzsl_theme', 'light');
+        } else {
+            doc.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('uzsl_theme', 'dark');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const icon = document.getElementById('themeIcon');
+        if (icon) {
+            if (savedTheme === 'light') {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const lessonScreen = document.getElementById('screenLesson');
+            const finishScreen = document.getElementById('screenFinish');
+            const failScreen = document.getElementById('screenFail');
+            
+            if (lessonScreen && lessonScreen.classList.contains('active')) {
+                const btn = document.getElementById('btnCheck');
+                if (btn && btn.classList.contains('active')) {
+                    btn.click();
+                }
+            } else if (finishScreen && finishScreen.classList.contains('active')) {
+                quitLesson();
+            } else if (failScreen && failScreen.classList.contains('active')) {
+                window.location.reload();
+            }
+        }
+    });
+
     function createConfetti() {
         const container = document.getElementById('confettiContainer');
-        const colors = ['#10b981', '#34d399', '#6ee7b7', '#f59e0b', '#fbbf24', '#6366f1', '#ec4899', '#a78bfa', '#facc15', '#38bdf8'];
+        const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#f59e0b', '#fbbf24', '#10b981', '#ec4899', '#facc15'];
         const count = 150;
         const gravity = 800; // px/s^2
 
@@ -537,7 +630,6 @@
             const size = Math.random() * 8 + 5;
             const isCircle = Math.random() > 0.5;
 
-            // Velocity: upward with horizontal spread
             const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.2; 
             const speed = 600 + Math.random() * 500; 
             const vx = Math.cos(angle) * speed;
@@ -576,51 +668,6 @@
             requestAnimationFrame(animatePiece);
         }
     }
-
-    function toggleTheme() {
-        const doc = document.documentElement;
-        const icon = document.getElementById('themeIcon');
-        if (doc.getAttribute('data-theme') === 'dark') {
-            doc.setAttribute('data-theme', 'light');
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            localStorage.setItem('uzsl_theme', 'light');
-        } else {
-            doc.setAttribute('data-theme', 'dark');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            localStorage.setItem('uzsl_theme', 'dark');
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        const icon = document.getElementById('themeIcon');
-        if (icon) {
-            if (savedTheme === 'light') {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            } else {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            const lessonScreen = document.getElementById('screenLesson');
-            const finishScreen = document.getElementById('screenFinish');
-            
-            if (lessonScreen && lessonScreen.classList.contains('active')) {
-                const btn = document.getElementById('btnCheck');
-                if (btn && btn.classList.contains('active')) {
-                    btn.click();
-                }
-            } else if (finishScreen && finishScreen.classList.contains('active')) {
-                quitLesson();
-            }
-        }
-    });
 
     // Init
     generateQuestions();

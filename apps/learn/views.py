@@ -26,3 +26,6 @@ def dict_quiz_view(request):
 
 def alphabet_lesson_view(request):
     return render(request, 'learn/lesson_alphabet.html')
+
+def alphabet_exam_view(request):
+    return render(request, 'learn/lesson_exam.html')

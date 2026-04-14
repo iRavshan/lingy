@@ -56,7 +56,10 @@ units.forEach(unit => {
     unit.lessons.forEach(lesson => {
         let lId = lesson.id.toString();
         // Setup proper link arguments for lesson
-        if (lesson.link && lesson.link.includes('?')) {
+        if (lesson.checkpoint && !lesson.link) {
+            let cpNumber = lId.replace('cp', '');
+            lesson.link = `/learn/lesson/exam/?cp=${cpNumber}&id=${lId}&xp=${lesson.xp || (cpNumber==3?100:30)}`;
+        } else if (lesson.link && lesson.link.includes('?')) {
             lesson.link += `&id=${lId}&xp=${lesson.xp}`;
         }
         
@@ -187,10 +190,22 @@ function openPopup(lesson) {
     xp.innerHTML = `<i class="fa-solid fa-bolt"></i> +${lesson.xp} XP`;
 
     if (lesson.checkpoint) {
-        icon.className = lesson.status === 'completed' ? 'popup-icon gold' : 'popup-icon gray';
-        icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
-        btn.textContent = lesson.status === 'completed' ? 'Qayta o\'tish' : 'Qulflangan';
-        btn.className = lesson.status === 'completed' ? 'popup-btn primary' : 'popup-btn locked';
+        if (lesson.status === 'completed') {
+            icon.className = 'popup-icon gold';
+            icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+            btn.textContent = 'Qayta o\'tish';
+            btn.className = 'popup-btn primary';
+        } else if (lesson.status === 'current') {
+            icon.className = 'popup-icon pink';
+            icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+            btn.textContent = 'Sinovni boshlash';
+            btn.className = 'popup-btn secondary';
+        } else {
+            icon.className = 'popup-icon gray';
+            icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+            btn.textContent = 'Qulflangan';
+            btn.className = 'popup-btn locked';
+        }
     } else if (lesson.status === 'completed') {
         icon.className = 'popup-icon green';
         icon.innerHTML = '<i class="fa-solid fa-check"></i>';
