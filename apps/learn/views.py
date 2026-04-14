@@ -23,3 +23,6 @@ def dict_practice_view(request):
 
 def dict_quiz_view(request):
     return render(request, 'learn/dict_quiz.html')
+
+def alphabet_lesson_view(request):
+    return render(request, 'learn/lesson_alphabet.html')

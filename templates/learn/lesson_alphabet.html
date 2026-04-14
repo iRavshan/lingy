@@ -1,0 +1,569 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dars - Remu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root, [data-theme="dark"] {
+            --bg-main: #0B0B13;
+            --bg-secondary: #131422;
+            --bg-card: rgba(22, 24, 43, 0.7);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-hover: rgba(255, 255, 255, 0.25);
+            --primary: #58cc02; /* Duolingo Green */
+            --primary-shadow: #58a700;
+            --danger: #ff4b4b;
+            --danger-shadow: #ea2b2b;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --border-hover: #d1d5db;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overscroll-behavior-y: none;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-close:hover { color: var(--text-main); }
+        
+        .progress-container {
+            flex-grow: 1;
+            height: 16px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 24px 140px; /* space for bottom bar */
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .question-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .question-media {
+            width: 180px;
+            height: 180px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .question-media img, .question-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+        .option-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 0 var(--border-color);
+        }
+        .option-btn:hover {
+            background: var(--bg-secondary);
+        }
+        .option-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--border-color);
+        }
+        .option-btn.selected {
+            border-color: #84d8ff;
+            background: rgba(132, 216, 255, 0.1);
+            color: #84d8ff;
+            box-shadow: 0 4px 0 #84d8ff;
+        }
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* BOTTOM BAR */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-main);
+            border-top: 2px solid var(--border-color);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            transition: background 0.3s inset;
+        }
+        .bottom-bar.correct {
+            background: #d7ffb8;
+            border-top-color: #58a700;
+        }
+        .bottom-bar.wrong {
+            background: #ffdfe0;
+            border-top-color: #ea2b2b;
+        }
+
+        [data-theme="dark"] .bottom-bar.correct {
+            background: rgba(88, 204, 2, 0.15);
+            border-top-color: var(--primary);
+        }
+        [data-theme="dark"] .bottom-bar.wrong {
+            background: rgba(255, 75, 75, 0.15);
+            border-top-color: var(--danger);
+        }
+
+        .bar-message {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .bottom-bar.correct .bar-message, .bottom-bar.wrong .bar-message {
+            opacity: 1;
+            visibility: visible;
+        }
+        .bottom-bar.correct .bar-message { color: var(--primary-shadow); }
+        .bottom-bar.wrong .bar-message { color: var(--danger-shadow); }
+        [data-theme="dark"] .bottom-bar.correct .bar-message { color: var(--primary); }
+        [data-theme="dark"] .bottom-bar.wrong .bar-message { color: var(--danger); }
+
+        .btn-check {
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            border: none;
+            border-radius: 16px;
+            padding: 16px 40px;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: not-allowed;
+            text-transform: uppercase;
+        }
+        .btn-check.active {
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--primary-shadow);
+        }
+        .btn-check.active:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--primary-shadow);
+        }
+        
+        .bottom-bar.correct .btn-check, .bottom-bar.wrong .btn-check {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        .bottom-bar.wrong .btn-check {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 0 var(--danger-shadow);
+        }
+
+        /* Screen views */
+        #screenLesson, #screenFinish { display: none; }
+        #screenLesson.active, #screenFinish.active { display: flex; }
+
+        .finish-container {
+            text-align: center;
+            max-width: 400px;
+            animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .finish-container img { width: 150px; margin-bottom: 20px; }
+        .finish-container h1 { font-family: var(--font-heading); font-size: 2.2rem; color: #ffc800; margin-bottom: 10px; }
+        .finish-container p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            will-change: transform, opacity;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .bottom-bar { flex-direction: column; gap: 15px; padding: 15px 20px; }
+            .btn-check { width: 100%; text-align: center; }
+            .bar-message { width: 100%; justify-content: center; }
+            .main-content { padding-bottom: 180px; }
+            .question-title { font-size: 1.4rem; text-align: center; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <!-- Lesson Screen -->
+    <div id="screenLesson" class="active" style="flex-grow:1; flex-direction:column; width:100%;">
+        <div class="top-bar">
+            <button class="btn-close" onclick="quitLesson()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="question-title" id="questionTitle">Ushbu harf nima?</div>
+            
+            <div class="question-media" id="questionMedia">
+                <!-- Image or Video -->
+            </div>
+
+            <div class="options-grid" id="optionsGrid">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <div class="bottom-bar" id="bottomBar">
+            <div class="bar-message" id="barMessage">
+                <div class="bg-icon" id="messageIcon"><i class="fa-solid fa-circle-check"></i></div>
+                <span id="messageText">Ajoyib!</span>
+            </div>
+            <button class="btn-check" id="btnCheck" onclick="submitAnswer()">Tekshirish</button>
+        </div>
+    </div>
+
+    <!-- Finish Screen -->
+    <div id="screenFinish" class="main-content">
+        <div class="finish-container">
+            <div style="font-size: 80px; margin-bottom: 20px;">🏆</div>
+            <h1>Ajoyib natija!</h1>
+            <p>Siz darsni muvaffaqiyatli yakunladingiz. <span style="color:#58cc02; font-weight:700;">+10 XP</span></p>
+            <button class="btn-check active" style="width:100%; box-shadow: 0 4px 0 var(--primary-shadow);" onclick="quitLesson()">Davom etish</button>
+        </div>
+    </div>
+
+    <script>
+    const alphabetDB = "ABCDEFGHIJKLMNOPQRSTUVWXYZO'G'ShChNg".split(/(?=[A-Z])/); // simplified for mockup
+    
+    let targetLetters = [];
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let selectedOption = null;
+    let isChecked = false;
+
+    // Load URL params
+    const params = new URLSearchParams(window.location.search);
+    const lettersParam = params.get('letters');
+    if (lettersParam) {
+        targetLetters = lettersParam.split(',').map(s=>s.trim()).filter(s=>s);
+    }
+    if (targetLetters.length === 0) targetLetters = ['A', 'B']; // fallback
+
+    // Generate questions for these letters
+    function generateQuestions() {
+        questions = [];
+        // For each letter, create 2 questions (1 image, 1 video)
+        targetLetters.forEach(letter => {
+            // Q1: Image
+            questions.push({
+                type: 'image',
+                answer: letter,
+                media: `/static/img/alphabet/${letter}.png`,
+                title: "Ushbu imo-ishora qaysi harfni bildiradi?",
+                options: generateOptions(letter)
+            });
+            // Q2: Video
+            questions.push({
+                type: 'video',
+                answer: letter,
+                media: `/static/img/pron/${letter}.mp4`,
+                title: "Ushbu ishora qaysi harf?",
+                options: generateOptions(letter)
+            });
+        });
+        
+        // Shuffle questions
+        questions.sort(() => Math.random() - 0.5);
+    }
+
+    function generateOptions(correctAnswer) {
+        let opts = new Set([correctAnswer]);
+        while(opts.size < 4) {
+            let rnd = alphabetDB[Math.floor(Math.random() * alphabetDB.length)];
+            opts.add(rnd);
+        }
+        return Array.from(opts).sort(() => Math.random() - 0.5);
+    }
+
+    function renderQuestion() {
+        selectedOption = null;
+        isChecked = false;
+        
+        const q = questions[currentQuestionIndex];
+        document.getElementById('questionTitle').textContent = q.title;
+
+        // Render Media
+        const mediaBox = document.getElementById('questionMedia');
+        if (q.type === 'image') {
+            mediaBox.innerHTML = `<img src="${q.media}" onerror="this.src=''" alt="gesture">`;
+        } else {
+            mediaBox.innerHTML = `<video src="${q.media}" autoplay loop muted playsinline></video>`;
+        }
+
+        // Render Options
+        const grid = document.getElementById('optionsGrid');
+        grid.innerHTML = '';
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => selectOption(btn, opt);
+            grid.appendChild(btn);
+        });
+
+        // Reset Bottom Bar
+        const bar = document.getElementById('bottomBar');
+        bar.className = 'bottom-bar';
+        const checkBtn = document.getElementById('btnCheck');
+        checkBtn.className = 'btn-check';
+        checkBtn.textContent = 'Tekshirish';
+
+        // Progress
+        const pct = (currentQuestionIndex / questions.length) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    function selectOption(btnElement, opt) {
+        if (isChecked) return; // cannot change after check
+
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btnElement.classList.add('selected');
+        selectedOption = opt;
+
+        const checkBtn = document.getElementById('btnCheck');
+        checkBtn.classList.add('active');
+    }
+
+    function submitAnswer() {
+        const checkBtn = document.getElementById('btnCheck');
+
+        if (!isChecked) {
+            // Checking Answer
+            if (!selectedOption) return;
+
+            isChecked = true;
+            const q = questions[currentQuestionIndex];
+            const bar = document.getElementById('bottomBar');
+            const icon = document.getElementById('messageIcon');
+            const msg = document.getElementById('messageText');
+
+            // Disable other buttons
+            document.querySelectorAll('.option-btn').forEach(b => {
+                if (!b.classList.contains('selected')) {
+                    b.classList.add('disabled');
+                }
+            });
+
+            if (selectedOption === q.answer) {
+                // Correct
+                bar.classList.add('correct');
+                icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                msg.textContent = "To'g'ri javob! Ajoyib.";
+                createConfetti();
+            } else {
+                // Wrong
+                bar.classList.add('wrong');
+                icon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                msg.textContent = `Noto'g'ri. To'g'ri javob: ${q.answer}`;
+                // Push question to end of array to repeat it
+                questions.push({...q, options: generateOptions(q.answer)});
+            }
+
+            checkBtn.textContent = 'Davom etish';
+
+        } else {
+            // Go to next question
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                finishLesson();
+            } else {
+                renderQuestion();
+            }
+        }
+    }
+
+    function finishLesson() {
+        document.getElementById('progressBar').style.width = '100%';
+        
+        const lessId = params.get('id');
+        const xpPts = parseInt(params.get('xp')) || 10;
+        if (lessId) {
+            let completed = JSON.parse(localStorage.getItem('uzsl_completed_lessons') || '[]');
+            if (!completed.includes(lessId)) {
+                completed.push(lessId);
+                localStorage.setItem('uzsl_completed_lessons', JSON.stringify(completed));
+                let curXp = parseInt(localStorage.getItem('uzsl_total_xp') || '0');
+                localStorage.setItem('uzsl_total_xp', curXp + xpPts);
+            }
+        }
+
+        setTimeout(() => {
+            document.getElementById('screenLesson').classList.remove('active');
+            document.getElementById('screenFinish').classList.add('active');
+            createConfetti();
+        }, 500);
+    }
+
+    function quitLesson() {
+        window.location.href = "{% url 'path' %}";
+    }
+
+    function createConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#10b981', '#34d399', '#6ee7b7', '#f59e0b', '#fbbf24', '#6366f1', '#ec4899', '#a78bfa', '#facc15', '#38bdf8'];
+        const count = 150;
+        const gravity = 800; // px/s^2
+
+        for (let i = 0; i < count; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 8 + 5;
+            const isCircle = Math.random() > 0.5;
+
+            // Velocity: upward with horizontal spread
+            const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.2; 
+            const speed = 600 + Math.random() * 500; 
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            const spinSpeed = (Math.random() - 0.5) * 1200; 
+            const duration = 2.0 + Math.random() * 1.0;
+            const delay = Math.random() * 0.25;
+
+            piece.style.cssText = `
+                width: ${size}px;
+                height: ${size * (isCircle ? 1 : 0.5)}px;
+                background: ${color};
+                left: 50%;
+                bottom: 0;
+                border-radius: ${isCircle ? '50%' : '2px'};
+                opacity: 1;
+            `;
+
+            container.appendChild(piece);
+
+            const startTime = performance.now() + delay * 1000;
+            function animatePiece(now) {
+                const elapsed = (now - startTime) / 1000;
+                if (elapsed < 0) { requestAnimationFrame(animatePiece); return; }
+                if (elapsed > duration) { piece.remove(); return; }
+
+                const x = vx * elapsed;
+                const y = vy * elapsed + 0.5 * gravity * elapsed * elapsed;
+                const rotation = spinSpeed * elapsed;
+                const opacity = elapsed > duration * 0.7 ? 1 - ((elapsed - duration * 0.7) / (duration * 0.3)) : 1;
+
+                piece.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+                piece.style.opacity = Math.max(0, opacity);
+                requestAnimationFrame(animatePiece);
+            }
+            requestAnimationFrame(animatePiece);
+        }
+    }
+
+    // Init
+    generateQuestions();
+    renderQuestion();
+    </script>
+</body>
+</html>

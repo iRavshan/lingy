@@ -814,7 +814,20 @@ const words = [
     { uz: "Uch", emoji: "3️⃣", cat: "raqamlar", },
     { uz: "To'rt", emoji: "4️⃣", cat: "raqamlar", },
     { uz: "Besh", emoji: "5️⃣", cat: "raqamlar", },
+    { uz: "Olti", emoji: "6️⃣", cat: "raqamlar", },
+    { uz: "Yetti", emoji: "7️⃣", cat: "raqamlar", },
+    { uz: "Sakkiz", emoji: "8️⃣", cat: "raqamlar", },
+    { uz: "To'qqiz", emoji: "9️⃣", cat: "raqamlar", },
     { uz: "O'n", emoji: "🔟", cat: "raqamlar", },
+    { uz: "Yigirma", emoji: "2️⃣0️⃣", cat: "raqamlar", },
+    { uz: "O'ttiz", emoji: "3️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Qirq", emoji: "4️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Ellik", emoji: "5️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Oltmish", emoji: "6️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Yetmish", emoji: "7️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Sakson", emoji: "8️⃣0️⃣", cat: "raqamlar", },
+    { uz: "To'qson", emoji: "9️⃣0️⃣", cat: "raqamlar", },
+    { uz: "Yuz", emoji: "1️⃣0️⃣0️⃣", cat: "raqamlar", },
 
     // His-tuyg'ular
     { uz: "Xursand", emoji: "😊", cat: "hissiyotlar", },
@@ -973,7 +986,7 @@ const syllableMap = {
     "non": "non", "suv": "suv", "choy": "choy", "olma": "ol-ma", "palov": "pa-lov", "go'sht": "go'sht", "meva": "me-va", "sut": "sut", 
     "mushuk": "mu-shuk", "it": "it", "qush": "qush", "baliq": "ba-liq", "ot": "ot", "sigir": "si-gir", 
     "qizil": "qi-zil", "ko'k": "ko'k", "yashil": "ya-shil", "oq": "oq", "qora": "qo-ra", "sariq": "sa-riq", "pushti": "push-ti", "kulrang": "kul-rang", "binafsha": "bi-naf-sha",
-    "bir": "bir", "ikki": "ik-ki", "uch": "uch", "to'rt": "to'rt", "besh": "besh", "o'n": "o'n", 
+    "bir": "bir", "ikki": "ik-ki", "uch": "uch", "to'rt": "to'rt", "besh": "besh", "olti": "ol-ti", "yetti": "yet-ti", "sakkiz": "sak-kiz", "to'qqiz": "to'q-qiz", "o'n": "o'n", "yigirma": "yi-gir-ma", "o'ttiz": "o't-tiz", "qirq": "qirq", "ellik": "el-lik", "oltmish": "olt-mish", "yetmish": "yet-mish", "sakson": "sak-son", "to'qson": "to'q-son", "yuz": "yuz", 
     "xursand": "xur-sand", "g'amgin": "g'am-gin", "qo'rqinchli": "qo'r-qinch-li", "hayron": "hay-ron", "sevgi": "sev-gi", "charchagan": "char-cha-gan", 
     "uy": "uy", "maktab": "mak-tab", "ish": "ish", "ovqat": "ov-qat", "kitob": "ki-tob", "telefon": "te-le-fon", "mashina": "ma-shi-na", "do'kon": "do'-kon", 
     "quyosh": "qu-yosh", "oy": "oy", "yomg'ir": "yom-g'ir", "gul": "gul", "daraxt": "da-raxt", "tog'": "tog'", 
@@ -1176,7 +1189,7 @@ document.addEventListener('keydown', (e) => {
 function wordImgFallback(img, emoji) {
     const container = img.parentElement;
     if (emoji) {
-        container.innerHTML = '<span style="font-size:3rem; line-height:1; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));">' + emoji + '</span>';
+        container.innerHTML = '<span style="font-size:2.4rem;filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));">' + emoji + '</span>';
     } else {
         container.style.display = 'none';
     }

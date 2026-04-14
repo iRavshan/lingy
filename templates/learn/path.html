@@ -20,49 +20,86 @@
 // ===== DATA =====
 const units = [
     {
-        title: "Bo'lim 1: Asoslar",
-        desc: "Salomlashish va daktil alifbosi",
-        icon: "👋",
+        title: "Bo'lim 1: Harflar",
+        desc: "Daktil alifbosi harflarini to'liq o'rganish",
+        icon: "🅰️",
         gradient: "linear-gradient(135deg, #6366f1, #ec4899)",
         lessons: [
-            { id: 1, title: "Salom!", desc: "Salomlashish va tanishish", xp: 10, status: "completed", link: "/learn/dictionary.html" },
-            { id: 2, title: "A-D harflari", desc: "Birinchi 4 ta daktil harfi", xp: 10, status: "completed", link: "/learn/alphabet.html" },
-            { id: 3, title: "Ha va Yo'q", desc: "Oddiy javoblar", xp: 15, status: "completed", link: "/learn/dictionary.html" },
-            { id: 4, title: "E-I harflari", desc: "Navbatdagi harflar guruhi", xp: 15, status: "current", link: "/learn/alphabet.html" },
-            { id: 5, title: "Oila a'zolari", desc: "Ona, Ota, Aka, Opa", xp: 20, status: "locked" },
-            { id: "cp1", title: "Birinchi sinov", desc: "Bo'lim 1 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
-        ]
-    },
-    {
-        title: "Bo'lim 2: Kundalik hayot",
-        desc: "Har kuni kerak bo'ladigan so'zlar",
-        icon: "🏠",
-        gradient: "linear-gradient(135deg, #7c3aed, #2563eb)",
-        lessons: [
-            { id: 6, title: "Uy va maktab", desc: "Muhim joylar nomlari", xp: 15, status: "locked" },
-            { id: 7, title: "J-N harflari", desc: "Daktil davomi", xp: 15, status: "locked" },
-            { id: 8, title: "Ovqatlanish", desc: "Non, suv, choy, palov", xp: 20, status: "locked" },
-            { id: 9, title: "Ranglar", desc: "Qizil, ko'k, yashil...", xp: 15, status: "locked" },
-            { id: 10, title: "O-T harflari", desc: "Daktil harflari davomi", xp: 20, status: "locked" },
-            { id: "cp2", title: "Ikkinchi sinov", desc: "Bo'lim 2 yakuniy testi", xp: 50, status: "locked", checkpoint: true }
-        ]
-    },
-    {
-        title: "Bo'lim 3: So'zlashish",
-        desc: "Gaplar tuzish va muloqot",
-        icon: "💬",
-        gradient: "linear-gradient(135deg, #f59e0b, #ef4444)",
-        lessons: [
-            { id: 11, title: "Raqamlar", desc: "1 dan 10 gacha sanash", xp: 15, status: "locked" },
-            { id: 12, title: "U-Z harflari", desc: "Oxirgi harflar guruhi", xp: 20, status: "locked" },
-            { id: 13, title: "His-tuyg'ular", desc: "Xursand, g'amgin, sevgi", xp: 20, status: "locked" },
-            { id: 14, title: "Maxsus harflar", desc: "O', G', Sh, Ch, Ng", xp: 25, status: "locked" },
-            { id: 15, title: "Hayvonlar", desc: "Mushuk, it, qush...", xp: 20, status: "locked" },
-            { id: 16, title: "Tabiat", desc: "Quyosh, oy, yomg'ir", xp: 20, status: "locked" },
-            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha darslar bo'yicha sinov", xp: 100, status: "locked", checkpoint: true }
+            { id: 1, title: "A, B harflari", desc: "Daktil alifbosini boshlash", xp: 10, status: "completed", link: "/learn/lesson/alphabet/?letters=A,B" },
+            { id: 2, title: "D, E harflari", desc: "Navbatdagi harflar", xp: 15, status: "current", link: "/learn/lesson/alphabet/?letters=D,E" },
+            { id: 3, title: "F, G harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=F,G" },
+            { id: 4, title: "H, I harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=H,I" },
+            { id: 5, title: "J, K harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=J,K" },
+            { id: "cp1", title: "Birinchi sinov", desc: "A dan K gacha", xp: 30, status: "locked", checkpoint: true },
+            { id: 6, title: "L, M harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=L,M" },
+            { id: 7, title: "N, O harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=N,O" },
+            { id: 8, title: "P, Q harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=P,Q" },
+            { id: 9, title: "R, S harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=R,S" },
+            { id: 10, title: "T, U harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=T,U" },
+            { id: "cp2", title: "Ikkinchi sinov", desc: "L dan U gacha", xp: 30, status: "locked", checkpoint: true },
+            { id: 11, title: "V, X harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=V,X" },
+            { id: 12, title: "Y, Z harflari", desc: "Daktil davomi", xp: 15, status: "locked", link: "/learn/lesson/alphabet/?letters=Y,Z" },
+            { id: 13, title: "O', G' harflari", desc: "Maxsus harflar", xp: 20, status: "locked", link: "/learn/lesson/alphabet/?letters=O',G'" },
+            { id: 14, title: "Sh, Ch harflari", desc: "Qo'shma harflar", xp: 20, status: "locked", link: "/learn/lesson/alphabet/?letters=Sh,Ch" },
+            { id: 15, title: "Ng harfi", desc: "Oxirgi harf", xp: 10, status: "locked", link: "/learn/lesson/alphabet/?letters=Ng" },
+            { id: "cp3", title: "Yakuniy imtihon", desc: "Barcha harflar bo'yicha", xp: 100, status: "locked", checkpoint: true }
         ]
     }
 ];
+
+// Process completed lessons from localStorage
+const completedLessons = JSON.parse(localStorage.getItem('uzsl_completed_lessons') || '[]');
+const savedXp = localStorage.getItem('uzsl_total_xp');
+let currentFound = false;
+
+units.forEach(unit => {
+    unit.lessons.forEach(lesson => {
+        let lId = lesson.id.toString();
+        // Setup proper link arguments for lesson
+        if (lesson.link && lesson.link.includes('?')) {
+            lesson.link += `&id=${lId}&xp=${lesson.xp}`;
+        }
+        
+        // Define statuses
+        if (completedLessons.includes(lId)) {
+            lesson.status = 'completed';
+        } else if (!currentFound) {
+            lesson.status = 'current';
+            currentFound = true;
+        } else {
+            lesson.status = 'locked';
+        }
+    });
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Top Bar XP
+    if (savedXp) {
+        const xpD = document.getElementById('gemCountDesktop');
+        if (xpD) xpD.innerHTML = savedXp + ' XP';
+        const xpM = document.getElementById('gemCountMobile');
+        if (xpM) xpM.textContent = savedXp;
+    }
+    
+    // Sidebar Progression Card
+    const barWrap = document.querySelector('.progression-card .progress-bar');
+    if (barWrap) {
+        const total = 18; // total lessons + checkpoints
+        const comp = completedLessons.length;
+        const pct = Math.min(Math.round((comp / total) * 100), 100);
+        
+        barWrap.style.width = pct + '%';
+        
+        const divs = document.querySelectorAll('.progression-card');
+        if (divs.length > 0) {
+            const spans = divs[0].querySelectorAll('span');
+            if (spans.length >= 2) {
+                spans[0].textContent = `${comp} / ${total} darslar`;
+                spans[1].textContent = pct + '%';
+            }
+        }
+    }
+});
 
 // Zigzag pattern
 const zigzag = ['center', 'right', 'center', 'left', 'center', 'right'];
@@ -362,7 +399,7 @@ renderPath();
             </div>
         </div>
         <div class="stat-item stat-bolt" title="Yig'ilgan tajriba (XP)">
-            <i class="fa-solid fa-bolt"></i> <span id="gemCountDesktop">120 XP</span>
+            <i class="fa-solid fa-bolt"></i> <span id="gemCountDesktop">0 XP</span>
         </div>
         <button class="theme-toggle" onclick="toggleLearnTheme()"><i class="fa-solid fa-moon"></i></button>
     </div>
