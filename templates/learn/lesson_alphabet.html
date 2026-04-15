@@ -474,6 +474,13 @@
                 bar.classList.add('correct');
                 icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
                 msg.textContent = "To'g'ri javob! Ajoyib.";
+                
+                try {
+                    let correctSound = new Audio("{% static 'sound/correct.mp3' %}");
+                    correctSound.volume = 0.5;
+                    correctSound.play();
+                } catch(e) {}
+
                 createConfetti();
             } else {
                 // Wrong
