@@ -458,7 +458,8 @@
             .alphabet-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .letter-big { font-size: 3rem; }
             .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
-            .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
+            .practice-panel { width: 100%; max-height: 0; opacity: 0; padding: 0 !important; border-left: none; border-top: 1px dashed transparent; transition: max-height 0.4s, opacity 0.3s, padding 0.3s; }
+            .modal-wrapper.practice-active .practice-panel { max-height: 800px; opacity: 1; border-top-color: var(--border-color); padding: 20px !important; }
         }
 
         @media (max-width: 480px) {
@@ -470,6 +471,12 @@
             .card-word-img { width: 90px; height: 90px; }
             .syllables { font-size: 0.95rem; }
             .filter-bar { flex-direction: column; }
+            .modal-wrapper { width: 95vw; border-radius: 20px; }
+            .modal-card { width: 100%; max-width: 100%; }
+            .modal-body { padding: 15px 15px 25px; }
+            .modal-letter { font-size: 3.2rem; margin-top: 10px; }
+            .modal-nav button { width: 40px; height: 40px; font-size: 1rem; }
+            .modal-wrapper.practice-active .practice-panel { padding: 15px; }
         }
     </style>
 
@@ -866,6 +873,11 @@
         
         if (wrapper.classList.contains('practice-active')) {
             startWebcam();
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    document.getElementById('practicePanel').scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 350);
+            }
         } else {
             stopWebcam();
         }

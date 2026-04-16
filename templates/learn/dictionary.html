@@ -614,6 +614,13 @@
         }
         @media (max-width: 480px) {
             .words-grid { grid-template-columns: repeat(2, 1fr); }
+            .modal-wrapper { width: 95vw; border-radius: 20px; }
+            .modal-card { width: 100%; max-width: 100%; }
+            .modal-video-header { height: 200px; }
+            .modal-body { padding: 20px; }
+            .modal-word-uz { font-size: 2rem; }
+            .modal-nav button { width: 40px; height: 40px; }
+            .modal-wrapper.practice-active .practice-panel { padding: 15px; }
         }
     </style>
 
@@ -1052,6 +1059,11 @@ function togglePractice() {
     const isActive = wrapper.classList.toggle('practice-active');
     if (isActive) {
         startWebcam();
+        if (window.innerWidth <= 768) {
+            setTimeout(() => {
+                document.getElementById('practicePanel').scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 350);
+        }
     } else {
         stopWebcam();
     }
