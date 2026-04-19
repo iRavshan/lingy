@@ -1,250 +1,310 @@
 {% extends 'learn/_base.html' %}
-{% block title %}Onlayn tarjimon{% endblock %}
+{% block title %}Surdo Tarjimon{% endblock %}
+{% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <style>
-    .translator-hub {
-        max-width: 1000px;
-        margin: 0 auto;
+    /* == Force Day Mode on Translator Page == */
+    :root, [data-theme="dark"], [data-theme="light"], body {
+        --bg-main: #f4f5f9 !important;
+        --bg-card: rgba(255, 255, 255, 0.85) !important;
+        --bg-secondary: #ffffff !important;
+        --bg-nav: rgba(255, 255, 255, 0.9) !important;
+        --border-color: rgba(0, 0, 0, 0.08) !important;
+        --text-main: #1e293b !important;
+        --text-muted: #64748b !important;
+    }
+
+    /* Hide the theme toggle button since Day Mode is forced */
+    .theme-toggle {
+        display: none !important;
+    }
+
+    /* Override some styles to fit in the learn dashboard layout */
+    .app-section {
         padding: 40px 20px;
-        animation: fadeIn 0.4s ease;
+        min-height: auto;
     }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+    .main-content {
+        background: var(--bg-main);
     }
-    
-    .translator-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    .translator-header h1 {
-        font-family: var(--font-heading);
-        font-size: 2.2rem;
-        margin-bottom: 10px;
-        color: var(--text-main);
-    }
-    .translator-header p {
-        color: var(--text-muted);
-        font-size: 1rem;
-    }
-    
-    .translator-grid {
+    /* Fix for learn base layout conflicts */
+    .app-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        gap: 25px;
+        margin-top: 30px;
     }
-    @media (max-width: 768px) {
-        .translator-grid { grid-template-columns: 1fr; gap: 20px; }
+    @media (max-width: 992px) {
+        .app-grid {
+            grid-template-columns: 1fr;
+        }
     }
-    
-    .t-card {
+    .glass-card {
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: var(--radius-lg);
+        backdrop-filter: var(--glass-blur);
+    }
+    /* Ensure icons from font-awesome are consistent */
+    .card-title i {
+        width: 30px;
+        text-align: center;
+    }
+    /* Mode switcher styling fix */
+    .app-mode-switcher {
         display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-    
-    .t-card-header {
-        padding: 16px 24px;
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(0,0,0,0.1);
-    }
-    .t-card-title {
-        font-weight: 700;
-        font-family: var(--font-heading);
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--primary);
-    }
-    
-    .t-input-area {
-        padding: 24px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    .t-textarea {
-        width: 100%;
-        min-height: 220px;
-        background: transparent;
-        border: none;
-        resize: none;
-        color: var(--text-main);
-        font-size: 1.15rem;
-        font-family: var(--font-body);
-        outline: none;
-        line-height: 1.6;
-    }
-    .t-textarea::placeholder {
-        color: var(--text-muted);
-        opacity: 0.6;
-    }
-    
-    .t-actions {
-        padding: 16px 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid var(--border-color);
-        background: rgba(0,0,0,0.05);
-    }
-    
-    .btn-action {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-muted);
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 1.1rem;
+        gap: 15px;
+        margin-bottom: 30px;
     }
-    .btn-action:hover {
+    .mode-btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        background: var(--bg-secondary);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+        font-weight: 600;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    .mode-btn.active {
+        background: var(--primary-light);
         color: var(--primary);
         border-color: var(--primary);
-        background: var(--primary-light);
-        transform: translateY(-2px);
+    }
+    .mode-btn i {
+        margin-right: 8px;
     }
     
-    .btn-translate {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        border: none;
-        padding: 14px 28px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 1.05rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 15px rgba(99,102,241,0.25);
-    }
-    .btn-translate:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(99,102,241,0.4);
-    }
-    .btn-translate:active {
-        transform: translateY(1px);
-        box-shadow: 0 4px 10px rgba(99,102,241,0.2);
-    }
-    
-    .t-video-area {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 320px;
-        background: #000;
-        position: relative;
-    }
-    .t-video-placeholder {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        color: rgba(255,255,255,0.4);
-        text-align: center;
-        padding: 20px;
-    }
-    .t-video-placeholder i {
-        font-size: 3.5rem;
-        margin-bottom: 5px;
-    }
-    
-    .t-video-controls {
-        position: absolute;
+    /* Notification area spacing */
+    .notification-area {
+        position: fixed;
         bottom: 20px;
-        display: none; /* Add flex logic when video plays */
-        gap: 20px;
-        background: rgba(0,0,0,0.6);
-        padding: 12px 25px;
-        border-radius: 20px;
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-    .t-video-controls button {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 1.3rem;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .t-video-controls button:hover {
-        color: var(--primary);
-        transform: scale(1.1);
+        right: 20px;
+        z-index: 9999;
     }
 </style>
 
-<div class="translator-hub">
-    <div class="translator-header">
-        <h1>Surdo tarjimon</h1>
-        <p>Istalgan so'z yoki gapni yozing va uning imo-ishoradagi holatini o'rganing.</p>
-    </div>
-
-    <div class="translator-grid">
-        <!-- Input Card -->
-        <div class="t-card">
-            <div class="t-card-header">
-                <div class="t-card-title">
-                    <i class="fa-solid fa-keyboard"></i> O'zbek tili
-                </div>
-                <button class="btn-action" title="Tozalash" onclick="document.getElementById('t-input').value=''">
-                    <i class="fa-solid fa-trash-can"></i>
+<div class="app-section">
+    <div class="container" style="max-width: 1000px; margin: 0 auto;">
+        <div class="section-header fade-in-up">
+            <h2 style="font-size: 2.2rem; text-align: center; margin-bottom: 10px;">Surdo Tarjimon</h2>
+            <div class="header-line" style="width: 60px; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); margin: 0 auto 20px; border-radius: 2px;"></div>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Matnni imo-ishoraga yoki imo-ishorani matnga o'giring.</p>
+            
+            <!-- Main App Mode Switcher -->
+            <div class="app-mode-switcher">
+                <button class="mode-btn active" data-mode="text-to-sl" onclick="switchAppMode('text-to-sl')">
+                    <i class="fa-solid fa-font"></i> Matndan tarjima
                 </button>
-            </div>
-            <div class="t-input-area">
-                <textarea id="t-input" class="t-textarea" placeholder="Matnni bu yerga kiriting... Masalan: Maktabga borgim kelyapti" autofocus></textarea>
-            </div>
-            <div class="t-actions">
-                <div style="display: flex; gap: 12px;">
-                    <button class="btn-action" title="Ovoz bilan kiritish (Tez kunda)">
-                        <i class="fa-solid fa-microphone"></i>
-                    </button>
-                </div>
-                <button class="btn-translate">
-                    Hoziroq tarjima <i class="fa-solid fa-language" style="margin-left: 8px;"></i>
+
+                <button class="mode-btn" data-mode="sl-to-text" onclick="switchAppMode('sl-to-text')">
+                    <i class="fa-solid fa-hands-bubbles"></i> Imo-ishoradan matnga
                 </button>
             </div>
         </div>
-
-        <!-- Video Output Card -->
-        <div class="t-card">
-            <div class="t-card-header">
-                <div class="t-card-title">
-                    <i class="fa-solid fa-video"></i> UzSL Tarjima
-                </div>
-                <div style="color: var(--text-muted); font-size: 0.9rem;">
-                    <i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> Kutmoqda
-                </div>
-            </div>
-            <div class="t-video-area">
-                <!-- Placeholder when no video is playing -->
-                <div class="t-video-placeholder">
-                    <i class="fa-solid fa-hands-asl-interpreting"></i>
-                    <p style="font-size: 0.95rem;">Natijani ko'rish uchun "Hoziroq tarjima"<br>tugmasini bosing</p>
+        
+        <!-- MODE 1: Text to Sign Language -->
+        <div id="mode-text-to-sl" class="app-grid mode-section active">
+            <!-- Text Input Card -->
+            <div class="glass-card input-card slide-in-left">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-keyboard text-primary" style="font-size: 1.2rem;"></i> 
+                        <h3 style="font-size: 1.1rem; margin: 0;">O'zbekcha kiritish</h3>
+                    </div>
+                    <div class="input-actions-top">
+                        <button id="clear-btn" class="btn-icon" title="Tozalash">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- Video Controls (hidden until playing) -->
-                <div class="t-video-controls">
-                    <button><i class="fa-solid fa-rotate-left"></i></button>
-                    <button><i class="fa-solid fa-pause"></i></button>
-                    <button><i class="fa-solid fa-gear"></i></button>
+                <div class="input-container" style="flex-grow: 1;">
+                    <textarea id="matn-kiritish" style="width: 100%; min-height: 200px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; color: var(--text-main); font-family: var(--font-body); resize: none; outline: none;" placeholder="Tarjima qilish uchun matnni shu yerga kiriting..." autofocus></textarea>
+                    <div class="char-count" id="char-count" style="text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">0 / 500</div>
+                </div>
+
+                <!-- Translation Mode Toggle -->
+                <div id="translation-mode-toggle" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(99,102,241,0.06); border-radius: 10px; margin: 10px 0; border: 1px solid var(--border-color);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-bolt" id="realtime-icon" style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;"></i>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);" id="realtime-label">Real-vaqt tarjima</span>
+                    </div>
+                    <label class="switch-toggle" style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                        <input type="checkbox" id="realtime-toggle" style="opacity:0; width:0; height:0;">
+                        <span class="switch-slider" style="position:absolute; inset:0; background: var(--bg-card); border-radius: 24px; transition: 0.3s; border: 1px solid var(--border-color);"></span>
+                    </label>
+                </div>
+                
+                <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 8px;">
+                        <button id="nutq-kiritish" class="btn-outline btn-mic" title="Mikrofon orqali gapirish" style="padding: 10px 15px; font-size: 0.9rem;">
+                            <i class="fa-solid fa-microphone"></i> <span>Gapirish</span>
+                        </button>
+                        <input type="file" id="audio-upload" accept="audio/*" style="display: none;" onchange="handleAudioUpload(this)">
+                        <button class="btn-outline" onclick="document.getElementById('audio-upload').click()" title="Tayyor audio faylni yuklash" style="padding: 10px 15px; font-size: 0.9rem;">
+                            <i class="fa-solid fa-file-audio"></i> <span>Fayl</span>
+                        </button>
+                    </div>
+                    <button id="tarjima-qilish" class="btn-primary" style="padding: 10px 20px;">
+                        Tarjima <i class="fa-solid fa-language"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Video Result Card -->
+            <div class="glass-card video-card slide-in-right">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-video text-primary" style="font-size: 1.2rem;"></i> 
+                        <h3 style="font-size: 1.1rem; margin: 0;">Imo-ishora videosi</h3>
+                    </div>
+                    <span class="status-badge" id="video-status" style="font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+                        <i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> Kutmoqda
+                    </span>
+                </div>
+                
+                <div class="video-container" style="position: relative; background: #000; border-radius: 12px; height: 280px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    <div class="video-placeholder" id="video-placeholder" style="text-align: center; color: rgba(255,255,255,0.4);">
+                        <div class="placeholder-content">
+                            <i class="fa-solid fa-play" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                            <p style="font-size: 0.9rem;">Tarjima uchun matn kiriting</p>
+                        </div>
+                    </div>
+                    <video id="sl-video" style="display: none; width: 100%; height: 100%; object-fit: cover;" playsinline></video>
+                    <div id="sl-image-sequence" style="display: none; width: 100%; height: 100%; background: var(--bg-secondary); position: relative; overflow: hidden; align-items: center; justify-content: center;">
+                        <img id="current-sl-image" src="" style="max-height: 100%; max-width: 100%; object-fit: contain; transition: opacity 0.2s ease-in-out; opacity: 1;">
+                        <div id="current-sl-letter" style="position: absolute; bottom: 20px; font-size: 2.5rem; color: #fff; font-family: var(--font-heading); font-weight: 800; text-transform: uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>
+                    </div>
+                    <div class="loading-overlay" id="loading-overlay" style="display: none; position: absolute; inset: 0; background: rgba(11,11,19,0.8); z-index: 10; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+                        <div class="spinner" style="width: 40px; height: 40px; border: 3px solid rgba(99,102,241,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <p style="font-size: 0.9rem; color: var(--text-main);">Tarjima qilinmoqda...</p>
+                    </div>
+                </div>
+                
+                <div class="video-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <div class="playback-controls" style="display: flex; gap: 10px;">
+                        <button class="btn-icon" id="btn-replay" disabled title="Boshidan">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                        <button class="btn-icon btn-play-pause" id="btn-play-pause" disabled>
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="speed-control" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <select id="speed-select" class="custom-select" disabled style="background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 8px; padding: 4px 8px; font-size: 0.85rem;">
+                            <option value="0.5">0.5x</option>
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- MODE 3: Sign Language To Text -->
+        <div id="mode-sl-to-text" class="app-grid mode-section" style="display: none;">
+            <!-- Camera Input Card -->
+            <div class="glass-card input-card">
+                <div class="card-header" style="margin-bottom: 15px;">
+                    <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-camera text-primary" style="font-size: 1.2rem;"></i> 
+                        <h3 style="font-size: 1.1rem; margin: 0;">Kamera yoki Video</h3>
+                    </div>
+                </div>
+                
+                <div class="input-container video-capture-container" style="flex-grow: 1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; border-radius:12px; border:2px dashed var(--border-color); padding: 20px; min-height: 250px;">
+                    <video id="camera-stream" style="display: none; width: 100%; border-radius: 8px;"></video>
+                    <div id="camera-placeholder">
+                        <i class="fa-solid fa-video text-muted" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4 style="font-size: 1rem; margin-bottom: 8px;">Kamerani yoqing or fayl yuklang</h4>
+                        <p class="text-muted" style="font-size: 0.85rem;">Imo-ishorani kompyuter o'qiydi va uni matnga, so'ngra ovozga o'girib beradi.</p>
+                    </div>
+                </div>
+                
+                <div class="card-footer" style="display: flex; justify-content: center; gap: 12px; margin-top: 15px;">
+                    <button id="btn-toggle-camera" class="btn-primary" onclick="toggleCameraScan()" style="padding: 10px 20px; font-size: 0.9rem;">
+                        Kamerani yoqish <i class="fa-solid fa-video"></i>
+                    </button>
+                    <input type="file" id="sl-video-upload" accept="video/*" style="display:none;" onchange="simulateVideoSignScan(this)">
+                    <button class="btn-outline" onclick="document.getElementById('sl-video-upload').click()" style="padding: 10px 20px; font-size: 0.9rem;">
+                        Yuklash <i class="fa-solid fa-file-video"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Text Result Card -->
+            <div class="glass-card video-card">
+                <div class="card-header" style="margin-bottom: 15px;">
+                    <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-font text-primary" style="font-size: 1.2rem;"></i> 
+                        <h3 id="sl-text-title" style="font-size: 1.1rem; margin: 0;">Tahlil qilingan matn</h3>
+                    </div>
+                    <span class="status-badge" id="sl-text-status" style="font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; background: rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+                        <i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle;"></i> Kutmoqda
+                    </span>
+                </div>
+                
+                <div class="video-container" style="background:var(--bg-main); padding: 25px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; height: 100%; min-height: 250px;">
+                    <div id="sl-result-placeholder" style="text-align:center; color: var(--text-muted); width: 100%;">
+                        <i class="fa-solid fa-comment-dots" style="font-size: 2.5rem; margin-bottom: 15px; opacity:0.5;"></i>
+                        <p style="font-size: 0.9rem;">O'qilgan imo-ishoralar mana shu yerda matn shaklida hosil bo'ladi.</p>
+                    </div>
+                    
+                    <div id="sl-result-loader" style="display:none; flex-direction:column; align-items:center; width: 100%;">
+                        <div class="spinner" style="width: 30px; height: 30px; border: 3px solid rgba(99,102,241,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom:10px;"></div>
+                        <span class="text-muted" style="font-size: 0.85rem;">Imo-ishoralar tanilmoqda...</span>
+                    </div>
+                    
+                    <div id="sl-result-content" style="display:none; font-size: 1.4rem; font-weight: 500; font-family: var(--font-heading); color: var(--text-main); text-align: center; width: 100%;">
+                        <!-- Dynamically filled later -->
+                    </div>
+                </div>
+                
+                <div class="video-controls" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+                    <button class="btn-outline" id="btn-read-aloud" onclick="window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Ovoz tayyorlanmoqda (Demo)...', type: 'info'}}))" disabled style="padding: 10px 15px; font-size: 0.9rem;">
+                        Ovoz chiqarish <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <button class="btn-icon" id="btn-copy-text" title="Nusxa olish" onclick="window.dispatchEvent(new CustomEvent('toast', {detail: {message: 'Matn nusxalandi.', type: 'success'}}))" disabled>
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="notification-area" class="notification-area"></div>
     </div>
 </div>
+
+<script src="{% static 'js/script.js' %}"></script>
+<style>
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .toast {
+        background: var(--bg-card);
+        color: var(--text-main);
+        padding: 12px 24px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+        transform: translateX(120%);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        backdrop-filter: blur(10px);
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.success i { color: var(--success); }
+    .toast.error i { color: var(--danger); }
+    .toast.warning i { color: var(--warning); }
+    .toast.info i { color: var(--primary); }
+</style>
 {% endblock %}
+

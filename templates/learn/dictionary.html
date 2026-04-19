@@ -609,7 +609,10 @@
             .page-hero h1 { font-size: 2rem; }
             .words-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
             .modal-wrapper { flex-direction: column; overflow-y: auto; max-height: 90vh; }
-            .modal-wrapper.practice-active .practice-panel { width: 100%; border-left: none; border-top: 1px dashed var(--border-color); padding: 20px; }
+            .practice-panel { width: 100%; max-height: 0; opacity: 0; padding: 0 !important; border-left: none; border-top: 1px dashed transparent; transition: max-height 0.4s, opacity 0.3s, padding 0.3s; }
+            .modal-wrapper.practice-active .practice-panel { width: 100%; max-height: 800px; opacity: 1; border-top-color: var(--border-color); padding: 20px !important; }
+            .modal-wrapper.practice-active .modal-video-header,
+            .modal-wrapper.practice-active .modal-nav { display: none !important; }
             .fc-banners { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
@@ -997,7 +1000,8 @@ const syllableMap = {
     "xursand": "xur-sand", "g'amgin": "g'am-gin", "qo'rqinchli": "qo'r-qinch-li", "hayron": "hay-ron", "sevgi": "sev-gi", "charchagan": "char-cha-gan", 
     "uy": "uy", "maktab": "mak-tab", "ish": "ish", "ovqat": "ov-qat", "kitob": "ki-tob", "telefon": "te-le-fon", "mashina": "ma-shi-na", "do'kon": "do'-kon", 
     "quyosh": "qu-yosh", "oy": "oy", "yomg'ir": "yom-g'ir", "gul": "gul", "daraxt": "da-raxt", "tog'": "tog'", 
-    "ismim": "is-mim", "yosh": "yosh", "qaerdan": "qa-er-dan", "tanishganimdan xursandman": "ta-nish-ga-nim-dan xur-sand-man"
+    "ismim": "is-mim", "yosh": "yosh", "qaerdan": "qa-er-dan", "tanishganimdan xursandman": "ta-nish-ga-nim-dan xur-sand-man",
+    "tarvuz": "tar-vuz", "qovun": "qo-vun", "no'xat": "no'-xat", "jo'xori": "jo'-xo-ri", "sarimsoq piyoz": "sa-rim-soq pi-yoz", "lavlagi": "lav-la-gi", "rediska": "re-dis-ka", "turp": "turp", "sholg'om": "shol-g'om"
 };
 
 function getSyllables(word) {

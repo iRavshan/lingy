@@ -405,7 +405,7 @@
             pool.push({
                 type: 'image',
                 answer: letter,
-                media: `/static/img/alphabet/${letter}.png`,
+                media: `/static/img/alphabet/${letter.toLowerCase()}.png`,
                 title: "O'tilgan harflar sinovi:",
                 options: generateOptions(letter)
             });

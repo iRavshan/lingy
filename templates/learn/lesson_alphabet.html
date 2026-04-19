@@ -373,7 +373,7 @@
             questions.push({
                 type: 'image',
                 answer: letter,
-                media: `/static/img/alphabet/${letter}.png`,
+                media: `/static/img/alphabet/${letter.toLowerCase()}.png`,
                 title: "Ushbu imo-ishora qaysi harfni bildiradi?",
                 options: generateOptions(letter)
             });

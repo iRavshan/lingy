@@ -530,10 +530,13 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-                <div class="setting-row" style="flex-direction: column; align-items: flex-start;">
-                    <div class="setting-label">
-                        <i class="icon-cat fa-solid fa-tags"></i>
-                        <span>Mavzularni tanlang</span>
+                <div class="setting-row" style="flex-direction: column; align-items: flex-start; width: 100%;">
+                    <div class="setting-label" style="width: 100%; display: flex; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="icon-cat fa-solid fa-tags"></i>
+                            <span>Mavzularni tanlang</span>
+                        </div>
+                        <button onclick="selectAllTopics()" style="background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">Barchasini tanlash</button>
                     </div>
                     <div class="topic-selector" id="topicSelector"></div>
                 </div>
@@ -629,84 +632,131 @@
 
     <script>
     const categories = [
-        { id: "salomlashish", name: "Salomlashish", emoji: "👋" },
-        { id: "oila", name: "Oila", emoji: "👨‍👩‍👧‍👦" },
-        { id: "oziq-ovqat", name: "Oziq-ovqat", emoji: "🍽️" },
+        { id: "salomlashish", name: "Tanishuv", emoji: "👋" },
+        { id: "qarindosh", name: "Qarindosh", emoji: "👨‍👩‍👧‍👦" },
+        { id: "mevalar", name: "Mevalar", emoji: "🍎" },
+        { id: "Sabzavotlar", name: "Sabzavotlar", emoji: "🥕" },
         { id: "hayvonlar", name: "Hayvonlar", emoji: "🐾" },
         { id: "ranglar", name: "Ranglar", emoji: "🎨" },
         { id: "raqamlar", name: "Raqamlar", emoji: "🔢" },
         { id: "hissiyotlar", name: "His-tuyg'ular", emoji: "😊" },
-        { id: "kundalik", name: "Kundalik hayot", emoji: "🏠" },
+        { id: "kundalik", name: "Kundalik", emoji: "🏠" },
         { id: "tabiat", name: "Tabiat", emoji: "🌿" },
-        { id: "tanishish", name: "Tanishish", emoji: "🤝" }
+        { id: "tanishish", name: "Davlatlar / Tanishish", emoji: "🌎" }
     ];
 
     const allWords = [
-        { uz: "Salom", emoji: "👋", cat: "salomlashish" },
-        { uz: "Xayr", emoji: "👋", cat: "salomlashish" },
-        { uz: "Rahmat", emoji: "🙏", cat: "salomlashish" },
-        { uz: "Iltimos", emoji: "🤲", cat: "salomlashish" },
-        { uz: "Kechirasiz", emoji: "😔", cat: "salomlashish" },
-        { uz: "Ha", emoji: "✅", cat: "salomlashish" },
-        { uz: "Yo'q", emoji: "❌", cat: "salomlashish" },
-        { uz: "Ona", emoji: "👩", cat: "oila" },
-        { uz: "Ota", emoji: "👨", cat: "oila" },
-        { uz: "Aka", emoji: "👦", cat: "oila" },
-        { uz: "Opa", emoji: "👧", cat: "oila" },
-        { uz: "Bola", emoji: "👶", cat: "oila" },
-        { uz: "Bobo", emoji: "👴", cat: "oila" },
-        { uz: "Buvi", emoji: "👵", cat: "oila" },
-        { uz: "Oila", emoji: "👨‍👩‍👧", cat: "oila" },
-        { uz: "Non", emoji: "🍞", cat: "oziq-ovqat" },
-        { uz: "Suv", emoji: "💧", cat: "oziq-ovqat" },
-        { uz: "Choy", emoji: "🍵", cat: "oziq-ovqat" },
-        { uz: "Olma", emoji: "🍎", cat: "oziq-ovqat" },
-        { uz: "Palov", emoji: "🍚", cat: "oziq-ovqat" },
-        { uz: "Go'sht", emoji: "🥩", cat: "oziq-ovqat" },
-        { uz: "Meva", emoji: "🍇", cat: "oziq-ovqat" },
-        { uz: "Sut", emoji: "🥛", cat: "oziq-ovqat" },
-        { uz: "Mushuk", emoji: "🐱", cat: "hayvonlar" },
-        { uz: "It", emoji: "🐕", cat: "hayvonlar" },
-        { uz: "Qush", emoji: "🐦", cat: "hayvonlar" },
-        { uz: "Baliq", emoji: "🐟", cat: "hayvonlar" },
-        { uz: "Ot", emoji: "🐴", cat: "hayvonlar" },
-        { uz: "Sigir", emoji: "🐄", cat: "hayvonlar" },
-        { uz: "Qizil", emoji: "🔴", cat: "ranglar" },
-        { uz: "Ko'k", emoji: "🔵", cat: "ranglar" },
-        { uz: "Yashil", emoji: "🟢", cat: "ranglar" },
-        { uz: "Oq", emoji: "⚪", cat: "ranglar" },
-        { uz: "Qora", emoji: "⚫", cat: "ranglar" },
-        { uz: "Sariq", emoji: "🟡", cat: "ranglar" },
-        { uz: "Bir", emoji: "1️⃣", cat: "raqamlar" },
-        { uz: "Ikki", emoji: "2️⃣", cat: "raqamlar" },
-        { uz: "Uch", emoji: "3️⃣", cat: "raqamlar" },
-        { uz: "To'rt", emoji: "4️⃣", cat: "raqamlar" },
-        { uz: "Besh", emoji: "5️⃣", cat: "raqamlar" },
-        { uz: "O'n", emoji: "🔟", cat: "raqamlar" },
-        { uz: "Xursand", emoji: "😊", cat: "hissiyotlar" },
-        { uz: "G'amgin", emoji: "😢", cat: "hissiyotlar" },
-        { uz: "Qo'rqinchli", emoji: "😨", cat: "hissiyotlar" },
-        { uz: "Hayron", emoji: "😲", cat: "hissiyotlar" },
-        { uz: "Sevgi", emoji: "❤️", cat: "hissiyotlar" },
-        { uz: "Charchagan", emoji: "😩", cat: "hissiyotlar" },
-        { uz: "Uy", emoji: "🏠", cat: "kundalik" },
-        { uz: "Maktab", emoji: "🏫", cat: "kundalik" },
-        { uz: "Ish", emoji: "💼", cat: "kundalik" },
-        { uz: "Ovqat", emoji: "🍽️", cat: "kundalik" },
-        { uz: "Kitob", emoji: "📖", cat: "kundalik" },
-        { uz: "Telefon", emoji: "📱", cat: "kundalik" },
-        { uz: "Mashina", emoji: "🚗", cat: "kundalik" },
-        { uz: "Do'kon", emoji: "🏪", cat: "kundalik" },
-        { uz: "Quyosh", emoji: "☀️", cat: "tabiat" },
-        { uz: "Oy", emoji: "🌙", cat: "tabiat" },
-        { uz: "Yomg'ir", emoji: "🌧️", cat: "tabiat" },
-        { uz: "Gul", emoji: "🌸", cat: "tabiat" },
-        { uz: "Daraxt", emoji: "🌳", cat: "tabiat" },
-        { uz: "Tog'", emoji: "⛰️", cat: "tabiat" },
-        { uz: "Ismim", emoji: "🏷️", cat: "tanishish" },
-        { uz: "Yosh", emoji: "🎂", cat: "tanishish" },
-        { uz: "Qaerdan", emoji: "📍", cat: "tanishish" },
-        { uz: "Tanishganimdan xursandman", emoji: "🤝", cat: "tanishish" }
+        // Tanishuv
+        { uz: "Salom", emoji: "👋", cat: "salomlashish", },
+        { uz: "Xayr", emoji: "👋", cat: "salomlashish", },
+        { uz: "Rahmat", emoji: "🙏", cat: "salomlashish", },
+        { uz: "Iltimos", emoji: "🤲", cat: "salomlashish", },
+        { uz: "Kechirasiz", emoji: "😔", cat: "salomlashish", },
+        { uz: "Ha", emoji: "✅", cat: "salomlashish", },
+        { uz: "Yo'q", emoji: "❌", cat: "salomlashish", },
+
+        // Oila/qarindosh
+        { uz: "Ona", emoji: "👩", cat: "qarindosh", },
+        { uz: "Ota", emoji: "👨", cat: "qarindosh", },
+        { uz: "Aka", emoji: "👦", cat: "qarindosh", },
+        { uz: "Opa", emoji: "👧", cat: "qarindosh", },
+        { uz: "Bola", emoji: "👶", cat: "qarindosh", },
+        { uz: "Bobo", emoji: "👴", cat: "qarindosh", },
+        { uz: "Buvi", emoji: "👵", cat: "qarindosh", },
+        { uz: "Oila", emoji: "👨‍👩‍👧", cat: "qarindosh", },
+
+        // Mevalar
+        { uz: "Olma", emoji: "🍎", cat: "mevalar", },
+        { uz: "Banan", emoji: "🍌", cat: "mevalar", },
+        { uz: "", emoji: "🍵", cat: "mevalar", },
+        { uz: "Olma", emoji: "🍎", cat: "mevalar", },
+        { uz: "Palov", emoji: "🍚", cat: "mevalar", },
+        { uz: "Go'sht", emoji: "🥩", cat: "mevalar", },
+        { uz: "Meva", emoji: "🍇", cat: "mevalar", },
+        { uz: "Sut", emoji: "🥛", cat: "mevalar", },
+
+        // Sabzavotlar
+        { uz: "Tarvuz", cat: "Sabzavotlar", },
+        { uz: "Qovun", cat: "Sabzavotlar", },
+        { uz: "No'xat", cat: "Sabzavotlar", },
+        { uz: "Jo'xori", cat: "Sabzavotlar", },
+        { uz: "Sarimsoq piyoz", cat: "Sabzavotlar", },
+        { uz: "Lavlagi", cat: "Sabzavotlar", },
+        { uz: "Rediska", cat: "Sabzavotlar", },
+        { uz: "Turp", cat: "Sabzavotlar", },
+        { uz: "Sholg'om", cat: "Sabzavotlar", },
+
+        // Hayvonlar
+        { uz: "Mushuk", emoji: "🐱", cat: "hayvonlar", },
+        { uz: "It", emoji: "🐕", cat: "hayvonlar", },
+        { uz: "Qush", emoji: "🐦", cat: "hayvonlar", },
+        { uz: "Baliq", emoji: "🐟", cat: "hayvonlar", },
+        { uz: "Ot", emoji: "🐴", cat: "hayvonlar", },
+        { uz: "Sigir", emoji: "🐄", cat: "hayvonlar", },
+
+        // Ranglar
+        { uz: "Qizil", emoji: "🔴", cat: "ranglar", },
+        { uz: "Ko'k", emoji: "🔵", cat: "ranglar", },
+        { uz: "Yashil", emoji: "🟢", cat: "ranglar", },
+        { uz: "Oq", emoji: "⚪", cat: "ranglar", },
+        { uz: "Qora", emoji: "⚫", cat: "ranglar", },
+        { uz: "Sariq", emoji: "🟡", cat: "ranglar", },
+        { uz: "Pushti", emoji: "", cat: "ranglar", },
+        { uz: "Kulrang", emoji: "🌫️", cat: "ranglar", },
+        { uz: "Binafsha", emoji: "🟣", cat: "ranglar", },
+
+        // Raqamlar
+        { uz: "Bir", emoji: "1️⃣", cat: "raqamlar", },
+        { uz: "Ikki", emoji: "2️⃣", cat: "raqamlar", },
+        { uz: "Uch", emoji: "3️⃣", cat: "raqamlar", },
+        { uz: "To'rt", emoji: "4️⃣", cat: "raqamlar", },
+        { uz: "Besh", emoji: "5️⃣", cat: "raqamlar", },
+        { uz: "Olti", emoji: "6️⃣", cat: "raqamlar", },
+        { uz: "Yetti", emoji: "7️⃣", cat: "raqamlar", },
+        { uz: "Sakkiz", emoji: "8️⃣", cat: "raqamlar", },
+        { uz: "To'qqiz", emoji: "9️⃣", cat: "raqamlar", },
+        { uz: "O'n", emoji: "🔟", cat: "raqamlar", },
+        { uz: "Yigirma", emoji: "2️⃣0️⃣", cat: "raqamlar", },
+        { uz: "O'ttiz", emoji: "3️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Qirq", emoji: "4️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Ellik", emoji: "5️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Oltmish", emoji: "6️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Yetmish", emoji: "7️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Sakson", emoji: "8️⃣0️⃣", cat: "raqamlar", },
+        { uz: "To'qson", emoji: "9️⃣0️⃣", cat: "raqamlar", },
+        { uz: "Yuz", emoji: "1️⃣0️⃣0️⃣", cat: "raqamlar", },
+
+        // His-tuyg'ular
+        { uz: "Xursand", emoji: "😊", cat: "hissiyotlar", },
+        { uz: "G'amgin", emoji: "😢", cat: "hissiyotlar", },
+        { uz: "Qo'rqinchli", emoji: "😨", cat: "hissiyotlar", },
+        { uz: "Hayron", emoji: "😲", cat: "hissiyotlar", },
+        { uz: "Sevgi", emoji: "❤️", cat: "hissiyotlar", },
+        { uz: "Charchagan", emoji: "😩", cat: "hissiyotlar", },
+
+        // Kundalik hayot
+        { uz: "Uy", emoji: "🏠", cat: "kundalik", },
+        { uz: "Maktab", emoji: "🏫", cat: "kundalik", },
+        { uz: "Ish", emoji: "💼", cat: "kundalik", },
+        { uz: "Ovqat", emoji: "🍽️", cat: "kundalik", },
+        { uz: "Kitob", emoji: "📖", cat: "kundalik", },
+        { uz: "Telefon", emoji: "📱", cat: "kundalik", },
+        { uz: "Mashina", emoji: "🚗", cat: "kundalik", },
+        { uz: "Do'kon", emoji: "🏪", cat: "kundalik", },
+
+        // Tabiat
+        { uz: "Quyosh", emoji: "☀️", cat: "tabiat", },
+        { uz: "Oy", emoji: "🌙", cat: "tabiat", },
+        { uz: "Yomg'ir", emoji: "🌧️", cat: "tabiat", },
+        { uz: "Gul", emoji: "🌸", cat: "tabiat", },
+        { uz: "Daraxt", emoji: "🌳", cat: "tabiat", },
+        { uz: "Tog'", emoji: "⛰️", cat: "tabiat", },
+
+        // Tanishish
+        { uz: "Ismim", emoji: "🏷️", cat: "tanishish", },
+        { uz: "Yosh", emoji: "🎂", cat: "tanishish", },
+        { uz: "Qaerdan", emoji: "📍", cat: "tanishish", },
+        { uz: "Tanishganimdan xursandman", emoji: "🤝", cat: "tanishish", },
     ];
 
     let selectedTopics = new Set();
@@ -720,10 +770,9 @@
     const topicContainer = document.getElementById('topicSelector');
     categories.forEach(cat => {
         const chip = document.createElement('div');
-        chip.className = 'topic-chip selected';
+        chip.className = 'topic-chip';
         chip.innerHTML = `${cat.emoji} ${cat.name}`;
         chip.dataset.catId = cat.id;
-        selectedTopics.add(cat.id);
         chip.onclick = () => {
             chip.classList.toggle('selected');
             if (selectedTopics.has(cat.id)) {
@@ -734,6 +783,18 @@
         };
         topicContainer.appendChild(chip);
     });
+
+    window.selectAllTopics = function() {
+        const chips = document.querySelectorAll('.topic-chip');
+        const allSelected = selectedTopics.size === categories.length;
+        if (allSelected) {
+            selectedTopics.clear();
+            chips.forEach(c => c.classList.remove('selected'));
+        } else {
+            categories.forEach(cat => selectedTopics.add(cat.id));
+            chips.forEach(c => c.classList.add('selected'));
+        }
+    };
 
     function shuffle(arr) {
         const a = [...arr];
@@ -748,7 +809,10 @@
         showImages = document.getElementById('settingImages').checked;
 
         let filtered = allWords.filter(w => selectedTopics.has(w.cat));
-        if (filtered.length === 0) filtered = [...allWords];
+        if (filtered.length === 0) {
+            alert("Iltimos, kamida bitta mavzuni tanlang!");
+            return;
+        }
 
         deck = shuffle(filtered);
         currentIndex = 0;
@@ -784,7 +848,7 @@
         }
 
         const videoEl = document.getElementById('fcAnswerVideo');
-        videoEl.src = '/static/img/pron/' + w.uz + '.mp4';
+        videoEl.src = '/static/img/pron_words/' + w.uz + '.mp4';
         videoEl.pause();
         document.getElementById('fcAnswerWord').textContent = w.uz;
 

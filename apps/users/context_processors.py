@@ -14,8 +14,7 @@ def streak_context(request):
         return {'streak_count': 0, 'streak_freezes_left': 3, 'weekly_streak': []}
 
     today = timezone.localdate()
-    # Get the last 7 days (Mon-Sun of current week)
-    # Start from Monday of this week
+   
     weekday = today.weekday()  # 0=Monday
     monday = today - timedelta(days=weekday)
 
